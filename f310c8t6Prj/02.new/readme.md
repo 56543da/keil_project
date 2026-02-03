@@ -1,0 +1,2 @@
+PA14为SWCLK PA13为SWDIO
+PA10应该设定为RX

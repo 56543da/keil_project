@@ -1,0 +1,1152 @@
+Dependencies for Project 'GD32', Target 'Target 1': (DO NOT MODIFY !)
+CompilerVersion: 6140000::V6.14::ARMCLANG
+F (..\App\Main\Main.c)(0x6055AC9A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/main.o -MD)
+I (..\App\Main\Main.h)(0x604C74EF)
+I (..\ARM\System\gd32f30x_conf.h)(0x6055A1EF)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+I (..\App\DataType\DataType.h)(0x6055A613)
+I (..\ARM\NVIC\NVIC.h)(0x5CE35148)
+I (..\ARM\SysTick\SysTick.h)(0x6055A7A7)
+I (..\HW\RCC\RCC.h)(0x5CE35B2E)
+I (..\HW\UART1\UART1.h)(0x5CE2B64F)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdio.h)(0x5DDFFD72)
+F (..\HW\RCC\RCC.c)(0x6055A9BC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/rcc.o -MD)
+I (..\HW\RCC\RCC.h)(0x5CE35B2E)
+I (..\App\DataType\DataType.h)(0x6055A613)
+I (..\ARM\System\gd32f30x_conf.h)(0x6055A1EF)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\HW\UART1\UART1.c)(0x6055AB3C)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/uart1.o -MD)
+I (..\HW\UART1\UART1.h)(0x5CE2B64F)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdio.h)(0x5DDFFD72)
+I (..\App\DataType\DataType.h)(0x6055A613)
+I (..\ARM\System\gd32f30x_conf.h)(0x6055A1EF)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+I (..\HW\UART1\Queue.h)(0x5CE2B5A5)
+F (..\HW\UART1\Queue.c)(0x5CE2B590)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/queue.o -MD)
+I (..\HW\UART1\Queue.h)(0x5CE2B5A5)
+I (..\App\DataType\DataType.h)(0x6055A613)
+F (..\FW\Source\gd32f30x_adc.c)(0x5FDC4DCD)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_adc.o -MD)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_bkp.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_bkp.o -MD)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_can.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_can.o -MD)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdlib.h)(0x5DDFFD6A)
+F (..\FW\Source\gd32f30x_crc.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_crc.o -MD)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_ctc.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_ctc.o -MD)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_dac.c)(0x5FDC4DCD)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_dac.o -MD)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_dbg.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_dbg.o -MD)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_dma.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_dma.o -MD)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdlib.h)(0x5DDFFD6A)
+F (..\FW\Source\gd32f30x_enet.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_enet.o -MD)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdlib.h)(0x5DDFFD6A)
+F (..\FW\Source\gd32f30x_exmc.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_exmc.o -MD)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_exti.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_exti.o -MD)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_fmc.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_fmc.o -MD)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_fwdgt.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_fwdgt.o -MD)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_gpio.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_gpio.o -MD)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_i2c.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_i2c.o -MD)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_misc.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_misc.o -MD)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_pmu.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_pmu.o -MD)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_rcu.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_rcu.o -MD)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_rtc.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_rtc.o -MD)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_sdio.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_sdio.o -MD)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_spi.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_spi.o -MD)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_timer.c)(0x5FDC4DCD)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_timer.o -MD)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_usart.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_usart.o -MD)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\FW\Source\gd32f30x_wwdgt.c)(0x5FDC4DCE)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_wwdgt.o -MD)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\ARM\System\gd32f30x_it.c)(0x6055A808)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/gd32f30x_it.o -MD)
+I (..\ARM\System\gd32f30x_it.h)(0x5FDC4DCA)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+I (..\App\Main\main.h)(0x604C74EF)
+I (..\ARM\SysTick\systick.h)(0x6055A7A7)
+I (..\App\DataType\DataType.h)(0x6055A613)
+I (..\ARM\System\gd32f30x_conf.h)(0x6055A1EF)
+F (..\ARM\NVIC\NVIC.c)(0x6055A5FC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/nvic.o -MD)
+I (..\ARM\NVIC\NVIC.h)(0x5CE35148)
+I (..\App\DataType\DataType.h)(0x6055A613)
+I (..\ARM\System\gd32f30x_conf.h)(0x6055A1EF)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (..\ARM\SysTick\SysTick.c)(0x6055A7FA)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/systick.o -MD)
+I (..\ARM\SysTick\SysTick.h)(0x6055A7A7)
+I (..\App\DataType\DataType.h)(0x6055A613)
+I (..\ARM\System\gd32f30x_conf.h)(0x6055A1EF)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
+F (RTE\Device\GD32F303RC\startup_gd32f30x_hd.s)(0x6055AF00)(--target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -masm=auto -c-gdwarf-3 -Wa,armasm,--pd,"__MICROLIB SETA 1"-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 530" -Wa,armasm,--pd,"_RTE_ SETA 1" -Wa,armasm,--pd,"GD32F30X_HD SETA 1" -Wa,armasm,--pd,"_RTE_ SETA 1"-o ./objects/startup_gd32f30x_hd.o)
+F (RTE\Device\GD32F303RC\system_gd32f30x.c)(0x5BC68B14)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__MICROLIB -gdwarf-3 -Oz -ffunction-sections -w -I ../FW/Include -I ../App/Main -I ../ARM/SysTick -I ../ARM/System -I ../App/DataType -I ../ARM/NVIC -I ../HW/RCC -I ../HW/UART1-I./RTE/_Target_1-ID:/Keil/PACK/ARM/CMSIS/5.7.0/CMSIS/Core/Include-ID:/Keil/PACK/GigaDevice/GD32F30x_DFP/2.1.0/Device/Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o ./objects/system_gd32f30x.o -MD)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\gd32f30x.h)(0x5BC68ACA)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\core_cm4.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\stdint.h)(0x5DDFFD72)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h)(0x5E8ED122)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h)(0x5E8306C2)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h)(0x5E8ED122)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_compat.h)(0x5E0CC2EC)
+I (D:\Keil\K\ARM\ARMCLANG\include\arm_acle.h)(0x5E0CC318)
+I (D:\Keil\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include\mpu_armv7.h)(0x5E8ED122)
+I (D:\Keil\PACK\GigaDevice\GD32F30x_DFP\2.1.0\Device\Include\system_gd32f30x.h)(0x5BC68A4A)
+I (..\ARM\System\gd32f30x_libopt.h)(0x5FDC4DCA)
+I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_can.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_crc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_ctc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dac.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dbg.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_dma.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_fwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_i2c.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_pmu.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_bkp.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_rtc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_sdio.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_spi.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
+I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)

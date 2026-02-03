@@ -1,0 +1,269 @@
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\E_tools\keil\core\ARM\ARMCC\Bin'
+Build target 'Target 1'
+compiling gd32f3x0_ctc.c...
+FW\Source\gd32f3x0_ctc.c(50): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+      rcu_periph_reset_enable(RCU_CTCRST);
+FW\Source\gd32f3x0_ctc.c(50): error:  #20: identifier "RCU_CTCRST" is undefined
+      rcu_periph_reset_enable(RCU_CTCRST);
+FW\Source\gd32f3x0_ctc.c(51): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+      rcu_periph_reset_disable(RCU_CTCRST);
+FW\Source\gd32f3x0_ctc.c: 2 warnings, 1 error
+compiling RCU.c...
+.\ARM\System\gd32f3x0_conf.h(46): warning:  #1-D: last line of file ends without a newline
+  #endif
+HW\RCU\RCU.c(79): warning:  #223-D: function "rcu_pllpresel_config" declared implicitly
+      rcu_pllpresel_config(RCU_PLLPRESRC_HXTAL);
+HW\RCU\RCU.c(79): error:  #20: identifier "RCU_PLLPRESRC_HXTAL" is undefined
+      rcu_pllpresel_config(RCU_PLLPRESRC_HXTAL);
+HW\RCU\RCU.c(81): warning:  #223-D: function "rcu_predv0_config" declared implicitly
+      rcu_predv0_config(RCU_PREDV0_DIV1);
+HW\RCU\RCU.c(81): error:  #20: identifier "RCU_PREDV0_DIV1" is undefined
+      rcu_predv0_config(RCU_PREDV0_DIV1);
+HW\RCU\RCU.c: 3 warnings, 2 errors
+compiling Timer.c...
+.\ARM\System\gd32f3x0_conf.h(46): warning:  #1-D: last line of file ends without a newline
+  #endif
+HW\Timer\Timer.c(91): error:  #20: identifier "RCU_TIMER4" is undefined
+    rcu_periph_clock_enable(RCU_TIMER4);                  //使能TIMER4的时钟
+HW\Timer\Timer.c(93): error:  #20: identifier "TIMER4" is undefined
+    timer_deinit(TIMER4);                                 //设置TIMER4参数恢复默认值
+HW\Timer\Timer.c(104): error:  #20: identifier "TIMER4_IRQn" is undefined
+    nvic_irq_enable(TIMER4_IRQn, 1, 0);                   //配置NVIC设置优先级
+HW\Timer\Timer.c(149): error:  #20: identifier "TIMER4" is undefined
+    if (timer_interrupt_flag_get(TIMER4, TIMER_INT_FLAG_UP) == SET) //判断定时器更新中断是否发生
+HW\Timer\Timer.c: 1 warning, 4 errors
+compiling Main.c...
+.\ARM\System\gd32f3x0_conf.h(46): warning:  #1-D: last line of file ends without a newline
+  #endif
+App\Main\Main.c(82): warning:  #223-D: function "InitLED" declared implicitly
+    InitLED();           /* 初始化LED模块 */
+App\Main\Main.c(84): warning:  #223-D: function "InitKeyOne" declared implicitly
+    InitKeyOne();        /* 初始化KeyOne模块 */
+App\Main\Main.c(85): warning:  #223-D: function "InitProcKeyOne" declared implicitly
+    InitProcKeyOne();    /* 初始化ProcKeyOne模块 */
+App\Main\Main.c(86): warning:  #223-D: function "LCD_Init" declared implicitly
+    LCD_Init();          /* 初始化LCD模块 */
+App\Main\Main.c(87): warning:  #223-D: function "SPO2_DisplayInit" declared implicitly
+    SPO2_DisplayInit();  /* 初始化血氧显示 */
+App\Main\Main.c(109): error:  #20: identifier "lcddev" is undefined
+      sprintf((char*)lcd_id, "LCD ID:%04X", lcddev.id);
+App\Main\Main.c(132): warning:  #223-D: function "LCD_Clear" declared implicitly
+          LCD_Clear(BLACK);
+App\Main\Main.c(132): error:  #20: identifier "BLACK" is undefined
+          LCD_Clear(BLACK);
+App\Main\Main.c(136): error:  #20: identifier "POINT_COLOR" is undefined
+      POINT_COLOR = RED;  /* 画笔颜色为红色 */
+App\Main\Main.c(136): error:  #20: identifier "RED" is undefined
+      POINT_COLOR = RED;  /* 画笔颜色为红色 */
+App\Main\Main.c(137): warning:  #223-D: function "LCD_ShowString" declared implicitly
+      LCD_ShowString(30, 40, 200, 16, 16, (u8*)"GD32 ^_^");
+App\Main\Main.c(143): error:  #20: identifier "g_u32Key1Count" is undefined
+      sprintf((char*)key_buf, "K1:%d K2:%d K3:%d", g_u32Key1Count, g_u32Key2Count, g_u32Key3Count);
+App\Main\Main.c(143): error:  #20: identifier "g_u32Key2Count" is undefined
+      sprintf((char*)key_buf, "K1:%d K2:%d K3:%d", g_u32Key1Count, g_u32Key2Count, g_u32Key3Count);
+App\Main\Main.c(143): error:  #20: identifier "g_u32Key3Count" is undefined
+      sprintf((char*)key_buf, "K1:%d K2:%d K3:%d", g_u32Key1Count, g_u32Key2Count, g_u32Key3Count);
+App\Main\Main.c(147): warning:  #223-D: function "SPO2_UpdateDisplay" declared implicitly
+      SPO2_UpdateDisplay();
+App\Main\Main.c(180): warning:  #223-D: function "KeyOne_2msTask" declared implicitly
+        KeyOne_2msTask();
+App\Main\Main.c: 10 warnings, 7 errors
+compiling gd32f3x0_pmu.c...
+FW\Source\gd32f3x0_pmu.c(49): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+      rcu_periph_reset_enable(RCU_PMURST);
+FW\Source\gd32f3x0_pmu.c(49): error:  #20: identifier "RCU_PMURST" is undefined
+      rcu_periph_reset_enable(RCU_PMURST);
+FW\Source\gd32f3x0_pmu.c(50): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+      rcu_periph_reset_disable(RCU_PMURST);
+FW\Source\gd32f3x0_pmu.c: 2 warnings, 1 error
+compiling gd32f3x0_i2c.c...
+FW\Source\gd32f3x0_i2c.c(60): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+          rcu_periph_reset_enable(RCU_I2C0RST);
+FW\Source\gd32f3x0_i2c.c(60): error:  #20: identifier "RCU_I2C0RST" is undefined
+          rcu_periph_reset_enable(RCU_I2C0RST);
+FW\Source\gd32f3x0_i2c.c(61): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+          rcu_periph_reset_disable(RCU_I2C0RST);
+FW\Source\gd32f3x0_i2c.c(65): error:  #20: identifier "RCU_I2C1RST" is undefined
+          rcu_periph_reset_enable(RCU_I2C1RST);
+FW\Source\gd32f3x0_i2c.c(90): warning:  #223-D: function "rcu_clock_freq_get" declared implicitly
+      pclk1 = rcu_clock_freq_get(CK_APB1);
+FW\Source\gd32f3x0_i2c.c(90): error:  #20: identifier "CK_APB1" is undefined
+      pclk1 = rcu_clock_freq_get(CK_APB1);
+FW\Source\gd32f3x0_i2c.c: 3 warnings, 3 errors
+compiling gd32f3x0_adc.c...
+FW\Source\gd32f3x0_adc.c(47): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+      rcu_periph_reset_enable(RCU_ADCRST);
+FW\Source\gd32f3x0_adc.c(47): error:  #20: identifier "RCU_ADCRST" is undefined
+      rcu_periph_reset_enable(RCU_ADCRST);
+FW\Source\gd32f3x0_adc.c(48): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+      rcu_periph_reset_disable(RCU_ADCRST);
+FW\Source\gd32f3x0_adc.c: 2 warnings, 1 error
+compiling gd32f3x0_timer.c...
+FW\Source\gd32f3x0_timer.c(51): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+          rcu_periph_reset_enable(RCU_TIMER0RST);
+FW\Source\gd32f3x0_timer.c(51): error:  #20: identifier "RCU_TIMER0RST" is undefined
+          rcu_periph_reset_enable(RCU_TIMER0RST);
+FW\Source\gd32f3x0_timer.c(52): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+          rcu_periph_reset_disable(RCU_TIMER0RST);
+FW\Source\gd32f3x0_timer.c(56): error:  #20: identifier "RCU_TIMER1RST" is undefined
+          rcu_periph_reset_enable(RCU_TIMER1RST);
+FW\Source\gd32f3x0_timer.c(61): error:  #20: identifier "RCU_TIMER2RST" is undefined
+          rcu_periph_reset_enable(RCU_TIMER2RST);
+FW\Source\gd32f3x0_timer.c(73): error:  #20: identifier "RCU_TIMER13RST" is undefined
+          rcu_periph_reset_enable(RCU_TIMER13RST);
+FW\Source\gd32f3x0_timer.c(78): error:  #20: identifier "RCU_TIMER14RST" is undefined
+          rcu_periph_reset_enable(RCU_TIMER14RST);
+FW\Source\gd32f3x0_timer.c(83): error:  #20: identifier "RCU_TIMER15RST" is undefined
+          rcu_periph_reset_enable(RCU_TIMER15RST);
+FW\Source\gd32f3x0_timer.c(88): error:  #20: identifier "RCU_TIMER16RST" is undefined
+          rcu_periph_reset_enable(RCU_TIMER16RST);
+FW\Source\gd32f3x0_timer.c: 2 warnings, 7 errors
+compiling gd32f3x0_usart.c...
+FW\Source\gd32f3x0_usart.c(58): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+          rcu_periph_reset_enable(RCU_USART0RST);
+FW\Source\gd32f3x0_usart.c(58): error:  #20: identifier "RCU_USART0RST" is undefined
+          rcu_periph_reset_enable(RCU_USART0RST);
+FW\Source\gd32f3x0_usart.c(59): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+          rcu_periph_reset_disable(RCU_USART0RST);
+FW\Source\gd32f3x0_usart.c(63): error:  #20: identifier "RCU_USART1RST" is undefined
+          rcu_periph_reset_enable(RCU_USART1RST);
+FW\Source\gd32f3x0_usart.c(85): warning:  #223-D: function "rcu_clock_freq_get" declared implicitly
+           uclk = rcu_clock_freq_get(CK_USART);
+FW\Source\gd32f3x0_usart.c(85): error:  #20: identifier "CK_USART" is undefined
+           uclk = rcu_clock_freq_get(CK_USART);
+FW\Source\gd32f3x0_usart.c(89): error:  #20: identifier "CK_APB1" is undefined
+           uclk = rcu_clock_freq_get(CK_APB1);
+FW\Source\gd32f3x0_usart.c: 3 warnings, 4 errors
+compiling gd32f3x0_gpio.c...
+FW\Source\gd32f3x0_gpio.c(52): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+          rcu_periph_reset_enable(RCU_GPIOARST);
+FW\Source\gd32f3x0_gpio.c(52): error:  #20: identifier "RCU_GPIOARST" is undefined
+          rcu_periph_reset_enable(RCU_GPIOARST);
+FW\Source\gd32f3x0_gpio.c(53): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+          rcu_periph_reset_disable(RCU_GPIOARST);
+FW\Source\gd32f3x0_gpio.c(57): error:  #20: identifier "RCU_GPIOBRST" is undefined
+          rcu_periph_reset_enable(RCU_GPIOBRST);
+FW\Source\gd32f3x0_gpio.c(62): error:  #20: identifier "RCU_GPIOCRST" is undefined
+          rcu_periph_reset_enable(RCU_GPIOCRST);
+FW\Source\gd32f3x0_gpio.c(67): error:  #20: identifier "RCU_GPIODRST" is undefined
+          rcu_periph_reset_enable(RCU_GPIODRST);
+FW\Source\gd32f3x0_gpio.c(72): error:  #20: identifier "RCU_GPIOFRST" is undefined
+          rcu_periph_reset_enable(RCU_GPIOFRST);
+FW\Source\gd32f3x0_gpio.c: 2 warnings, 5 errors
+compiling gd32f3x0_syscfg.c...
+FW\Source\gd32f3x0_syscfg.c(47): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+      rcu_periph_reset_enable(RCU_CFGCMPRST);
+FW\Source\gd32f3x0_syscfg.c(47): error:  #20: identifier "RCU_CFGCMPRST" is undefined
+      rcu_periph_reset_enable(RCU_CFGCMPRST);
+FW\Source\gd32f3x0_syscfg.c(48): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+      rcu_periph_reset_disable(RCU_CFGCMPRST);
+FW\Source\gd32f3x0_syscfg.c: 2 warnings, 1 error
+compiling gd32f3x0_tsi.c...
+FW\Source\gd32f3x0_tsi.c(47): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+      rcu_periph_reset_enable(RCU_TSIRST);
+FW\Source\gd32f3x0_tsi.c(47): error:  #20: identifier "RCU_TSIRST" is undefined
+      rcu_periph_reset_enable(RCU_TSIRST);
+FW\Source\gd32f3x0_tsi.c(48): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+      rcu_periph_reset_disable(RCU_TSIRST);
+FW\Source\gd32f3x0_tsi.c: 2 warnings, 1 error
+compiling gd32f3x0_spi.c...
+FW\Source\gd32f3x0_spi.c(55): warning:  #223-D: function "rcu_periph_reset_enable" declared implicitly
+          rcu_periph_reset_enable(RCU_SPI0RST);
+FW\Source\gd32f3x0_spi.c(55): error:  #20: identifier "RCU_SPI0RST" is undefined
+          rcu_periph_reset_enable(RCU_SPI0RST);
+FW\Source\gd32f3x0_spi.c(56): warning:  #223-D: function "rcu_periph_reset_disable" declared implicitly
+          rcu_periph_reset_disable(RCU_SPI0RST);
+FW\Source\gd32f3x0_spi.c(60): error:  #20: identifier "RCU_SPI1RST" is undefined
+          rcu_periph_reset_enable(RCU_SPI1RST);
+FW\Source\gd32f3x0_spi.c: 2 warnings, 2 errors
+compiling system_gd32f3x0.c...
+ARM\System\system_gd32f3x0.c(240): error:  #20: identifier "FMC_OBSTAT" is undefined
+      if(((FMC_OBSTAT & OB_OBSTAT_PLEVEL_HIGH) != OB_OBSTAT_PLEVEL_HIGH) &&
+ARM\System\system_gd32f3x0.c(240): error:  #20: identifier "OB_OBSTAT_PLEVEL_HIGH" is undefined
+      if(((FMC_OBSTAT & OB_OBSTAT_PLEVEL_HIGH) != OB_OBSTAT_PLEVEL_HIGH) &&
+ARM\System\system_gd32f3x0.c(242): error:  #20: identifier "FMC_KEY" is undefined
+          FMC_KEY = UNLOCK_KEY0;
+ARM\System\system_gd32f3x0.c(242): error:  #20: identifier "UNLOCK_KEY0" is undefined
+          FMC_KEY = UNLOCK_KEY0;
+ARM\System\system_gd32f3x0.c(243): error:  #20: identifier "UNLOCK_KEY1" is undefined
+          FMC_KEY = UNLOCK_KEY1 ;
+ARM\System\system_gd32f3x0.c(244): error:  #20: identifier "FMC_OBKEY" is undefined
+          FMC_OBKEY = UNLOCK_KEY0;
+ARM\System\system_gd32f3x0.c(246): error:  #20: identifier "FMC_CTL" is undefined
+          FMC_CTL |= FMC_CTL_OBER;
+ARM\System\system_gd32f3x0.c(246): error:  #20: identifier "FMC_CTL_OBER" is undefined
+          FMC_CTL |= FMC_CTL_OBER;
+ARM\System\system_gd32f3x0.c(247): error:  #20: identifier "FMC_CTL_START" is undefined
+          FMC_CTL |= FMC_CTL_START;
+ARM\System\system_gd32f3x0.c(248): error:  #20: identifier "FMC_STAT" is undefined
+          while((uint32_t)0x00U != (FMC_STAT & FMC_STAT_BUSY));
+ARM\System\system_gd32f3x0.c(248): error:  #20: identifier "FMC_STAT_BUSY" is undefined
+          while((uint32_t)0x00U != (FMC_STAT & FMC_STAT_BUSY));
+ARM\System\system_gd32f3x0.c(250): error:  #20: identifier "FMC_CTL_OBPG" is undefined
+          FMC_CTL |= FMC_CTL_OBPG;
+ARM\System\system_gd32f3x0.c(251): error:  #20: identifier "OB_OBSTAT_PLEVEL_NO" is undefined
+          if((FMC_OBSTAT & OB_OBSTAT_PLEVEL_HIGH) == OB_OBSTAT_PLEVEL_NO) {
+ARM\System\system_gd32f3x0.c(252): error:  #20: identifier "OB_SPC" is undefined
+              OB_SPC = FMC_NSPC;
+ARM\System\system_gd32f3x0.c(252): error:  #20: identifier "FMC_NSPC" is undefined
+              OB_SPC = FMC_NSPC;
+ARM\System\system_gd32f3x0.c(253): error:  #20: identifier "OB_OBSTAT_PLEVEL_LOW" is undefined
+          } else if((FMC_OBSTAT & OB_OBSTAT_PLEVEL_HIGH) == OB_OBSTAT_PLEVEL_LOW) {
+ARM\System\system_gd32f3x0.c(254): error:  #20: identifier "OB_SPC" is undefined
+              OB_SPC = FMC_LSPC;
+ARM\System\system_gd32f3x0.c(254): error:  #20: identifier "FMC_LSPC" is undefined
+              OB_SPC = FMC_LSPC;
+ARM\System\system_gd32f3x0.c(256): error:  #20: identifier "OB_USER" is undefined
+          OB_USER = OB_USER_DEFAULT & ((uint8_t)(FMC_OBSTAT >> 8));
+ARM\System\system_gd32f3x0.c(256): error:  #20: identifier "OB_USER_DEFAULT" is undefined
+          OB_USER = OB_USER_DEFAULT & ((uint8_t)(FMC_OBSTAT >> 8));
+ARM\System\system_gd32f3x0.c(257): error:  #20: identifier "OB_DATA0" is undefined
+          OB_DATA0 = ((uint8_t)(FMC_OBSTAT >> 16));
+ARM\System\system_gd32f3x0.c(258): error:  #20: identifier "OB_DATA1" is undefined
+          OB_DATA1 = ((uint8_t)(FMC_OBSTAT >> 24));
+ARM\System\system_gd32f3x0.c(259): error:  #20: identifier "OB_WP0" is undefined
+          OB_WP0 = ((uint8_t)(FMC_WP));
+ARM\System\system_gd32f3x0.c(259): error:  #20: identifier "FMC_WP" is undefined
+          OB_WP0 = ((uint8_t)(FMC_WP));
+ARM\System\system_gd32f3x0.c(260): error:  #20: identifier "OB_WP1" is undefined
+          OB_WP1 = ((uint8_t)(FMC_WP >> 8));
+ARM\System\system_gd32f3x0.c(263): error:  #20: identifier "FMC_CTL_OBWEN" is undefined
+          FMC_CTL &= ~FMC_CTL_OBWEN;
+ARM\System\system_gd32f3x0.c(264): error:  #20: identifier "FMC_CTL_LK" is undefined
+          FMC_CTL |= FMC_CTL_LK;
+ARM\System\system_gd32f3x0.c(272): error:  #20: identifier "RCU_CTL0" is undefined
+      RCU_CTL0 |= RCU_CTL0_IRC8MEN;
+ARM\System\system_gd32f3x0.c(272): error:  #20: identifier "RCU_CTL0_IRC8MEN" is undefined
+      RCU_CTL0 |= RCU_CTL0_IRC8MEN;
+ARM\System\system_gd32f3x0.c(273): error:  #20: identifier "RCU_CTL0_IRC8MSTB" is undefined
+      while(0U == (RCU_CTL0 & RCU_CTL0_IRC8MSTB)) {
+ARM\System\system_gd32f3x0.c: 0 warnings, 30 errors
+compiling NVIC.c...
+.\ARM\System\gd32f3x0_conf.h(46): warning:  #1-D: last line of file ends without a newline
+  #endif
+ARM\NVIC\NVIC.c: 1 warning, 0 errors
+compiling UART0.c...
+.\ARM\System\gd32f3x0_conf.h(46): warning:  #1-D: last line of file ends without a newline
+  #endif
+HW\UART0\UART0.c(154): warning:  #223-D: function "gpio_init" declared implicitly
+    gpio_init(GPIOA, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_9);
+HW\UART0\UART0.c(154): error:  #20: identifier "GPIO_MODE_AF_PP" is undefined
+    gpio_init(GPIOA, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_9);
+HW\UART0\UART0.c(157): error:  #20: identifier "GPIO_MODE_IN_FLOATING" is undefined
+    gpio_init(GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_10);
+HW\UART0\UART0.c: 2 warnings, 2 errors
+compiling gd32f3x0_it.c...
+.\ARM\System\gd32f3x0_conf.h(46): warning:  #1-D: last line of file ends without a newline
+  #endif
+ARM\System\gd32f3x0_it.c(151): warning:  #223-D: function "led_spark" declared implicitly
+      led_spark();
+ARM\System\gd32f3x0_it.c(152): warning:  #223-D: function "delay_decrement" declared implicitly
+      delay_decrement();
+ARM\System\gd32f3x0_it.c: 3 warnings, 0 errors
+compiling SysTick.c...
+.\ARM\System\gd32f3x0_conf.h(46): warning:  #1-D: last line of file ends without a newline
+  #endif
+ARM\SysTick\SysTick.c: 1 warning, 0 errors
+".\Objects\02.new" - 71 Error(s), 43 Warning(s).
+Target not created.
+Build Time Elapsed:  00:00:03
