@@ -33,11 +33,15 @@
 *********************************************************************************************************/
 void  InitProcKeyOne(void);   //初始化ProcKeyOne模块
 
-void  ProcKeyDownKey1(void);  //处理KEY1按下的事件，即KEY1按键按下的响应函数 
-void  ProcKeyUpKey1(void);    //处理KEY1弹起的事件，即KEY1按键弹起的响应函数
-void  ProcKeyDownKey2(void);  //处理KEY2按下的事件，即KEY2按键按下的响应函数 
-void  ProcKeyUpKey2(void);    //处理KEY2弹起的事件，即KEY2按键弹起的响应函数
-void  ProcKeyDownKey3(void);  //处理KEY3按下的事件，即KEY3按键按下的响应函数 
-void  ProcKeyUpKey3(void);    //处理KEY3弹起的事件，即KEY3按键弹起的响应函数
+void  ProcKeyDownLL(void);    //处理LL按下的事件，即LL按键按下的响应函数 
+void  ProcKeyUpLL(void);      //处理LL弹起的事件，即LL按键弹起的响应函数
+void  ProcKeyDownRL(void);    //处理RL按下的事件，即RL按键按下的响应函数 
+void  ProcKeyUpRL(void);      //处理RL弹起的事件，即RL按键弹起的响应函数
+void  ProcKeyDownLeftHigh(void);   // 处理LEFT_HIGH (PE5) 按下的事件
+void  ProcKeyUpLeftHigh(void);     // 处理LEFT_HIGH (PE5) 弹起的事件
+void  ProcKeyDownRightHigh(void);  // 处理RIGHT_HIGH (PC13) 按下的事件
+void  ProcKeyUpRightHigh(void);    // 处理RIGHT_HIGH (PC13) 弹起的事件
+void  ProcKeyDownMenu(void);       // 处理MENU (PC9) 按下的事件
+void  ProcKeyUpMenu(void);         // 处理MENU (PC9) 弹起的事件
 
 #endif

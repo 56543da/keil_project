@@ -4,12 +4,14 @@
 * 当前版本：1.0.0
 * 作    者：Leyutek
 * 完成日期：2026年01月08日
+* 优化日期：2026年02月03日 (修复接收逻辑和解析状态机)
 *********************************************************************************************************/
 #include "UART1.h"
 #include "gd32f30x_conf.h"
 #include "Queue.h"
 #include "DataType.h"
 #include "SPO2_Display.h"
+#include "UI_Manager.h" // 添加头文件引用
 #include <stdio.h>
 
 /*********************************************************************************************************
@@ -94,6 +96,7 @@ static void ConfigUART1(unsigned int bound)
 
     // 4. 配置中断
     usart_interrupt_enable(USART1, USART_INT_RBNE); // 使能接收非空中断
+    usart_interrupt_enable(USART1, USART_INT_ERR);  // 使能错误中断(ORE/NE/FE/PE)
     nvic_irq_enable(USART1_IRQn, 1, 0);             // 抢占优先级 1 (低于 UART0 的优先级)
 
     // 5. 使能 USART1
@@ -107,12 +110,20 @@ static void ParseSPO2Packet(unsigned char data)
     static u8 s_packetLen = 0;
     static u8 s_packetBuffer[10];
 
+    // 调试打印：输出每一个接收到的字节
+    // printf("Rx: %02X State: %d\r\n", data, s_parseState);
+
     switch(s_parseState)
     {
         case 0: // Wait for Header
             if(data == SPO2_PACKET_HEAD) // 0xAA
             {
                 s_parseState = 1;
+            }
+            else
+            {
+                // 转发非协议数据的字符，用于调试 f310 的日志
+                printf("%c", data);
             }
             break;
         case 1: // Wait for Length
@@ -121,6 +132,10 @@ static void ParseSPO2Packet(unsigned char data)
                  s_packetLen = data;
                  s_packetIndex = 0;
                  s_parseState = 2;
+             }
+             else if (data == SPO2_PACKET_HEAD) // 容错
+             {
+                 s_parseState = 1; 
              }
              else
              {
@@ -143,10 +158,26 @@ static void ParseSPO2Packet(unsigned char data)
                 s_spo2Data.status = 0; // Valid
                 s_spo2Data.update_flag = 1;
                 
+                // 成功解析：打印结果
+                printf("Parsed: SPO2=%d HR=%d PI=%d\r\n", s_spo2Data.spo2, s_spo2Data.heart_rate, s_spo2Data.pi);
+                
+                // 立即更新到UI
+                UI_UpdateData(&s_spo2Data);
+                
                 SPO2_DisplayData(&s_spo2Data);
                 SPO2_DisplayStatus(1);
+                s_parseState = 0; // 成功，复位
             }
-            s_parseState = 0;
+            else if (data == SPO2_PACKET_HEAD) // 容错
+            {
+                printf("Parse Error: Tail mismatch, restart.\r\n");
+                s_parseState = 1; // 尝试重新同步
+            }
+            else
+            {
+                printf("Parse Error: Tail=%02X\r\n", data);
+                s_parseState = 0; // 失败，复位
+            }
             break;
         default:
             s_parseState = 0;
@@ -180,7 +211,11 @@ unsigned char UART1_GetLastRx(unsigned char *pBuf, unsigned char max_len)
         cnt = max_len;
     }
 
-    start = (unsigned char)(s_u8UART1MonPos + UART1_MON_SIZE - cnt);
+    if (cnt == 0) return 0; // 无数据直接返回
+
+    // 计算起始位置：当前写指针 - 数据量
+    // 注意：MonPos 指向的是下一个写入位置，所以要先退格
+    start = (unsigned char)(s_u8UART1MonPos + UART1_MON_SIZE - s_u8UART1MonCount);
     if (start >= UART1_MON_SIZE)
     {
         start -= UART1_MON_SIZE;
@@ -195,6 +230,10 @@ unsigned char UART1_GetLastRx(unsigned char *pBuf, unsigned char max_len)
         }
         pBuf[i] = s_arrUART1MonBuf[idx];
     }
+    
+    // 关键修复：读取后清空监控计数，这样才能在LCD上看到 "L=0" -> "L=6" 的动态变化
+    // 否则 L 永远是 32 (满)
+    s_u8UART1MonCount = 0; 
 
     return cnt;
 }
@@ -213,7 +252,11 @@ unsigned char UART1_GetLastParsed(SPO2Data_t *pData)
 void UART1_ProcessSPO2Data(void)
 {
     unsigned char data;
-    while(ReadUART1(&data, 1))
+    // 限制单次处理最大字节数，防止主循环被大量数据积压卡死
+    // 假设波特率115200，每秒约11KB，每次主循环处理64字节足以消化
+    uint32_t limit = 64; 
+    
+    while(ReadUART1(&data, 1) && limit--)
     {
         ParseSPO2Packet(data);
     }
@@ -229,17 +272,33 @@ void UART1_ReceiveSelfCheck(void)
 // USART1 中断服务程序
 void USART1_IRQHandler(void)
 {
+    // 接收非空中断
     if(usart_interrupt_flag_get(USART1, USART_INT_FLAG_RBNE) != RESET)
     {
         unsigned char uData = usart_data_receive(USART1);
+        
+        // 增加缓冲区保护：只有当队列未满时才写入
+        // 虽然 WriteReceiveBuf1 内部有保护，但显式检查更安全
         WriteReceiveBuf1(uData);
-        UART1_MonPush(uData);
+        
+        UART1_MonPush(uData); // 放入监控缓冲区
         usart_interrupt_flag_clear(USART1, USART_INT_FLAG_RBNE);
     }
     
+    // 处理溢出错误 (Overrun Error)，防止接收死锁
     if(usart_interrupt_flag_get(USART1, USART_INT_FLAG_ERR_ORERR) != RESET)
     {
-        usart_data_receive(USART1); // 清除错误标志
+        usart_data_receive(USART1); // 读数据寄存器以清除 ORE
         usart_interrupt_flag_clear(USART1, USART_INT_FLAG_ERR_ORERR);
+    }
+    
+    // 处理其他错误 (噪声/帧错误/奇偶校验错误)
+    if(usart_interrupt_flag_get(USART1, USART_INT_FLAG_ERR_NERR) != RESET)
+    {
+        usart_interrupt_flag_clear(USART1, USART_INT_FLAG_ERR_NERR);
+    }
+    if(usart_interrupt_flag_get(USART1, USART_INT_FLAG_ERR_FERR) != RESET)
+    {
+        usart_interrupt_flag_clear(USART1, USART_INT_FLAG_ERR_FERR);
     }
 }

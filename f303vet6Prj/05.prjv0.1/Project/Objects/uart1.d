@@ -41,3 +41,4 @@
 .\objects\uart1.o: ..\App\SPO2_Display\SPO2_Display.h
 .\objects\uart1.o: ..\App\LCD\LCD.h
 .\objects\uart1.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\uart1.o: ..\App\UI\UI_Manager.h

@@ -41,9 +41,11 @@
 *********************************************************************************************************/
 typedef enum
 {
-  KEY_NAME_KEY1 = 0,  //KEY1
-  KEY_NAME_KEY2,      //KEY2
-  KEY_NAME_KEY3,      //KEY3
+  KEY_NAME_LL = 0,    // LL (KEY1 - PE3)
+  KEY_NAME_RL,        // RL (KEY2 - PE4)
+  KEY_NAME_LEFT_HIGH, // LEFT_HIGH (PE5)
+  KEY_NAME_RIGHT_HIGH,// RIGHT_HIGH (PC13)
+  KEY_NAME_MENU,      // MENU (PC9)
   KEY_NAME_MAX
 }EnumKeyOneName;
 
@@ -59,14 +61,17 @@ void  KeyOne_2msTask(void);
 /* 中断服务函数 */
 void EXTI3_IRQHandler(void);    // KEY1中断服务函数
 void EXTI4_IRQHandler(void);    // KEY2中断服务函数  
-void EXTI9_5_IRQHandler(void); // KEY3中断服务函数（KEY5-9共享中断）
+void EXTI5_9_IRQHandler(void);  // LEFT_HIGH (PE5) 中断服务函数
+void EXTI10_15_IRQHandler(void); // RIGHT_HIGH (PC13) 中断服务函数
 
 /*********************************************************************************************************
 *                                              全局变量声明
 **********************************************************************************************************/
-extern volatile unsigned int g_u32Key1Count;
-extern volatile unsigned int g_u32Key2Count;
-extern volatile unsigned int g_u32Key3Count;
+extern volatile unsigned int g_u32KeyLLCount;
+extern volatile unsigned int g_u32KeyRLCount;
+extern volatile unsigned int g_u32KeyLeftHighCount;
+extern volatile unsigned int g_u32KeyRightHighCount;
+extern volatile unsigned int g_u32KeyMenuCount;
 
 /*********************************************************************************************************
 *                                              内部变量声明

@@ -25,12 +25,16 @@
 #include "LED.h"
 
 /* 按键处理函数声明 - 避免隐式声明警告 */
-extern void ProcKeyDownKey1(void);
-extern void ProcKeyUpKey1(void);
-extern void ProcKeyDownKey2(void);
-extern void ProcKeyUpKey2(void);
-extern void ProcKeyDownKey3(void);
-extern void ProcKeyUpKey3(void);
+extern void ProcKeyDownLL(void);
+extern void ProcKeyUpLL(void);
+extern void ProcKeyDownRL(void);
+extern void ProcKeyUpRL(void);
+extern void ProcKeyDownLeftHigh(void);
+extern void ProcKeyUpLeftHigh(void);
+extern void ProcKeyDownRightHigh(void);
+extern void ProcKeyUpRightHigh(void);
+extern void ProcKeyDownMenu(void);
+extern void ProcKeyUpMenu(void);
 
 /*********************************************************************************************************
 *                                              宏定义
@@ -44,9 +48,11 @@ extern void ProcKeyUpKey3(void);
 *                                              内部变量声明
 **********************************************************************************************************/
 /* 按键按下计数变量 */
-volatile unsigned int g_u32Key1Count = 0;
-volatile unsigned int g_u32Key2Count = 0;
-volatile unsigned int g_u32Key3Count = 0;
+volatile unsigned int g_u32KeyLLCount = 0;
+volatile unsigned int g_u32KeyRLCount = 0;
+volatile unsigned int g_u32KeyLeftHighCount = 0;
+volatile unsigned int g_u32KeyRightHighCount = 0;
+volatile unsigned int g_u32KeyMenuCount = 0;
 
 #define KEY_DEBOUNCE_TICKS 5
 
@@ -75,31 +81,46 @@ static  void  ConfigKeyOneGPIO(void)
   /* 使能RCU时钟 */
   rcu_periph_clock_enable(RCU_GPIOE);  /* 使能GPIOE时钟 */
   rcu_periph_clock_enable(RCU_GPIOC);  /* 使能GPIOC时钟 */
-  rcu_periph_clock_enable(RCU_AF);      /* 使能AFIO时钟，用于外部中断 */
+  rcu_periph_clock_enable(RCU_AF);      /* 使能AFIO时钟 */
   
   /* 配置按键GPIO为输入模式 */
-  gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_3);  /* KEY1配置为输入上拉（低电平有效） */
-  gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_4);  /* KEY2配置为输入上拉（低电平有效） */
-  gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_5);  /* KEY3配置为输入上拉（低电平有效） */
+  gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_3);  /* KEY1 */
+  gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_4);  /* KEY2 */
+  gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_5);  /* LEFT_HIGH (PE5) */
+  gpio_init(GPIOC, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_13); /* RIGHT_HIGH (PC13) */
+  gpio_init(GPIOC, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_9);  /* MENU (PC9) */
   
-  /* 配置外部中断源选择 - GD32F303使用GPIO端口和引脚源配置 */
-    gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOE, GPIO_PIN_SOURCE_3);  /* KEY1(PE3) -> EXTI3 */
-    gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOE, GPIO_PIN_SOURCE_4);  /* KEY2(PE4) -> EXTI4 */
-    gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOE, GPIO_PIN_SOURCE_5);  /* KEY3(PE5) -> EXTI5 */
+  /* 配置外部中断源选择 */
+  /* KEY1(PE3) -> EXTI3 */
+  gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOE, GPIO_PIN_SOURCE_3);
+  /* KEY2(PE4) -> EXTI4 */
+  gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOE, GPIO_PIN_SOURCE_4);
+  /* LEFT_HIGH(PE5) -> EXTI5 */
+  gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOE, GPIO_PIN_SOURCE_5);
+  /* RIGHT_HIGH(PC13) -> EXTI13 */
+  gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOC, GPIO_PIN_SOURCE_13);
+  /* MENU(PC9) -> EXTI9 */
+  gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOC, GPIO_PIN_SOURCE_9);
   
-  exti_init(EXTI_3, EXTI_INTERRUPT, EXTI_TRIG_FALLING);   /* KEY1下降沿触发（低电平有效） */
-  exti_init(EXTI_4, EXTI_INTERRUPT, EXTI_TRIG_FALLING); /* KEY2下降沿触发（低电平有效） */
-  exti_init(EXTI_5, EXTI_INTERRUPT, EXTI_TRIG_FALLING); /* KEY3下降沿触发（低电平有效） */
+  /* 配置中断触发方式 */
+  exti_init(EXTI_3, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
+  exti_init(EXTI_4, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
+  exti_init(EXTI_5, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
+  exti_init(EXTI_13, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
+  exti_init(EXTI_9, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
   
-  /* 清除中断标志位，防止使能中断后立即触发 */
+  /* 清除中断标志位 */
   exti_interrupt_flag_clear(EXTI_3);
   exti_interrupt_flag_clear(EXTI_4);
   exti_interrupt_flag_clear(EXTI_5);
+  exti_interrupt_flag_clear(EXTI_13);
+  exti_interrupt_flag_clear(EXTI_9);
 
   /* 配置NVIC中断优先级 */
-  nvic_irq_enable(EXTI3_IRQn, 2, 2);   /* KEY1中断优先级 */
-    nvic_irq_enable(EXTI4_IRQn, 2, 2);   /* KEY2中断优先级 */
-    nvic_irq_enable(EXTI5_9_IRQn, 2, 2);  /* KEY3中断优先级 (EXTI5-9共享中断) */
+  nvic_irq_enable(EXTI3_IRQn, 2, 2);      /* KEY1 */
+  nvic_irq_enable(EXTI4_IRQn, 2, 2);      /* KEY2 */
+  nvic_irq_enable(EXTI10_15_IRQn, 2, 2);  /* RIGHT_HIGH */
+  nvic_irq_enable(EXTI5_9_IRQn, 2, 2);    /* LH (EXTI5) & MENU (EXTI9) 共享中断 */
 }
 
 /*********************************************************************************************************
@@ -118,9 +139,11 @@ static unsigned char KeyIsPressed(unsigned char keyName)
 {
     switch(keyName)
     {
-        case KEY_NAME_KEY1: return (gpio_input_bit_get(GPIOE, GPIO_PIN_3) == RESET);
-        case KEY_NAME_KEY2: return (gpio_input_bit_get(GPIOE, GPIO_PIN_4) == RESET);
-        case KEY_NAME_KEY3: return (gpio_input_bit_get(GPIOE, GPIO_PIN_5) == RESET);
+        case KEY_NAME_LL: return (gpio_input_bit_get(GPIOE, GPIO_PIN_3) == RESET);
+        case KEY_NAME_RL: return (gpio_input_bit_get(GPIOE, GPIO_PIN_4) == RESET);
+        case KEY_NAME_LEFT_HIGH: return (gpio_input_bit_get(GPIOE, GPIO_PIN_5) == RESET);
+        case KEY_NAME_RIGHT_HIGH: return (gpio_input_bit_get(GPIOC, GPIO_PIN_13) == RESET);
+        case KEY_NAME_MENU: return (gpio_input_bit_get(GPIOC, GPIO_PIN_9) == RESET);
         default: return 0;
     }
 }
@@ -148,8 +171,8 @@ void EXTI3_IRQHandler(void)
     {
         exti_interrupt_flag_clear(EXTI_3);
         exti_interrupt_disable(EXTI_3);
-        s_keyState[KEY_NAME_KEY1] = 1;
-        s_keyStableCnt[KEY_NAME_KEY1] = 0;
+        s_keyState[KEY_NAME_LL] = 1;
+        s_keyStableCnt[KEY_NAME_LL] = 0;
     }
 }
 
@@ -160,25 +183,54 @@ void EXTI4_IRQHandler(void)
     {
         exti_interrupt_flag_clear(EXTI_4);
         exti_interrupt_disable(EXTI_4);
-        s_keyState[KEY_NAME_KEY2] = 1;
-        s_keyStableCnt[KEY_NAME_KEY2] = 0;
+        s_keyState[KEY_NAME_RL] = 1;
+        s_keyStableCnt[KEY_NAME_RL] = 0;
     }
 }
 
-void EXTI9_5_IRQHandler(void)
+void EXTI5_9_IRQHandler(void)
 {
+    /* 处理 LH (EXTI5) */
     if(exti_flag_get(EXTI_5) != RESET)
     {
         exti_interrupt_flag_clear(EXTI_5);
         exti_interrupt_disable(EXTI_5);
-        s_keyState[KEY_NAME_KEY3] = 1;
-        s_keyStableCnt[KEY_NAME_KEY3] = 0;
+        s_keyState[KEY_NAME_LEFT_HIGH] = 1;
+        s_keyStableCnt[KEY_NAME_LEFT_HIGH] = 0;
     }
 
+    /* 处理 MENU (EXTI9) */
+    if(exti_flag_get(EXTI_9) != RESET)
+    {
+        exti_interrupt_flag_clear(EXTI_9);
+        exti_interrupt_disable(EXTI_9);
+        s_keyState[KEY_NAME_MENU] = 1;
+        s_keyStableCnt[KEY_NAME_MENU] = 0;
+    }
+
+    /* 清除所有可能的中断标志位，防止死循环 */
+    exti_interrupt_flag_clear(EXTI_5);
     exti_interrupt_flag_clear(EXTI_6);
     exti_interrupt_flag_clear(EXTI_7);
     exti_interrupt_flag_clear(EXTI_8);
     exti_interrupt_flag_clear(EXTI_9);
+}
+
+void EXTI10_15_IRQHandler(void)
+{
+    if(exti_flag_get(EXTI_13) != RESET)
+    {
+        exti_interrupt_flag_clear(EXTI_13);
+        exti_interrupt_disable(EXTI_13);
+        s_keyState[KEY_NAME_RIGHT_HIGH] = 1;
+        s_keyStableCnt[KEY_NAME_RIGHT_HIGH] = 0;
+    }
+    
+    exti_interrupt_flag_clear(EXTI_10);
+    exti_interrupt_flag_clear(EXTI_11);
+    exti_interrupt_flag_clear(EXTI_12);
+    exti_interrupt_flag_clear(EXTI_14);
+    exti_interrupt_flag_clear(EXTI_15);
 }
 
 
@@ -188,16 +240,28 @@ void KeyOne_2msTask(void)
 
     for(i = 0; i < KEY_NAME_MAX; i++)
     {
-        if(s_keyState[i] == 1)
+        /* 状态0：空闲检测 */
+        if(s_keyState[i] == 0)
+        {
+            if(KeyIsPressed(i))
+            {
+                s_keyState[i] = 1;
+                s_keyStableCnt[i] = 0;
+            }
+        }
+        /* 状态1：按下消抖 */
+        else if(s_keyState[i] == 1)
         {
             if(KeyIsPressed(i))
             {
                 s_keyStableCnt[i]++;
                 if(s_keyStableCnt[i] >= KEY_DEBOUNCE_TICKS)
                 {
-                    if(i == KEY_NAME_KEY1) { LED1_Toggle(); g_u32Key1Count++; }
-                    else if(i == KEY_NAME_KEY2) { LED2_Toggle(); g_u32Key2Count++; }
-                    else if(i == KEY_NAME_KEY3) { LED3_Toggle(); g_u32Key3Count++; }
+                    if(i == KEY_NAME_LL) { LED1_Toggle(); g_u32KeyLLCount++; ProcKeyDownLL(); }
+                    else if(i == KEY_NAME_RL) { LED2_Toggle(); g_u32KeyRLCount++; ProcKeyDownRL(); }
+                    else if(i == KEY_NAME_LEFT_HIGH) { LED3_Toggle(); g_u32KeyLeftHighCount++; ProcKeyDownLeftHigh(); }
+                    else if(i == KEY_NAME_RIGHT_HIGH) { g_u32KeyRightHighCount++; ProcKeyDownRightHigh(); }
+                    else if(i == KEY_NAME_MENU) { g_u32KeyMenuCount++; ProcKeyDownMenu(); }
 
                     s_keyState[i] = 2;
                     s_keyStableCnt[i] = 0;
@@ -206,8 +270,17 @@ void KeyOne_2msTask(void)
             else
             {
                 s_keyStableCnt[i] = 0;
+                s_keyState[i] = 0; /* 如果抖动，回到状态0。对于中断按键，这里其实应该重新使能中断 */
+                
+                /* 补充：对于中断触发的按键，如果在这里复位，需要重新开启中断 */
+                if(i == KEY_NAME_LL) exti_interrupt_enable(EXTI_3);
+                else if(i == KEY_NAME_RL) exti_interrupt_enable(EXTI_4);
+                else if(i == KEY_NAME_LEFT_HIGH) exti_interrupt_enable(EXTI_5);
+                else if(i == KEY_NAME_RIGHT_HIGH) exti_interrupt_enable(EXTI_13);
+                else if(i == KEY_NAME_MENU) exti_interrupt_enable(EXTI_9);
             }
         }
+        /* 状态2：释放消抖 */
         else if(s_keyState[i] == 2)
         {
             if(!KeyIsPressed(i))
@@ -215,9 +288,11 @@ void KeyOne_2msTask(void)
                 s_keyStableCnt[i]++;
                 if(s_keyStableCnt[i] >= KEY_DEBOUNCE_TICKS)
                 {
-                    if(i == KEY_NAME_KEY1) exti_interrupt_enable(EXTI_3);
-                    else if(i == KEY_NAME_KEY2) exti_interrupt_enable(EXTI_4);
-                    else if(i == KEY_NAME_KEY3) exti_interrupt_enable(EXTI_5);
+                    if(i == KEY_NAME_LL) { ProcKeyUpLL(); exti_interrupt_enable(EXTI_3); }
+                    else if(i == KEY_NAME_RL) { ProcKeyUpRL(); exti_interrupt_enable(EXTI_4); }
+                    else if(i == KEY_NAME_LEFT_HIGH) { ProcKeyUpLeftHigh(); exti_interrupt_enable(EXTI_5); }
+                    else if(i == KEY_NAME_RIGHT_HIGH) { ProcKeyUpRightHigh(); exti_interrupt_enable(EXTI_13); }
+                    else if(i == KEY_NAME_MENU) { ProcKeyUpMenu(); exti_interrupt_enable(EXTI_9); }
 
                     s_keyState[i] = 0;
                     s_keyStableCnt[i] = 0;

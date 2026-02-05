@@ -47,5 +47,7 @@
 .\objects\main.o: ..\HW\RCU\RCU.h
 .\objects\main.o: ..\ARM\NVIC\NVIC.h
 .\objects\main.o: ..\HW\Timer\Timer.h
+.\objects\main.o: ..\HW\UART0\UART0.h
 .\objects\main.o: ..\HW\UART1\UART1.h
+.\objects\main.o: ..\App\UI\UI_Manager.h
 .\objects\main.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\string.h

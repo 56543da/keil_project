@@ -1,5 +1,6 @@
 --cpu=Cortex-M4.fp.sp
 ".\objects\main.o"
+".\objects\spo2_driver.o"
 ".\objects\rcu.o"
 ".\objects\timer.o"
 ".\objects\uart0.o"

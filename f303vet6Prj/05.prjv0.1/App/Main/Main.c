@@ -23,6 +23,7 @@
 #include "RCU.h"
 #include "NVIC.h"
 #include "Timer.h"
+#include "UART0.h"
 
 #include "LED.h"
 #include "KeyOne.h"
@@ -30,6 +31,7 @@
 #include "DataType.h"
 #include "LCD.h"
 #include "UART1.h"
+#include "UI_Manager.h"
 #include <string.h>
 
 /*********************************************************************************************************
@@ -94,7 +96,8 @@ static  void  InitHardware(void)
   InitKeyOne();        /* 初始化KeyOne模块 */
   InitProcKeyOne();    /* 初始化ProcKeyOne模块 */
   LCD_Init();          /* 初始化LCD模块 */
-  SPO2_DisplayInit();  /* 初始化血氧显示 */
+  // SPO2_DisplayInit();  /* 初始化血氧显示 */
+  UI_Init();           /* 初始化UI管理器 */
 }
 
 
@@ -110,32 +113,34 @@ static  void  InitHardware(void)
 **********************************************************************************************************/
 static  void  Proc1SecTask(void)
 { 
+    /* 正常工作指示灯：红色LED每秒闪烁一次 */
+    LED3_Toggle();
+
+  // 暂时屏蔽原有显示逻辑，交由UI_Manager管理
+  /*
   static u8 lcd_id[12];
   static char uart1_hex_cur[64];
   static char uart1_hex_prev[64];
-  u8 key_buf[50];  /* 移动到块开头，修复 error #268 */
+  u8 key_buf[50];  
   u8 uart_buf[128];
   u8 len;
   SPO2Data_t spo2Data;
-  char hex_buf[64]; /* 修复变量定义 hex_buf */
+  char hex_buf[64]; 
   
     sprintf((char*)lcd_id, "LCD ID:%04X", lcddev.id);
 
-    POINT_COLOR = RED;  /* 画笔颜色 */
+    POINT_COLOR = RED;  
     LCD_ShowString(30, 40, 200, 24, 24, (u8*)"GD32F303VE");
     LCD_ShowString(30, 70, 200, 16, 16, lcd_id);
     LCD_ShowString(30, 90, 200, 16, 16, (u8*)"2026-01-08");
 
-    /* 显示按键计数 */
-    sprintf((char*)key_buf, "K1:%d K2:%d K3:%d", g_u32Key1Count, g_u32Key2Count, g_u32Key3Count);
-    LCD_ShowString(30, 110, 240, 16, 16, key_buf); // 修改Y坐标 110 (原 130)
+    sprintf((char*)key_buf, "LL:%d RL:%d LH:%d RH:%d M:%d", g_u32KeyLLCount, g_u32KeyRLCount, g_u32KeyLeftHighCount, g_u32KeyRightHighCount, g_u32KeyMenuCount);
+    LCD_ShowString(30, 110, 240, 16, 16, key_buf); 
 
-    /* 简单的 UART1 接收并显示 */
-    LCD_ShowString(30, 140, 200, 16, 16, (u8*)"UART1 Monitor:"); // 标题
+    LCD_ShowString(30, 140, 200, 16, 16, (u8*)"UART1 Monitor:"); 
 
     len = UART1_GetLastRx(uart_buf, 32);
 
-    /* 调试信息: 用于监测数据 */
     sprintf((char*)debug_buf, "Run:%d L:%d ", run_cnt++, len);
     LCD_ShowString(140, 140, 100, 16, 16, debug_buf);
     printf("RX Run=%lu L=%d\r\n", (unsigned long)run_cnt, len);
@@ -162,11 +167,9 @@ static  void  Proc1SecTask(void)
     LCD_Fill(30, 280, 240, 320, BLACK);
     LCD_ShowString(30, 282, 240, 16, 16, (u8*)uart1_hex_prev);
     LCD_ShowString(30, 302, 240, 16, 16, (u8*)uart1_hex_cur);
-    
-    /*
-    x++;
-    if(x == 12) x = 0;
     */
+    
+    // UI_Update(); // 更新UI（如果需要定时刷新）
 }
 //
 //dda2d12a
@@ -204,6 +207,7 @@ int main(void)
     }
 
     UART1_ProcessSPO2Data();  /* 处理UART1接收到的SPO2数据 */
+    UI_Update();              /* 实时更新UI */
 
   }
 }

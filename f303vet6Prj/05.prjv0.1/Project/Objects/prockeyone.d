@@ -39,3 +39,4 @@
 .\objects\prockeyone.o: ..\FW\Include\gd32f30x_enet.h
 .\objects\prockeyone.o: ..\FW\Include\gd32f30x_exmc.h
 .\objects\prockeyone.o: ..\App\LED\LED.h
+.\objects\prockeyone.o: ..\App\UI\UI_Manager.h

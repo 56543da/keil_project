@@ -39,3 +39,4 @@
 .\objects\main.o: .\HW\Timer\Timer.h
 .\objects\main.o: .\HW\UART0\UART0.h
 .\objects\main.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: .\App\SPO2\SPO2_Driver.h

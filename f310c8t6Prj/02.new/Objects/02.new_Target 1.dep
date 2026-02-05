@@ -1,6 +1,6 @@
 Dependencies for Project '02.new', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
-F (.\App\Main\Main.c)(0x69809DA2)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\App\Main\Main.c)(0x69830BC8)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (App\Main\Main.h)(0x69809FF7)
 I (.\App\DataType\DataType.h)(0x697E0866)
 I (.\ARM\System\gd32f3x0_conf.h)(0x697E0866)
@@ -40,7 +40,42 @@ I (.\ARM\NVIC\NVIC.h)(0x69809FF7)
 I (.\HW\Timer\Timer.h)(0x69809FF7)
 I (.\HW\UART0\UART0.h)(0x697E01C6)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
-F (.\HW\RCU\RCU.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\rcu.o --omf_browse .\objects\rcu.crf --depend .\objects\rcu.d)
+I (.\App\SPO2\SPO2_Driver.h)(0x69830742)
+F (.\App\SPO2\SPO2_Driver.c)(0x69830DB6)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\spo2_driver.o --omf_browse .\objects\spo2_driver.crf --depend .\objects\spo2_driver.d)
+I (App\SPO2\SPO2_Driver.h)(0x69830742)
+I (.\ARM\System\gd32f3x0.h)(0x697E0866)
+I (.\ARM\System\core_cm4.h)(0x5F72A14D)
+I (E:\E_tools\keil\core\ARM\ARMCC\include\stdint.h)(0x5E53505C)
+I (.\ARM\System\core_cmInstr.h)(0x5F72A14D)
+I (.\ARM\System\core_cmFunc.h)(0x5F72A14D)
+I (.\ARM\System\core_cm4_simd.h)(0x5F72A14D)
+I (E:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include\system_gd32f3x0.h)(0x61CD2724)
+I (.\ARM\System\gd32f3x0_conf.h)(0x697E0866)
+I (.\FW\Include\gd32f3x0_adc.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_cec.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_cmp.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_crc.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_ctc.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_dac.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_dbg.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_dma.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_exti.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_fmc.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_fwdgt.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_gpio.h)(0x697E0866)
+I (.\FW\Include\gd32f3x0_i2c.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_misc.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_pmu.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_rcu.h)(0x697E0866)
+I (.\FW\Include\gd32f3x0_rtc.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_spi.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_syscfg.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
+I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
+I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
+I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
+F (.\HW\RCU\RCU.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\rcu.o --omf_browse .\objects\rcu.crf --depend .\objects\rcu.d)
 I (HW\RCU\RCU.h)(0x69809FF7)
 I (.\ARM\System\gd32f3x0_conf.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_adc.h)(0x5F72A14D)
@@ -73,7 +108,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\HW\Timer\Timer.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
+F (.\HW\Timer\Timer.c)(0x69830AAB)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
 I (HW\Timer\Timer.h)(0x69809FF7)
 I (.\ARM\System\gd32f3x0_conf.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_adc.h)(0x5F72A14D)
@@ -106,7 +141,8 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\HW\UART0\UART0.c)(0x6980916E)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\uart0.o --omf_browse .\objects\uart0.crf --depend .\objects\uart0.d)
+I (.\App\SPO2\SPO2_Driver.h)(0x69830742)
+F (.\HW\UART0\UART0.c)(0x6980916E)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\uart0.o --omf_browse .\objects\uart0.crf --depend .\objects\uart0.d)
 I (HW\UART0\UART0.h)(0x697E01C6)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (.\App\DataType\DataType.h)(0x697E0866)
@@ -141,7 +177,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_adc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_adc.o --omf_browse .\objects\gd32f3x0_adc.crf --depend .\objects\gd32f3x0_adc.d)
+F (.\FW\Source\gd32f3x0_adc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_adc.o --omf_browse .\objects\gd32f3x0_adc.crf --depend .\objects\gd32f3x0_adc.d)
 I (.\FW\Include\gd32f3x0_adc.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -173,8 +209,8 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_cec.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_cec.o --omf_browse .\objects\gd32f3x0_cec.crf --depend .\objects\gd32f3x0_cec.d)
-F (.\FW\Source\gd32f3x0_cmp.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_cmp.o --omf_browse .\objects\gd32f3x0_cmp.crf --depend .\objects\gd32f3x0_cmp.d)
+F (.\FW\Source\gd32f3x0_cec.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_cec.o --omf_browse .\objects\gd32f3x0_cec.crf --depend .\objects\gd32f3x0_cec.d)
+F (.\FW\Source\gd32f3x0_cmp.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_cmp.o --omf_browse .\objects\gd32f3x0_cmp.crf --depend .\objects\gd32f3x0_cmp.d)
 I (.\FW\Include\gd32f3x0_cmp.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -206,7 +242,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_crc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_crc.o --omf_browse .\objects\gd32f3x0_crc.crf --depend .\objects\gd32f3x0_crc.d)
+F (.\FW\Source\gd32f3x0_crc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_crc.o --omf_browse .\objects\gd32f3x0_crc.crf --depend .\objects\gd32f3x0_crc.d)
 I (.\FW\Include\gd32f3x0_crc.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -238,7 +274,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_ctc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_ctc.o --omf_browse .\objects\gd32f3x0_ctc.crf --depend .\objects\gd32f3x0_ctc.d)
+F (.\FW\Source\gd32f3x0_ctc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_ctc.o --omf_browse .\objects\gd32f3x0_ctc.crf --depend .\objects\gd32f3x0_ctc.d)
 I (.\FW\Include\gd32f3x0_ctc.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -270,8 +306,8 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_dac.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_dac.o --omf_browse .\objects\gd32f3x0_dac.crf --depend .\objects\gd32f3x0_dac.d)
-F (.\FW\Source\gd32f3x0_dbg.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_dbg.o --omf_browse .\objects\gd32f3x0_dbg.crf --depend .\objects\gd32f3x0_dbg.d)
+F (.\FW\Source\gd32f3x0_dac.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_dac.o --omf_browse .\objects\gd32f3x0_dac.crf --depend .\objects\gd32f3x0_dac.d)
+F (.\FW\Source\gd32f3x0_dbg.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_dbg.o --omf_browse .\objects\gd32f3x0_dbg.crf --depend .\objects\gd32f3x0_dbg.d)
 I (.\FW\Include\gd32f3x0_dbg.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -303,7 +339,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_dma.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_dma.o --omf_browse .\objects\gd32f3x0_dma.crf --depend .\objects\gd32f3x0_dma.d)
+F (.\FW\Source\gd32f3x0_dma.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_dma.o --omf_browse .\objects\gd32f3x0_dma.crf --depend .\objects\gd32f3x0_dma.d)
 I (.\FW\Include\gd32f3x0_dma.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -335,7 +371,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_exti.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_exti.o --omf_browse .\objects\gd32f3x0_exti.crf --depend .\objects\gd32f3x0_exti.d)
+F (.\FW\Source\gd32f3x0_exti.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_exti.o --omf_browse .\objects\gd32f3x0_exti.crf --depend .\objects\gd32f3x0_exti.d)
 I (.\FW\Include\gd32f3x0_exti.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -367,7 +403,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_fmc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_fmc.o --omf_browse .\objects\gd32f3x0_fmc.crf --depend .\objects\gd32f3x0_fmc.d)
+F (.\FW\Source\gd32f3x0_fmc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_fmc.o --omf_browse .\objects\gd32f3x0_fmc.crf --depend .\objects\gd32f3x0_fmc.d)
 I (.\FW\Include\gd32f3x0_fmc.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -399,7 +435,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_fwdgt.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_fwdgt.o --omf_browse .\objects\gd32f3x0_fwdgt.crf --depend .\objects\gd32f3x0_fwdgt.d)
+F (.\FW\Source\gd32f3x0_fwdgt.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_fwdgt.o --omf_browse .\objects\gd32f3x0_fwdgt.crf --depend .\objects\gd32f3x0_fwdgt.d)
 I (.\FW\Include\gd32f3x0_fwdgt.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -431,7 +467,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_gpio.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_gpio.o --omf_browse .\objects\gd32f3x0_gpio.crf --depend .\objects\gd32f3x0_gpio.d)
+F (.\FW\Source\gd32f3x0_gpio.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_gpio.o --omf_browse .\objects\gd32f3x0_gpio.crf --depend .\objects\gd32f3x0_gpio.d)
 I (.\FW\Include\gd32f3x0_gpio.h)(0x697E0866)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -463,7 +499,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_i2c.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_i2c.o --omf_browse .\objects\gd32f3x0_i2c.crf --depend .\objects\gd32f3x0_i2c.d)
+F (.\FW\Source\gd32f3x0_i2c.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_i2c.o --omf_browse .\objects\gd32f3x0_i2c.crf --depend .\objects\gd32f3x0_i2c.d)
 I (.\FW\Include\gd32f3x0_i2c.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -495,7 +531,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_misc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_misc.o --omf_browse .\objects\gd32f3x0_misc.crf --depend .\objects\gd32f3x0_misc.d)
+F (.\FW\Source\gd32f3x0_misc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_misc.o --omf_browse .\objects\gd32f3x0_misc.crf --depend .\objects\gd32f3x0_misc.d)
 I (.\FW\Include\gd32f3x0_misc.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -527,7 +563,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_pmu.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_pmu.o --omf_browse .\objects\gd32f3x0_pmu.crf --depend .\objects\gd32f3x0_pmu.d)
+F (.\FW\Source\gd32f3x0_pmu.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_pmu.o --omf_browse .\objects\gd32f3x0_pmu.crf --depend .\objects\gd32f3x0_pmu.d)
 I (.\FW\Include\gd32f3x0_pmu.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -559,7 +595,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_rcu.c)(0x697E0866)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_rcu.o --omf_browse .\objects\gd32f3x0_rcu.crf --depend .\objects\gd32f3x0_rcu.d)
+F (.\FW\Source\gd32f3x0_rcu.c)(0x697E0866)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_rcu.o --omf_browse .\objects\gd32f3x0_rcu.crf --depend .\objects\gd32f3x0_rcu.d)
 I (.\FW\Include\gd32f3x0_rcu.h)(0x697E0866)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -591,7 +627,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_rtc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_rtc.o --omf_browse .\objects\gd32f3x0_rtc.crf --depend .\objects\gd32f3x0_rtc.d)
+F (.\FW\Source\gd32f3x0_rtc.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_rtc.o --omf_browse .\objects\gd32f3x0_rtc.crf --depend .\objects\gd32f3x0_rtc.d)
 I (.\FW\Include\gd32f3x0_rtc.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -623,7 +659,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_spi.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_spi.o --omf_browse .\objects\gd32f3x0_spi.crf --depend .\objects\gd32f3x0_spi.d)
+F (.\FW\Source\gd32f3x0_spi.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_spi.o --omf_browse .\objects\gd32f3x0_spi.crf --depend .\objects\gd32f3x0_spi.d)
 I (.\FW\Include\gd32f3x0_spi.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -655,7 +691,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_syscfg.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_syscfg.o --omf_browse .\objects\gd32f3x0_syscfg.crf --depend .\objects\gd32f3x0_syscfg.d)
+F (.\FW\Source\gd32f3x0_syscfg.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_syscfg.o --omf_browse .\objects\gd32f3x0_syscfg.crf --depend .\objects\gd32f3x0_syscfg.d)
 I (.\FW\Include\gd32f3x0_syscfg.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -687,7 +723,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_timer.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_timer.o --omf_browse .\objects\gd32f3x0_timer.crf --depend .\objects\gd32f3x0_timer.d)
+F (.\FW\Source\gd32f3x0_timer.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_timer.o --omf_browse .\objects\gd32f3x0_timer.crf --depend .\objects\gd32f3x0_timer.d)
 I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -719,7 +755,7 @@ I (.\FW\Include\gd32f3x0_syscfg.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_tsi.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_tsi.o --omf_browse .\objects\gd32f3x0_tsi.crf --depend .\objects\gd32f3x0_tsi.d)
+F (.\FW\Source\gd32f3x0_tsi.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_tsi.o --omf_browse .\objects\gd32f3x0_tsi.crf --depend .\objects\gd32f3x0_tsi.d)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -751,7 +787,7 @@ I (.\FW\Include\gd32f3x0_syscfg.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_usart.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_usart.o --omf_browse .\objects\gd32f3x0_usart.crf --depend .\objects\gd32f3x0_usart.d)
+F (.\FW\Source\gd32f3x0_usart.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_usart.o --omf_browse .\objects\gd32f3x0_usart.crf --depend .\objects\gd32f3x0_usart.d)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -783,7 +819,7 @@ I (.\FW\Include\gd32f3x0_syscfg.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\FW\Source\gd32f3x0_wwdgt.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_wwdgt.o --omf_browse .\objects\gd32f3x0_wwdgt.crf --depend .\objects\gd32f3x0_wwdgt.d)
+F (.\FW\Source\gd32f3x0_wwdgt.c)(0x5F72A14C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_wwdgt.o --omf_browse .\objects\gd32f3x0_wwdgt.crf --depend .\objects\gd32f3x0_wwdgt.d)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -815,7 +851,7 @@ I (.\FW\Include\gd32f3x0_syscfg.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
-F (.\ARM\NVIC\NVIC.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\nvic.o --omf_browse .\objects\nvic.crf --depend .\objects\nvic.d)
+F (.\ARM\NVIC\NVIC.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\nvic.o --omf_browse .\objects\nvic.crf --depend .\objects\nvic.d)
 I (ARM\NVIC\NVIC.h)(0x69809FF7)
 I (.\ARM\System\gd32f3x0_conf.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_adc.h)(0x5F72A14D)
@@ -848,7 +884,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\ARM\System\gd32f3x0_it.c)(0x698085FB)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_it.o --omf_browse .\objects\gd32f3x0_it.crf --depend .\objects\gd32f3x0_it.d)
+F (.\ARM\System\gd32f3x0_it.c)(0x698085FB)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\gd32f3x0_it.o --omf_browse .\objects\gd32f3x0_it.crf --depend .\objects\gd32f3x0_it.d)
 I (ARM\System\gd32f3x0_it.h)(0x67E60164)
 I (ARM\System\gd32f3x0.h)(0x697E0866)
 I (ARM\System\core_cm4.h)(0x5F72A14D)
@@ -886,7 +922,7 @@ I (.\App\Main\main.h)(0x69809FF7)
 I (.\App\DataType\DataType.h)(0x697E0866)
 I (.\ARM\SysTick\systick.h)(0x69807EC5)
 F (.\ARM\System\startup_gd32f3x0.s)(0x695F7BD9)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include--pd "__UVISION_VERSION SETA 530" --pd "_RTE_ SETA 1" --pd "GD32F310 SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_gd32f3x0.lst --xref -o .\objects\startup_gd32f3x0.o --depend .\objects\startup_gd32f3x0.d)
-F (.\ARM\System\system_gd32f3x0.c)(0x69808BE7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\system_gd32f3x0.o --omf_browse .\objects\system_gd32f3x0.crf --depend .\objects\system_gd32f3x0.d)
+F (.\ARM\System\system_gd32f3x0.c)(0x69830B29)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\system_gd32f3x0.o --omf_browse .\objects\system_gd32f3x0.crf --depend .\objects\system_gd32f3x0.d)
 I (ARM\System\gd32f3x0.h)(0x697E0866)
 I (ARM\System\core_cm4.h)(0x5F72A14D)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdint.h)(0x5E53505C)
@@ -919,7 +955,7 @@ I (.\FW\Include\gd32f3x0_timer.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_tsi.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_usart.h)(0x5F72A14D)
 I (.\FW\Include\gd32f3x0_wwdgt.h)(0x5F72A14D)
-F (.\ARM\SysTick\SysTick.c)(0x69809D85)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\systick.o --omf_browse .\objects\systick.crf --depend .\objects\systick.d)
+F (.\ARM\SysTick\SysTick.c)(0x6981AE40)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\systick.o --omf_browse .\objects\systick.crf --depend .\objects\systick.d)
 I (ARM\SysTick\SysTick.h)(0x69807EC5)
 I (.\ARM\System\gd32f3x0_conf.h)(0x697E0866)
 I (.\FW\Include\gd32f3x0_adc.h)(0x5F72A14D)

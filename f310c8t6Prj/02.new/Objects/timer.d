@@ -32,3 +32,4 @@
 .\objects\timer.o: .\FW\Include\gd32f3x0_tsi.h
 .\objects\timer.o: .\FW\Include\gd32f3x0_usart.h
 .\objects\timer.o: .\FW\Include\gd32f3x0_wwdgt.h
+.\objects\timer.o: .\App\SPO2\SPO2_Driver.h
