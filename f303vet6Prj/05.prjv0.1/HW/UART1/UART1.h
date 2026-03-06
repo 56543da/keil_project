@@ -25,5 +25,6 @@ unsigned char UART1_GetLastRx(unsigned char *pBuf, unsigned char max_len);
 unsigned char UART1_GetLastParsed(SPO2Data_t *pData);
 void UART1_ReceiveSelfCheck(void);                                  // 串口1接收自检
 void UART1_ProcessSPO2Data(void);                                   // 处理 SPO2 数据 (新增)
+void UART1_SendCmd(unsigned char cmd, unsigned char value);         // 发送控制命令 (新增)
 
 #endif

@@ -175,7 +175,7 @@ void SPO2_DisplayData(SPO2Data_t* pSpo2Data)
   
   // ?????????
   POINT_COLOR = SPO2_VALUE_COLOR;
-  sprintf((char*)displayBuf, "%d.%d%%", pSpo2Data->pi / 10, pSpo2Data->pi % 10);
+  sprintf((char*)displayBuf, "%d%%", pSpo2Data->pi);
   LCD_ShowString(SPO2_DISPLAY_START_X + 80, SPO2_DISPLAY_START_Y + SPO2_LINE_HEIGHT * 3, 
                  60, 16, 16, displayBuf);
   

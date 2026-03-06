@@ -21,5 +21,6 @@
 void  InitUART0(unsigned int bound);                                //初始化UART0模块
 unsigned char  WriteUART0(unsigned char *pBuf, unsigned char len);  //写串口，返回写数据的个数
 void UART0_SendSPO2Data(SPO2Data_t *pData);                         //发送血氧数据
+unsigned char UART0_GetCmd(unsigned char *cmd, unsigned char *val); // 获取控制命令
 
 #endif

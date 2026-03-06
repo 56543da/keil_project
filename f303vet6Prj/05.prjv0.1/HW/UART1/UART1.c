@@ -10,7 +10,6 @@
 #include "gd32f30x_conf.h"
 #include "Queue.h"
 #include "DataType.h"
-#include "SPO2_Display.h"
 #include "UI_Manager.h" // 添加头文件引用
 #include <stdio.h>
 
@@ -163,9 +162,6 @@ static void ParseSPO2Packet(unsigned char data)
                 
                 // 立即更新到UI
                 UI_UpdateData(&s_spo2Data);
-                
-                SPO2_DisplayData(&s_spo2Data);
-                SPO2_DisplayStatus(1);
                 s_parseState = 0; // 成功，复位
             }
             else if (data == SPO2_PACKET_HEAD) // 容错
@@ -182,6 +178,33 @@ static void ParseSPO2Packet(unsigned char data)
         default:
             s_parseState = 0;
             break;
+    }
+}
+
+/*********************************************************************************************************
+* 函数名称：UART1_SendCmd
+* 函数功能：发送控制命令给从机 (F310)
+* 输入参数：cmd-命令, value-参数
+* 输出参数：void
+* 返 回 值：void
+* 完成日期：2026年03月05日
+* 注    意：协议格式: HEAD(0xAB) + LEN(0x02) + CMD + VAL + TAIL(0x55)
+*********************************************************************************************************/
+void UART1_SendCmd(unsigned char cmd, unsigned char value)
+{
+    unsigned char sendBuf[5];
+    unsigned char i;
+    
+    sendBuf[0] = 0xAB;
+    sendBuf[1] = 0x02;
+    sendBuf[2] = cmd;
+    sendBuf[3] = value;
+    sendBuf[4] = 0x55;
+    
+    for(i = 0; i < 5; i++)
+    {
+        usart_data_transmit(USART1, sendBuf[i]);
+        while(RESET == usart_flag_get(USART1, USART_FLAG_TBE));
     }
 }
 

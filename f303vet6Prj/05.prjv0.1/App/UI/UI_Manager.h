@@ -8,7 +8,8 @@
 typedef enum
 {
     UI_STATE_MAIN = 0,
-    UI_STATE_SETTINGS
+    UI_STATE_SETTINGS,
+    UI_STATE_SPO2_SET
 } UI_State_t;
 
 void UI_Init(void);

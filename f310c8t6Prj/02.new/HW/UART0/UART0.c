@@ -23,9 +23,22 @@ void _sys_exit(int x) {
 } 
 
 /*********************************************************************************************************
+*                                              内部变量声明
+*********************************************************************************************************/
+#define UART0_RX_BUF_SIZE 64
+static uint8_t s_rxBuf[UART0_RX_BUF_SIZE];
+static uint8_t s_rxHead = 0;
+static uint8_t s_rxTail = 0;
+
+static uint8_t s_cmdReceived = 0;
+static uint8_t s_lastCmd = 0;
+static uint8_t s_lastVal = 0;
+
+/*********************************************************************************************************
 *                                              内部函数声明
 *********************************************************************************************************/
 static  void  ConfigUART(unsigned int bound);              //配置UART GPIO、RCU、USART
+static  void  ParseCmdPacket(uint8_t data);                //解析命令包
 
 /*********************************************************************************************************
 * 函数名称：ConfigUART
@@ -58,8 +71,12 @@ static  void  ConfigUART(unsigned int bound)
   usart_parity_config(USART0, USART_PM_NONE);           //无奇偶校验
   usart_hardware_flow_rts_config(USART0, USART_RTS_DISABLE); //禁用硬件流控RTS
   usart_hardware_flow_cts_config(USART0, USART_CTS_DISABLE); //禁用硬件流控CTS
-  usart_receive_config(USART0, USART_RECEIVE_DISABLE);  //禁用接收 (F310只发送)
+  usart_receive_config(USART0, USART_RECEIVE_ENABLE);   //使能接收 (开启接收)
   usart_transmit_config(USART0, USART_TRANSMIT_ENABLE); //使能发送
+  
+  // 配置中断
+  usart_interrupt_enable(USART0, USART_INT_RBNE);       //使能接收中断
+  nvic_irq_enable(USART0_IRQn, 0, 0);                   //配置中断优先级
   
   usart_enable(USART0);                                 //使能USART
 }
@@ -129,6 +146,90 @@ void UART0_SendSPO2Data(SPO2Data_t *pData)
     sendBuf[5] = SPO2_PACKET_TAIL;
     
     WriteUART0(sendBuf, 6);
+}
+
+/*********************************************************************************************************
+* 函数名称：USART0_IRQHandler
+* 函数功能：串口0中断服务函数
+* 输入参数：void
+* 输出参数：void
+* 返 回 值：void
+* 完成日期：2026年03月05日
+*********************************************************************************************************/
+void USART0_IRQHandler(void)
+{
+    if(RESET != usart_interrupt_flag_get(USART0, USART_INT_FLAG_RBNE))
+    {
+        uint8_t data = (uint8_t)usart_data_receive(USART0);
+        ParseCmdPacket(data);
+    }
+}
+
+/*********************************************************************************************************
+* 函数名称：ParseCmdPacket
+* 函数功能：解析命令包
+* 输入参数：data-接收到的字节
+* 输出参数：void
+* 返 回 值：void
+* 完成日期：2026年03月05日
+* 注    意：协议: 0xAB 0x02 CMD VAL 0x55
+*********************************************************************************************************/
+static void ParseCmdPacket(uint8_t data)
+{
+    static uint8_t s_state = 0;
+    static uint8_t s_len = 0;
+    static uint8_t s_buf[4];
+    static uint8_t s_idx = 0;
+    
+    switch(s_state)
+    {
+        case 0: // Header
+            if(data == 0xAB) s_state = 1;
+            break;
+        case 1: // Length
+            if(data == 0x02) { s_len = data; s_idx = 0; s_state = 2; }
+            else if(data == 0xAB) s_state = 1;
+            else s_state = 0;
+            break;
+        case 2: // Data
+            s_buf[s_idx++] = data;
+            if(s_idx >= s_len) s_state = 3;
+            break;
+        case 3: // Tail
+            if(data == 0x55)
+            {
+                s_lastCmd = s_buf[0];
+                s_lastVal = s_buf[1];
+                s_cmdReceived = 1;
+                s_state = 0;
+            }
+            else if(data == 0xAB) s_state = 1;
+            else s_state = 0;
+            break;
+        default:
+            s_state = 0;
+            break;
+    }
+}
+
+/*********************************************************************************************************
+* 函数名称：UART0_GetCmd
+* 函数功能：获取最新的控制命令
+* 输入参数：cmd-命令指针, val-参数指针
+* 输出参数：1-有新命令, 0-无
+* 返 回 值：状态
+* 完成日期：2026年03月05日
+*********************************************************************************************************/
+unsigned char UART0_GetCmd(unsigned char *cmd, unsigned char *val)
+{
+    if(s_cmdReceived)
+    {
+        *cmd = s_lastCmd;
+        *val = s_lastVal;
+        s_cmdReceived = 0;
+        return 1;
+    }
+    return 0;
 }
 
 /*********************************************************************************************************

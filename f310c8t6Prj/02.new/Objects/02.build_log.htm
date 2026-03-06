@@ -28,10 +28,16 @@ Project File Date:  02/04/2026
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\E_tools\keil\core\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling SPO2_Driver.c...
+compiling Main.c...
+App\Main\Main.c(260): warning:  #177-D: variable "gain_timer"  was declared but never referenced
+          static uint8_t gain_timer = 0;
+App\Main\Main.c(261): warning:  #177-D: variable "current_gain"  was declared but never referenced
+          static uint8_t current_gain = 0;
+App\Main\Main.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=6948 RO-data=368 RW-data=96 ZI-data=3560  
+Program Size: Code=9712 RO-data=368 RW-data=80 ZI-data=1864  
 FromELF: creating hex file...
-".\Objects\02.new" - 0 Error(s), 0 Warning(s).
+".\Objects\02.new" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 

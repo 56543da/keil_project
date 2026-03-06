@@ -38,3 +38,4 @@
 .\objects\ui_manager.o: ..\App\LCD\LCD.h
 .\objects\ui_manager.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\ui_manager.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\ui_manager.o: ..\HW\UART1\UART1.h
