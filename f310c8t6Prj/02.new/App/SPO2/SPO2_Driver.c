@@ -34,6 +34,7 @@ static uint16_t wave_count = 0;
 static volatile SPO2_Result_t g_spo2_result = {0, 0, 0, 0};
 static volatile uint16_t g_raw_red_adc = 0;
 static volatile uint16_t g_raw_ir_adc = 0;
+static volatile uint16_t g_raw_ambient_adc = 0; // 新增环境光变量
 static volatile uint8_t g_gain_code = 0;
 static volatile uint8_t g_filter_enable = 1;
 static volatile uint16_t g_wave_red_seq = 0;
@@ -41,14 +42,18 @@ static volatile uint16_t g_wave_ir_seq = 0;
 static volatile uint8_t g_agc_enable = 1;
 
 // PWM Period (ARR)
-#define SPO2_PWM_PERIOD 100 // 10kHz @ 1MHz Timer Clock (prescaler 71)
-
+// Target Frequency: 500kHz
+// Timer Clock: 72MHz (APB1 * 2 or similar, check RCU config)
+// Assuming Timer Clock is 72MHz (no prescaler or div 1)
+// Period = 72,000,000 / 500,000 = 144
+#define SPO2_PWM_PERIOD 144
 
 // PWM Pulse Values (Duty Cycle)
-// Red: 1.5V / 3.3V * 100 = 45
-// IR:  2.0V / 3.3V * 100 = 61
-#define SPO2_RED_PWM_PULSE  45
-#define SPO2_IR_PWM_PULSE   10
+// Note: 3.3V supply, max Vref=300mV => max duty ~9% (144*0.09 = 13)
+// Red: Try ~4.5% duty => 144 * 0.045 = 6
+// IR:  Try ~1% duty (to fix saturation) => 144 * 0.01 = 1-2
+#define SPO2_RED_PWM_PULSE  1//6
+#define SPO2_IR_PWM_PULSE   6//2
 
 void SPO2_SetFilterEnable(uint8_t enable)
 {
@@ -130,8 +135,8 @@ static void SPO2_PWM_Init(void)
     timer_struct_para_init(&timer_initpara);
 
     /* TIMER14 configuration */
-    /* Prescaler = 71, Clock = 72MHz / 72 = 1MHz */
-    timer_initpara.prescaler         = 71;
+    /* Prescaler = 0, Clock = 72MHz */
+    timer_initpara.prescaler         = 0;
     timer_initpara.alignedmode       = TIMER_COUNTER_EDGE;
     timer_initpara.counterdirection  = TIMER_COUNTER_UP;
     timer_initpara.period            = SPO2_PWM_PERIOD;
@@ -161,8 +166,12 @@ static void SPO2_PWM_Init(void)
     timer_channel_output_mode_config(TIMER14, TIMER_CH_1, TIMER_OC_MODE_PWM0);
     timer_channel_output_shadow_config(TIMER14, TIMER_CH_1, TIMER_OC_SHADOW_DISABLE);
 
+
+
     /* Enable TIMER14 Main Output (Required for timers with Break/Dead-time features) */
     timer_primary_output_config(TIMER14, ENABLE);
+
+
 
     /* Enable TIMER14 */
     timer_enable(TIMER14);
@@ -293,6 +302,10 @@ void SPO2_Timer_Handler(void)
     
     switch(time_slot)
     {
+        case 1: // 0.5ms时刻，采样环境光 (此时两灯皆灭)
+            g_raw_ambient_adc = ADC_Read_Fast();
+            break;
+
         case 2: // 1ms时刻，开始RED LED发光
             timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_1, SPO2_RED_PWM_PULSE);
             gpio_bit_set(SPO2_RED_CS_PORT, SPO2_RED_CS_PIN);
@@ -300,24 +313,22 @@ void SPO2_Timer_Handler(void)
             
         case 5: // 2.5ms时刻，RED LED ADC采样 (给1ms稳定时间)
             adc_val = ADC_Read_Fast();
-            g_raw_red_adc = adc_val;
+            // 减去环境光，防止负值溢出
+            if(adc_val >= g_raw_ambient_adc) g_raw_red_adc = adc_val - g_raw_ambient_adc;
+            else g_raw_red_adc = 0;
+            
             g_wave_red_seq++;
             
             // 简单的低通滤波 (FIR)
             if(g_filter_enable) {
-                filtered_val = fir_filter((float)adc_val, red_buffer, fir_coeffs, FIR_ORDER);
+                filtered_val = fir_filter((float)g_raw_red_adc, red_buffer, fir_coeffs, FIR_ORDER);
             } else {
-                filtered_val = (float)adc_val;
+                filtered_val = (float)g_raw_red_adc;
             }
             
-            // 简单的去直流 (High Pass) 用于波形显示
-            if (red_dc_val == 0.0f) red_dc_val = filtered_val;
-            else red_dc_val = DC_ALPHA * red_dc_val + (1.0f - DC_ALPHA) * filtered_val;
-            
-            // 存入 buffer 的是去直流后的 AC 分量 + 一个偏移量(2048)以便显示
+            // 存入 buffer (原始数据，仅用于调试)
             if (wave_index < WAVE_BUF_SIZE) {
-                // 显示用：放大 AC 分量
-                red_wave_buf[wave_index] = (filtered_val - red_dc_val) * 4.0f + 2048.0f;
+                red_wave_buf[wave_index] = filtered_val;
             }
             break;
             
@@ -333,23 +344,22 @@ void SPO2_Timer_Handler(void)
             
         case 13: // 6.5ms时刻，IR LED ADC采样 (给1ms稳定时间)
             adc_val = ADC_Read_Fast();
-            g_raw_ir_adc = adc_val;
+            // 减去环境光
+            if(adc_val >= g_raw_ambient_adc) g_raw_ir_adc = adc_val - g_raw_ambient_adc;
+            else g_raw_ir_adc = 0;
+            
             g_wave_ir_seq++;
             
             // 简单的低通滤波 (FIR)
             if(g_filter_enable) {
-                filtered_val = fir_filter((float)adc_val, ir_buffer, fir_coeffs, FIR_ORDER);
+                filtered_val = fir_filter((float)g_raw_ir_adc, ir_buffer, fir_coeffs, FIR_ORDER);
             } else {
-                filtered_val = (float)adc_val;
+                filtered_val = (float)g_raw_ir_adc;
             }
             
-            // 简单的去直流 (High Pass) 用于波形显示
-            if (ir_dc_val == 0.0f) ir_dc_val = filtered_val;
-            else ir_dc_val = DC_ALPHA * ir_dc_val + (1.0f - DC_ALPHA) * filtered_val;
-
+            // 存入 buffer (原始数据，仅用于调试)
             if (wave_index < WAVE_BUF_SIZE) {
-                // 显示用：放大 AC 分量
-                ir_wave_buf[wave_index] = (filtered_val - ir_dc_val) * 4.0f + 2048.0f;
+                ir_wave_buf[wave_index] = filtered_val;
                 wave_index++;
                 if (wave_count < WAVE_BUF_SIZE) wave_count++;
             }
