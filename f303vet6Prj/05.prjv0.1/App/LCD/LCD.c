@@ -1001,8 +1001,7 @@ void LCD_Init(void)
     /* 开启背光 */
     gpio_bit_set(LCD_LED_PORT, LCD_LED_PIN);
     
-    /* 清屏为白色 */
-    LCD_Clear(WHITE);
+    LCD_Clear(BLACK);
     
     printf("[LCD] Init Done, ID: 0x%04X, Width: %d, Height: %d\r\n", 
            lcddev.id, lcddev.width, lcddev.height);

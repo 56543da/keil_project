@@ -4,20 +4,28 @@
 #include <stdio.h>
 
 // UI Colors (RGB565)
-#define UI_COLOR_BG         BLACK
-#define UI_COLOR_PANEL_BG   0x1082  // Dark Gray-Blue
-#define UI_COLOR_HEADER_BG  0x2124  // Dark Slate
+#define UI_COLOR_BG         0x0841
+#define UI_COLOR_PANEL_BG   0x10A2
+#define UI_COLOR_HEADER_BG  0x18E3
 #define UI_COLOR_TEXT_W     WHITE
-#define UI_COLOR_SPO2       CYAN
-#define UI_COLOR_PR         GREEN
-#define UI_COLOR_PI         YELLOW
-#define UI_COLOR_SELECT     0x001F  // Blue
-#define UI_COLOR_BORDER     0x4208  // Gray
+#define UI_COLOR_SPO2       0x07FF
+#define UI_COLOR_PR         0x07E0
+#define UI_COLOR_PI         0xFFE0
+#define UI_COLOR_SELECT     0x22B8
+#define UI_COLOR_BORDER     0x6B6D
+#define UI_COLOR_ACCENT     0x055D
+#define UI_COLOR_HINT       0xBDF7
 
 static UI_State_t s_uiState = UI_STATE_MAIN;
 static uint8_t s_settingsIndex = 0;
 static uint8_t s_needRefresh = 1;
 static uint8_t s_autoLightEnable = 0;
+static uint8_t s_workMode = 0;
+static uint8_t s_alarmProfile = 1;
+static uint8_t s_etco2Enable = 0;
+static uint8_t s_systemBrightness = 3;
+static uint8_t s_systemBeepEnable = 1;
+static uint8_t s_dataReviewPage = 0;
 static SPO2Data_t s_curData = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // 缓存当前数据
 
 #define SETTINGS_ITEM_COUNT 9
@@ -35,15 +43,27 @@ static const char* s_settingsItems[SETTINGS_ITEM_COUNT] = {
 
 void UI_DrawMainScreen(void);
 void UI_DrawSettingsScreen(void);
+void UI_DrawWorkModeScreen(void);
+void UI_DrawAlarmSetScreen(void);
 void UI_DrawSpO2SetScreen(void);
 void UI_DrawFilterSetScreen(void);
 void UI_DrawRCalibScreen(void);
 void UI_DrawAutoLightScreen(void);
+void UI_DrawEtCO2SetScreen(void);
+void UI_DrawSystemSetScreen(void);
+void UI_DrawDataReviewScreen(void);
+static void UI_DrawScreenBackground(void);
+static void UI_DrawCard(u16 x, u16 y, u16 w, u16 h, u16 borderColor, u16 titleColor, char* title);
 static void UI_DrawSettingsItem(uint8_t index, uint8_t selected);
+static void UI_UpdateWorkModeStatus(void);
+static void UI_UpdateAlarmSetStatus(void);
 static void UI_UpdateGainValue(void);
 static void UI_UpdateFilterStatus(void);
 static void UI_UpdateRCalibValue(void);
 static void UI_UpdateAutoLightStatus(void);
+static void UI_UpdateEtCO2Status(void);
+static void UI_UpdateSystemSetStatus(void);
+static void UI_UpdateDataReviewValue(void);
 
 void UI_Init(void)
 {
@@ -62,7 +82,6 @@ void UI_UpdateData(SPO2Data_t *data)
     if(data->pwm_ir == 0 && s_curData.pwm_ir != 0) data->pwm_ir = s_curData.pwm_ir;
     if(data->gain_level == 0xFF && s_curData.gain_level != 0xFF) data->gain_level = s_curData.gain_level;
     
-    // 如果在主界面，仅更新数值区域，避免全屏刷新导致闪烁
     if(s_uiState == UI_STATE_MAIN)
     {
         uint8_t need_update_main = 0;
@@ -81,77 +100,64 @@ void UI_UpdateData(SPO2Data_t *data)
             return;
         }
 
-        // 1. Update SpO2
         {
             POINT_COLOR = UI_COLOR_SPO2;
-            BACK_COLOR = UI_COLOR_BG;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
             if(data->spo2 == 0) sprintf(buf, "SPO2: --  ");
             else sprintf(buf, "SPO2: %3d ", data->spo2);
-            LCD_ShowString(10, 60, 200, 16, 16, (u8*)buf);
+            LCD_ShowString(16, 70, 200, 16, 16, (u8*)buf);
         }
         
-        // 2. Update PR
         {
             POINT_COLOR = UI_COLOR_PR;
-            BACK_COLOR = UI_COLOR_BG;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
             if(data->heart_rate == 0) sprintf(buf, "PR:   --  ");
             else sprintf(buf, "PR:  %3d  ", data->heart_rate);
-            LCD_ShowString(10, 85, 200, 16, 16, (u8*)buf);
+            LCD_ShowString(16, 128, 200, 16, 16, (u8*)buf);
         }
         
-        // 3. Update PI
         {
             POINT_COLOR = UI_COLOR_PI;
-            BACK_COLOR = UI_COLOR_BG;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
             if(data->pi == 0 && data->status == 0) sprintf(buf, "PI R:-- I:-- ");
             else sprintf(buf, "PI R:%2d I:%2d ", data->status, data->pi);
-            LCD_ShowString(10, 110, 220, 16, 16, (u8*)buf);
+            LCD_ShowString(16, 186, 220, 16, 16, (u8*)buf);
         }
         
-        // 4. Update R Value (Footer)
         {
             POINT_COLOR = YELLOW;
-            BACK_COLOR = UI_COLOR_BG;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
             sprintf(buf, "R: %d    ", data->filter_status);
-            LCD_ShowString(10, 135, 200, 16, 16, (u8*)buf);
+            LCD_ShowString(16, 236, 120, 16, 16, (u8*)buf);
         }
         
         {
             POINT_COLOR = GRAY;
-            BACK_COLOR = UI_COLOR_BG;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
             sprintf(buf, "PWM R:%d I:%d   ", data->pwm_red, data->pwm_ir);
-            LCD_ShowString(10, 160, 200, 16, 16, (u8*)buf);
+            LCD_ShowString(16, 254, 200, 16, 16, (u8*)buf);
         }
         
         {
             POINT_COLOR = GRAY;
-            BACK_COLOR = UI_COLOR_BG;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
             if(data->gain_level == 0xFF) sprintf(buf, "Gain: --  ");
             else sprintf(buf, "Gain: %d   ", data->gain_level);
-            LCD_ShowString(10, 185, 200, 16, 16, (u8*)buf);
+            LCD_ShowString(130, 236, 100, 16, 16, (u8*)buf);
         }
 
         s_curData = *data;
     }
     else
     {
-        // 其他界面全屏刷新 -> 优化：非主界面不自动刷新，防止菜单操作时被数据更新打断
-        /*
-        if(s_curData.spo2 != data->spo2 || 
-           s_curData.heart_rate != data->heart_rate || 
-           s_curData.pi != data->pi ||
-           s_curData.filter_status != data->filter_status ||
-           s_curData.gain_level != data->gain_level)
-        {
-            s_curData = *data;
-            s_needRefresh = 1;
-        }
-        */
-        // 仅静默更新数据，不触发重绘
         s_curData = *data;
         if(s_uiState == UI_STATE_R_CALIB)
         {
             UI_UpdateRCalibValue();
+        }
+        else if(s_uiState == UI_STATE_DATA_REVIEW)
+        {
+            UI_UpdateDataReviewValue();
         }
     }
 }
@@ -166,9 +172,9 @@ void UI_UpdatePwm(uint8_t pwm_red, uint8_t pwm_ir)
     if(s_uiState == UI_STATE_MAIN)
     {
         POINT_COLOR = GRAY;
-        BACK_COLOR = UI_COLOR_BG;
+        BACK_COLOR = UI_COLOR_PANEL_BG;
         sprintf(buf, "PWM R:%d I:%d   ", s_curData.pwm_red, s_curData.pwm_ir);
-        LCD_ShowString(10, 160, 200, 16, 16, (u8*)buf);
+        LCD_ShowString(16, 254, 200, 16, 16, (u8*)buf);
     }
     else if(s_uiState == UI_STATE_R_CALIB)
     {
@@ -184,9 +190,9 @@ void UI_UpdateGain(uint8_t gain_level)
     if(s_uiState == UI_STATE_MAIN)
     {
         POINT_COLOR = GRAY;
-        BACK_COLOR = UI_COLOR_BG;
+        BACK_COLOR = UI_COLOR_PANEL_BG;
         sprintf(buf, "Gain: %d   ", s_curData.gain_level);
-        LCD_ShowString(10, 185, 200, 16, 16, (u8*)buf);
+        LCD_ShowString(130, 236, 100, 16, 16, (u8*)buf);
     }
     else if(s_uiState == UI_STATE_SPO2_SET)
     {
@@ -206,6 +212,14 @@ void UI_Update(void)
     {
         UI_DrawSettingsScreen();
     }
+    else if(s_uiState == UI_STATE_WORK_MODE)
+    {
+        UI_DrawWorkModeScreen();
+    }
+    else if(s_uiState == UI_STATE_ALARM_SET)
+    {
+        UI_DrawAlarmSetScreen();
+    }
     else if(s_uiState == UI_STATE_SPO2_SET)
     {
         UI_DrawSpO2SetScreen();
@@ -222,6 +236,18 @@ void UI_Update(void)
     {
         UI_DrawAutoLightScreen();
     }
+    else if(s_uiState == UI_STATE_ETCO2_SET)
+    {
+        UI_DrawEtCO2SetScreen();
+    }
+    else if(s_uiState == UI_STATE_SYSTEM_SET)
+    {
+        UI_DrawSystemSetScreen();
+    }
+    else if(s_uiState == UI_STATE_DATA_REVIEW)
+    {
+        UI_DrawDataReviewScreen();
+    }
     
     s_needRefresh = 0;
 }
@@ -234,95 +260,120 @@ void UI_Process(void)
 // 辅助函数：绘制圆角矩形风格的面板
 void UI_DrawPanel(u16 x, u16 y, u16 w, u16 h, u16 color, char* title, u16 titleColor)
 {
-    // 绘制边框和背景
     LCD_Fill(x, y, x+w, y+h, UI_COLOR_PANEL_BG);
     POINT_COLOR = color;
     LCD_DrawRectangle(x, y, x+w, y+h);
-    LCD_DrawRectangle(x+1, y+1, x+w-1, y+h-1); // 加粗边框
-    
-    // 绘制标题背景
+    LCD_DrawRectangle(x+1, y+1, x+w-1, y+h-1);
     LCD_Fill(x+2, y+2, x+w-2, y+24, color);
-    
-    // 绘制标题文字
-    POINT_COLOR = titleColor; // 通常是黑色或白色，取决于背景
-    BACK_COLOR = color;       // 设置背景色为标题栏颜色
+    POINT_COLOR = titleColor;
+    BACK_COLOR = color;
     LCD_ShowString(x+10, y+5, w-20, 16, 16, (u8*)title);
-    BACK_COLOR = UI_COLOR_BG; // 恢复默认背景色
+    BACK_COLOR = UI_COLOR_BG;
 }
 
 void UI_DrawHeader(char* title)
 {
-    LCD_Fill(0, 0, 240, 30, UI_COLOR_HEADER_BG);
-    
+    LCD_Fill(0, 0, 240, 34, UI_COLOR_HEADER_BG);
     POINT_COLOR = WHITE;
     BACK_COLOR = UI_COLOR_HEADER_BG;
-    // 左侧标题
-    LCD_ShowString(10, 7, 200, 16, 16, (u8*)title);
-    
-    // 右侧时间/ID (模拟)
-    LCD_ShowString(130, 7, 200, 16, 16, (u8*)"ID:01 12:00");
+    LCD_ShowString(10, 9, 120, 16, 16, (u8*)title);
+    LCD_ShowString(132, 9, 108, 16, 16, (u8*)"ID:01 ONLINE");
     BACK_COLOR = UI_COLOR_BG;
-    
-    // 分割线
-    POINT_COLOR = UI_COLOR_SPO2;
-    LCD_DrawLine(0, 30, 240, 30);
-    LCD_DrawLine(0, 31, 240, 31);
+    POINT_COLOR = UI_COLOR_ACCENT;
+    LCD_DrawLine(0, 34, 240, 34);
+    LCD_DrawLine(0, 35, 240, 35);
+}
+
+static void UI_DrawScreenBackground(void)
+{
+    u16 y;
+    u16 c;
+    u16 g;
+    u16 b;
+    for(y = 0; y < 320; y++)
+    {
+        g = (u16)(8 + y / 12);
+        if(g > 63) g = 63;
+        b = (u16)(10 + y / 11);
+        if(b > 31) b = 31;
+        c = (u16)((1 << 11) | (g << 5) | b);
+        LCD_Fill(0, y, 239, y, c);
+    }
+}
+
+static void UI_DrawCard(u16 x, u16 y, u16 w, u16 h, u16 borderColor, u16 titleColor, char* title)
+{
+    LCD_Fill(x, y, x + w, y + h, UI_COLOR_PANEL_BG);
+    POINT_COLOR = UI_COLOR_BORDER;
+    LCD_DrawRectangle(x, y, x + w, y + h);
+    POINT_COLOR = borderColor;
+    LCD_DrawRectangle(x + 1, y + 1, x + w - 1, y + h - 1);
+    LCD_Fill(x + 2, y + 2, x + w - 2, y + 18, borderColor);
+    POINT_COLOR = titleColor;
+    BACK_COLOR = borderColor;
+    LCD_ShowString(x + 8, y + 4, w - 12, 16, 16, (u8*)title);
+    BACK_COLOR = UI_COLOR_BG;
 }
 
 void UI_DrawMainScreen(void)
 {
     char buf[20];
-    
-    LCD_Clear(UI_COLOR_BG);
-    BACK_COLOR = UI_COLOR_BG; // 确保清除屏幕后背景色一致
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
     UI_DrawHeader("Monitor");
 
+    UI_DrawCard(8, 44, 224, 52, UI_COLOR_SPO2, BLACK, "SPO2");
+    UI_DrawCard(8, 102, 224, 52, UI_COLOR_PR, BLACK, "Pulse Rate");
+    UI_DrawCard(8, 160, 224, 52, UI_COLOR_PI, BLACK, "Perfusion");
+    UI_DrawCard(8, 218, 224, 56, UI_COLOR_ACCENT, WHITE, "Signal");
+
     POINT_COLOR = UI_COLOR_SPO2;
-    BACK_COLOR = UI_COLOR_BG;
+    BACK_COLOR = UI_COLOR_PANEL_BG;
     if(s_curData.spo2 == 0) sprintf(buf, "SPO2: --  ");
     else sprintf(buf, "SPO2: %3d ", s_curData.spo2);
-    LCD_ShowString(10, 60, 200, 16, 16, (u8*)buf);
+    LCD_ShowString(16, 70, 200, 16, 16, (u8*)buf);
     
     POINT_COLOR = UI_COLOR_PR;
-    BACK_COLOR = UI_COLOR_BG;
+    BACK_COLOR = UI_COLOR_PANEL_BG;
     if(s_curData.heart_rate == 0) sprintf(buf, "PR:   --  ");
     else sprintf(buf, "PR:  %3d  ", s_curData.heart_rate);
-    LCD_ShowString(10, 85, 200, 16, 16, (u8*)buf);
+    LCD_ShowString(16, 128, 200, 16, 16, (u8*)buf);
     
     POINT_COLOR = UI_COLOR_PI;
-    BACK_COLOR = UI_COLOR_BG;
+    BACK_COLOR = UI_COLOR_PANEL_BG;
     if(s_curData.pi == 0 && s_curData.status == 0) sprintf(buf, "PI R:-- I:-- ");
     else sprintf(buf, "PI R:%2d I:%2d ", s_curData.status, s_curData.pi);
-    LCD_ShowString(10, 110, 220, 16, 16, (u8*)buf);
+    LCD_ShowString(16, 186, 220, 16, 16, (u8*)buf);
     
     POINT_COLOR = YELLOW;
-    BACK_COLOR = UI_COLOR_BG;
+    BACK_COLOR = UI_COLOR_PANEL_BG;
     sprintf(buf, "R: %d    ", s_curData.filter_status);
-    LCD_ShowString(10, 135, 200, 16, 16, (u8*)buf);
+    LCD_ShowString(16, 236, 120, 16, 16, (u8*)buf);
     
     POINT_COLOR = GRAY;
-    BACK_COLOR = UI_COLOR_BG;
+    BACK_COLOR = UI_COLOR_PANEL_BG;
     sprintf(buf, "PWM R:%d I:%d   ", s_curData.pwm_red, s_curData.pwm_ir);
-    LCD_ShowString(10, 160, 200, 16, 16, (u8*)buf);
+    LCD_ShowString(16, 254, 200, 16, 16, (u8*)buf);
 
     POINT_COLOR = GRAY;
-    BACK_COLOR = UI_COLOR_BG;
+    BACK_COLOR = UI_COLOR_PANEL_BG;
     if(s_curData.gain_level == 0xFF) sprintf(buf, "Gain: --  ");
     else sprintf(buf, "Gain: %d   ", s_curData.gain_level);
-    LCD_ShowString(10, 185, 200, 16, 16, (u8*)buf);
-    
-    // Footer
-    POINT_COLOR = GRAY;
+    LCD_ShowString(130, 236, 100, 16, 16, (u8*)buf);
+
+    LCD_Fill(0, 286, 239, 319, 0x0862);
+    POINT_COLOR = UI_COLOR_HINT;
+    BACK_COLOR = 0x0862;
+    LCD_ShowString(20, 296, 220, 16, 16, (u8*)"LH:Menu  RH:Back");
     BACK_COLOR = UI_COLOR_BG;
-    LCD_ShowString(60, 290, 200, 16, 16, (u8*)"Press SET to Menu");
 }
 
 void UI_DrawSettingsScreen(void)
 {
     uint8_t i;
-    u16 original_back_color = BACK_COLOR; // 保存原始背景色
+    u16 original_back_color = BACK_COLOR;
 
-    LCD_Clear(UI_COLOR_BG);
+    UI_DrawScreenBackground();
     UI_DrawHeader("Settings");
     
     for(i = 0; i < SETTINGS_ITEM_COUNT; i++)
@@ -330,30 +381,30 @@ void UI_DrawSettingsScreen(void)
         UI_DrawSettingsItem(i, (i == s_settingsIndex) ? 1 : 0);
     }
     
-    // Footer
-    POINT_COLOR = WHITE;
-    BACK_COLOR = UI_COLOR_BG; // 恢复背景色
-    LCD_ShowString(10, 300, 200, 16, 16, (u8*)"UP/DN: Select  SET: Enter");
+    POINT_COLOR = UI_COLOR_HINT;
+    BACK_COLOR = UI_COLOR_BG;
+    LCD_ShowString(10, 300, 220, 16, 16, (u8*)"LL/RL:Sel LH:Enter RH:Back");
     
-    BACK_COLOR = original_back_color; // 恢复原始背景色
+    BACK_COLOR = original_back_color;
 }
 
 static void UI_DrawSettingsItem(uint8_t index, uint8_t selected)
 {
-    u16 y_pos = 50 + index*35;
+    u16 y_pos = 42 + index * 28;
     if(selected)
     {
-        LCD_Fill(10, y_pos - 5, 230, y_pos + 25, UI_COLOR_SELECT);
+        LCD_Fill(10, y_pos - 4, 230, y_pos + 20, UI_COLOR_SELECT);
         POINT_COLOR = WHITE;
         BACK_COLOR = UI_COLOR_SELECT;
-        LCD_DrawRectangle(10, y_pos - 5, 230, y_pos + 25);
+        LCD_DrawRectangle(10, y_pos - 4, 230, y_pos + 20);
     }
     else
     {
-        LCD_Fill(10, y_pos - 5, 230, y_pos + 25, UI_COLOR_PANEL_BG);
-        POINT_COLOR = GRAY;
+        LCD_Fill(10, y_pos - 4, 230, y_pos + 20, UI_COLOR_PANEL_BG);
+        POINT_COLOR = UI_COLOR_BORDER;
         BACK_COLOR = UI_COLOR_PANEL_BG;
-        LCD_DrawRectangle(10, y_pos - 5, 230, y_pos + 25);
+        LCD_DrawRectangle(10, y_pos - 4, 230, y_pos + 20);
+        POINT_COLOR = UI_COLOR_TEXT_W;
     }
     LCD_ShowString(20, y_pos, 200, 16, 16, (u8*)s_settingsItems[index]);
     if(selected)
@@ -362,33 +413,99 @@ static void UI_DrawSettingsItem(uint8_t index, uint8_t selected)
     }
     else
     {
-        POINT_COLOR = GRAY;
+        POINT_COLOR = UI_COLOR_BORDER;
         BACK_COLOR = UI_COLOR_PANEL_BG;
         LCD_ShowString(210, y_pos, 20, 16, 16, (u8*)" ");
     }
 }
 
-void UI_DrawSpO2SetScreen(void)
+void UI_DrawWorkModeScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
+    UI_DrawHeader("Work Mode");
+    UI_DrawPanel(30, 80, 180, 120, UI_COLOR_ACCENT, "Mode Select", WHITE);
+    UI_UpdateWorkModeStatus();
+    POINT_COLOR = GREEN;
+    LCD_ShowString(55, 165, 180, 16, 16, (u8*)"LL: Monitor");
+    POINT_COLOR = RED;
+    LCD_ShowString(55, 185, 180, 16, 16, (u8*)"RL: Service");
+    POINT_COLOR = UI_COLOR_HINT;
+    LCD_ShowString(55, 290, 180, 16, 16, (u8*)"Press BACK to Exit");
+}
+
+static void UI_UpdateWorkModeStatus(void)
+{
+    POINT_COLOR = WHITE;
+    BACK_COLOR = UI_COLOR_BG;
+    if(s_workMode == 0)
+        LCD_ShowString(50, 130, 170, 16, 16, (u8*)"Current: Monitor ");
+    else
+        LCD_ShowString(50, 130, 170, 16, 16, (u8*)"Current: Service ");
+}
+
+void UI_DrawAlarmSetScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
+    UI_DrawHeader("Alarm Set");
+    UI_DrawPanel(20, 70, 200, 150, UI_COLOR_ACCENT, "Alarm Profile", WHITE);
+    UI_UpdateAlarmSetStatus();
+    POINT_COLOR = GREEN;
+    LCD_ShowString(35, 190, 180, 16, 16, (u8*)"LL: Profile +");
+    POINT_COLOR = RED;
+    LCD_ShowString(35, 210, 180, 16, 16, (u8*)"RL: Profile -");
+    POINT_COLOR = UI_COLOR_HINT;
+    LCD_ShowString(55, 290, 180, 16, 16, (u8*)"Press BACK to Exit");
+}
+
+static void UI_UpdateAlarmSetStatus(void)
 {
     char buf[32];
-    LCD_Clear(UI_COLOR_BG);
-    BACK_COLOR = UI_COLOR_BG; // 确保清除屏幕后背景色一致
+    uint8_t spo2_low;
+    uint8_t hr_low;
+    uint8_t hr_high;
+    if(s_alarmProfile == 0)
+    {
+        spo2_low = 90;
+        hr_low = 45;
+        hr_high = 130;
+    }
+    else if(s_alarmProfile == 1)
+    {
+        spo2_low = 92;
+        hr_low = 50;
+        hr_high = 140;
+    }
+    else
+    {
+        spo2_low = 94;
+        hr_low = 55;
+        hr_high = 150;
+    }
+    POINT_COLOR = WHITE;
+    BACK_COLOR = UI_COLOR_BG;
+    if(s_alarmProfile == 0) LCD_ShowString(35, 110, 180, 16, 16, (u8*)"Profile: Low    ");
+    else if(s_alarmProfile == 1) LCD_ShowString(35, 110, 180, 16, 16, (u8*)"Profile: Medium ");
+    else LCD_ShowString(35, 110, 180, 16, 16, (u8*)"Profile: High   ");
+    sprintf(buf, "SpO2 Low: %d   ", spo2_low);
+    LCD_ShowString(35, 138, 180, 16, 16, (u8*)buf);
+    sprintf(buf, "HR Min/Max:%d/%d", hr_low, hr_high);
+    LCD_ShowString(35, 160, 180, 16, 16, (u8*)buf);
+}
+
+void UI_DrawSpO2SetScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
     UI_DrawHeader("SpO2 Gain Set");
-    
-    // Gain Control Panel
     UI_DrawPanel(40, 80, 160, 120, UI_COLOR_SPO2, "Gain Level", BLACK);
-    
-    // 显示增益值
     UI_UpdateGainValue();
-    
-    // Instructions
     POINT_COLOR = GREEN;
     LCD_ShowString(60, 160, 120, 16, 16, (u8*)"UP: Increase");
     POINT_COLOR = RED;
     LCD_ShowString(60, 180, 120, 16, 16, (u8*)"DN: Decrease");
-    
-    // Footer
-    POINT_COLOR = GRAY;
+    POINT_COLOR = UI_COLOR_HINT;
     LCD_ShowString(60, 290, 200, 16, 16, (u8*)"Press BACK to Exit");
 }
 
@@ -403,27 +520,18 @@ static void UI_UpdateGainValue(void)
 
 void UI_DrawFilterSetScreen(void)
 {
-    LCD_Clear(UI_COLOR_BG);
-    BACK_COLOR = UI_COLOR_BG; // 确保清除屏幕后背景色一致
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
     UI_DrawHeader("Filter Set");
-    
-    // Filter Control Panel
     UI_DrawPanel(40, 80, 160, 120, UI_COLOR_SPO2, "Filter Switch", BLACK);
-    
-    // 显示状态
     POINT_COLOR = WHITE;
     BACK_COLOR = UI_COLOR_BG;
-    
     UI_UpdateFilterStatus();
-    
-    // Instructions
     POINT_COLOR = GREEN;
     LCD_ShowString(60, 160, 200, 16, 16, (u8*)"UP: Enable (ON)");
     POINT_COLOR = RED;
     LCD_ShowString(60, 180, 200, 16, 16, (u8*)"DN: Disable(OFF)");
-    
-    // Footer
-    POINT_COLOR = GRAY;
+    POINT_COLOR = UI_COLOR_HINT;
     LCD_ShowString(60, 290, 200, 16, 16, (u8*)"Press BACK to Exit");
 }
 
@@ -439,14 +547,14 @@ static void UI_UpdateFilterStatus(void)
 
 void UI_DrawRCalibScreen(void)
 {
-    LCD_Clear(UI_COLOR_BG);
+    UI_DrawScreenBackground();
     BACK_COLOR = UI_COLOR_BG;
     UI_DrawHeader("R Calib");
     
     UI_DrawPanel(30, 80, 180, 120, UI_COLOR_SPO2, "R Value", BLACK);
     UI_UpdateRCalibValue();
     
-    POINT_COLOR = GRAY;
+    POINT_COLOR = UI_COLOR_HINT;
     LCD_ShowString(60, 290, 200, 16, 16, (u8*)"Press BACK to Exit");
 }
 
@@ -463,7 +571,7 @@ static void UI_UpdateRCalibValue(void)
 
 void UI_DrawAutoLightScreen(void)
 {
-    LCD_Clear(UI_COLOR_BG);
+    UI_DrawScreenBackground();
     BACK_COLOR = UI_COLOR_BG;
     UI_DrawHeader("Auto Light");
     
@@ -475,7 +583,7 @@ void UI_DrawAutoLightScreen(void)
     POINT_COLOR = RED;
     LCD_ShowString(60, 180, 200, 16, 16, (u8*)"DN: Disable(OFF)");
     
-    POINT_COLOR = GRAY;
+    POINT_COLOR = UI_COLOR_HINT;
     LCD_ShowString(60, 290, 200, 16, 16, (u8*)"Press BACK to Exit");
 }
 
@@ -487,6 +595,103 @@ static void UI_UpdateAutoLightStatus(void)
         LCD_ShowString(60, 130, 160, 16, 16, (u8*)"Current: ON  ");
     else
         LCD_ShowString(60, 130, 160, 16, 16, (u8*)"Current: OFF ");
+}
+
+void UI_DrawEtCO2SetScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
+    UI_DrawHeader("EtCO2 Set");
+    UI_DrawPanel(30, 80, 180, 120, UI_COLOR_ACCENT, "EtCO2 Switch", WHITE);
+    UI_UpdateEtCO2Status();
+    POINT_COLOR = GREEN;
+    LCD_ShowString(55, 165, 180, 16, 16, (u8*)"LL: Enable");
+    POINT_COLOR = RED;
+    LCD_ShowString(55, 185, 180, 16, 16, (u8*)"RL: Disable");
+    POINT_COLOR = UI_COLOR_HINT;
+    LCD_ShowString(55, 290, 180, 16, 16, (u8*)"Press BACK to Exit");
+}
+
+static void UI_UpdateEtCO2Status(void)
+{
+    POINT_COLOR = WHITE;
+    BACK_COLOR = UI_COLOR_BG;
+    if(s_etco2Enable)
+        LCD_ShowString(50, 130, 170, 16, 16, (u8*)"Current: ON   ");
+    else
+        LCD_ShowString(50, 130, 170, 16, 16, (u8*)"Current: OFF  ");
+}
+
+void UI_DrawSystemSetScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
+    UI_DrawHeader("System Set");
+    UI_DrawPanel(20, 70, 200, 150, UI_COLOR_ACCENT, "System Config", WHITE);
+    UI_UpdateSystemSetStatus();
+    POINT_COLOR = GREEN;
+    LCD_ShowString(35, 190, 180, 16, 16, (u8*)"LL: Brightness+");
+    POINT_COLOR = RED;
+    LCD_ShowString(35, 210, 180, 16, 16, (u8*)"RL: Brightness-");
+    POINT_COLOR = UI_COLOR_HINT;
+    LCD_ShowString(55, 290, 180, 16, 16, (u8*)"Press BACK to Exit");
+}
+
+static void UI_UpdateSystemSetStatus(void)
+{
+    char buf[32];
+    POINT_COLOR = WHITE;
+    BACK_COLOR = UI_COLOR_BG;
+    sprintf(buf, "Brightness: %d   ", s_systemBrightness);
+    LCD_ShowString(35, 120, 180, 16, 16, (u8*)buf);
+    if(s_systemBeepEnable) LCD_ShowString(35, 148, 180, 16, 16, (u8*)"Key Beep: ON ");
+    else LCD_ShowString(35, 148, 180, 16, 16, (u8*)"Key Beep: OFF");
+}
+
+void UI_DrawDataReviewScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
+    UI_DrawHeader("Data Review");
+    UI_DrawPanel(15, 60, 210, 170, UI_COLOR_ACCENT, "Review Page", WHITE);
+    UI_UpdateDataReviewValue();
+    POINT_COLOR = GREEN;
+    LCD_ShowString(35, 210, 180, 16, 16, (u8*)"LL: Page Next");
+    POINT_COLOR = RED;
+    LCD_ShowString(35, 230, 180, 16, 16, (u8*)"RL: Page Prev");
+    POINT_COLOR = UI_COLOR_HINT;
+    LCD_ShowString(55, 290, 180, 16, 16, (u8*)"Press BACK to Exit");
+}
+
+static void UI_UpdateDataReviewValue(void)
+{
+    char buf[32];
+    POINT_COLOR = WHITE;
+    BACK_COLOR = UI_COLOR_BG;
+    if(s_dataReviewPage == 0)
+    {
+        LCD_ShowString(30, 100, 180, 16, 16, (u8*)"Page 1: SPO2/PR");
+        sprintf(buf, "SPO2: %d    ", s_curData.spo2);
+        LCD_ShowString(30, 128, 180, 16, 16, (u8*)buf);
+        sprintf(buf, "PR: %d      ", s_curData.heart_rate);
+        LCD_ShowString(30, 150, 180, 16, 16, (u8*)buf);
+    }
+    else if(s_dataReviewPage == 1)
+    {
+        LCD_ShowString(30, 100, 180, 16, 16, (u8*)"Page 2: PI/R");
+        sprintf(buf, "PI R:%d I:%d   ", s_curData.status, s_curData.pi);
+        LCD_ShowString(30, 128, 180, 16, 16, (u8*)buf);
+        sprintf(buf, "R: %d         ", s_curData.filter_status);
+        LCD_ShowString(30, 150, 180, 16, 16, (u8*)buf);
+    }
+    else
+    {
+        LCD_ShowString(30, 100, 180, 16, 16, (u8*)"Page 3: Drive");
+        sprintf(buf, "PWM R:%d I:%d  ", s_curData.pwm_red, s_curData.pwm_ir);
+        LCD_ShowString(30, 128, 180, 16, 16, (u8*)buf);
+        sprintf(buf, "Gain: %d       ", s_curData.gain_level);
+        LCD_ShowString(30, 150, 180, 16, 16, (u8*)buf);
+    }
 }
 
 void UI_OnKeyLL(void) // Up
@@ -520,6 +725,33 @@ void UI_OnKeyLL(void) // Up
         UART1_SendCmd(0x05, 1);
         UI_UpdateAutoLightStatus();
     }
+    else if(s_uiState == UI_STATE_WORK_MODE)
+    {
+        s_workMode = 0;
+        UI_UpdateWorkModeStatus();
+    }
+    else if(s_uiState == UI_STATE_ALARM_SET)
+    {
+        if(s_alarmProfile < 2) s_alarmProfile++;
+        UI_UpdateAlarmSetStatus();
+    }
+    else if(s_uiState == UI_STATE_ETCO2_SET)
+    {
+        s_etco2Enable = 1;
+        UI_UpdateEtCO2Status();
+    }
+    else if(s_uiState == UI_STATE_SYSTEM_SET)
+    {
+        if(s_systemBrightness < 5) s_systemBrightness++;
+        if(s_systemBrightness >= 3) s_systemBeepEnable = 1;
+        UI_UpdateSystemSetStatus();
+    }
+    else if(s_uiState == UI_STATE_DATA_REVIEW)
+    {
+        if(s_dataReviewPage < 2) s_dataReviewPage++;
+        else s_dataReviewPage = 0;
+        UI_UpdateDataReviewValue();
+    }
 }
 
 void UI_OnKeyRL(void) // Down
@@ -551,6 +783,33 @@ void UI_OnKeyRL(void) // Down
         UART1_SendCmd(0x05, 0);
         UI_UpdateAutoLightStatus();
     }
+    else if(s_uiState == UI_STATE_WORK_MODE)
+    {
+        s_workMode = 1;
+        UI_UpdateWorkModeStatus();
+    }
+    else if(s_uiState == UI_STATE_ALARM_SET)
+    {
+        if(s_alarmProfile > 0) s_alarmProfile--;
+        UI_UpdateAlarmSetStatus();
+    }
+    else if(s_uiState == UI_STATE_ETCO2_SET)
+    {
+        s_etco2Enable = 0;
+        UI_UpdateEtCO2Status();
+    }
+    else if(s_uiState == UI_STATE_SYSTEM_SET)
+    {
+        if(s_systemBrightness > 1) s_systemBrightness--;
+        if(s_systemBrightness < 3) s_systemBeepEnable = 0;
+        UI_UpdateSystemSetStatus();
+    }
+    else if(s_uiState == UI_STATE_DATA_REVIEW)
+    {
+        if(s_dataReviewPage > 0) s_dataReviewPage--;
+        else s_dataReviewPage = 2;
+        UI_UpdateDataReviewValue();
+    }
 }
 
 void UI_OnKeyLH(void) // Enter / Settings
@@ -563,26 +822,50 @@ void UI_OnKeyLH(void) // Enter / Settings
     }
     else if(s_uiState == UI_STATE_SETTINGS)
     {
-        // Enter sub-menu
-        if(s_settingsIndex == 2) // SpO2 Set
+        if(s_settingsIndex == 0)
+        {
+            s_uiState = UI_STATE_WORK_MODE;
+            s_needRefresh = 1;
+        }
+        else if(s_settingsIndex == 1)
+        {
+            s_uiState = UI_STATE_ALARM_SET;
+            s_needRefresh = 1;
+        }
+        else if(s_settingsIndex == 2)
         {
             s_uiState = UI_STATE_SPO2_SET;
             s_needRefresh = 1;
         }
-        else if(s_settingsIndex == 3) // Filter Set
+        else if(s_settingsIndex == 3)
         {
             s_uiState = UI_STATE_FILTER_SET;
             s_needRefresh = 1;
         }
-        else if(s_settingsIndex == 4) // R Calib
+        else if(s_settingsIndex == 4)
         {
             s_uiState = UI_STATE_R_CALIB;
             UART1_SetRCalibMode(1);
             s_needRefresh = 1;
         }
-        else if(s_settingsIndex == 5) // Auto Light
+        else if(s_settingsIndex == 5)
         {
             s_uiState = UI_STATE_AUTO_LIGHT;
+            s_needRefresh = 1;
+        }
+        else if(s_settingsIndex == 6)
+        {
+            s_uiState = UI_STATE_ETCO2_SET;
+            s_needRefresh = 1;
+        }
+        else if(s_settingsIndex == 7)
+        {
+            s_uiState = UI_STATE_SYSTEM_SET;
+            s_needRefresh = 1;
+        }
+        else if(s_settingsIndex == 8)
+        {
+            s_uiState = UI_STATE_DATA_REVIEW;
             s_needRefresh = 1;
         }
     }
@@ -613,6 +896,31 @@ void UI_OnKeyRH(void) // Back
         s_needRefresh = 1;
     }
     else if(s_uiState == UI_STATE_AUTO_LIGHT)
+    {
+        s_uiState = UI_STATE_SETTINGS;
+        s_needRefresh = 1;
+    }
+    else if(s_uiState == UI_STATE_WORK_MODE)
+    {
+        s_uiState = UI_STATE_SETTINGS;
+        s_needRefresh = 1;
+    }
+    else if(s_uiState == UI_STATE_ALARM_SET)
+    {
+        s_uiState = UI_STATE_SETTINGS;
+        s_needRefresh = 1;
+    }
+    else if(s_uiState == UI_STATE_ETCO2_SET)
+    {
+        s_uiState = UI_STATE_SETTINGS;
+        s_needRefresh = 1;
+    }
+    else if(s_uiState == UI_STATE_SYSTEM_SET)
+    {
+        s_uiState = UI_STATE_SETTINGS;
+        s_needRefresh = 1;
+    }
+    else if(s_uiState == UI_STATE_DATA_REVIEW)
     {
         s_uiState = UI_STATE_SETTINGS;
         s_needRefresh = 1;
