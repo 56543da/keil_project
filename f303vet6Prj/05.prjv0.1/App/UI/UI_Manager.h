@@ -9,12 +9,18 @@ typedef enum
 {
     UI_STATE_MAIN = 0,
     UI_STATE_SETTINGS,
-    UI_STATE_SPO2_SET
+    UI_STATE_SPO2_SET,
+    UI_STATE_FILTER_SET,
+    UI_STATE_R_CALIB,
+    UI_STATE_AUTO_LIGHT
 } UI_State_t;
 
 void UI_Init(void);
+void UI_Process(void); // 新增 UI 处理函数
 void UI_Update(void);
 void UI_UpdateData(SPO2Data_t *data); // 新增数据更新接口
+void UI_UpdatePwm(uint8_t pwm_red, uint8_t pwm_ir);
+void UI_UpdateGain(uint8_t gain_level);
 void UI_OnKeyLL(void);
 void UI_OnKeyRL(void);
 void UI_OnKeyLH(void);

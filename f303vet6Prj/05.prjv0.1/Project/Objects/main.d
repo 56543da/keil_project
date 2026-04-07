@@ -51,3 +51,4 @@
 .\objects\main.o: ..\HW\UART1\UART1.h
 .\objects\main.o: ..\App\UI\UI_Manager.h
 .\objects\main.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: ..\App\SPO2\SPO2_Algo.h

@@ -33,6 +33,7 @@
 #include "UART1.h"
 #include "UI_Manager.h"
 #include <string.h>
+#include "SPO2_Algo.h" // 引用算法头文件
 
 /*********************************************************************************************************
 *                                              宏定义
@@ -88,16 +89,17 @@ static  void  InitHardware(void)
   SystemInit();        /* 系统初始化 */
   InitRCU();           /* 初始化RCU模块 */
   InitNVIC();          /* 初始化NVIC模块 */  
-  InitUART0(115200);   /* 初始化UART模块 */
+  InitUART0(921600);   /* 初始化UART模块 - 提速至 921600 */
   InitTimer();         /* 初始化Timer模块 */
   InitLED();           /* 初始化LED模块 */
   InitSysTick();       /* 初始化SysTick模块 */
-  InitUART1(115200);   /* 初始化UART1模块 (SPO2接收) */
+  InitUART1(921600);   /* 初始化UART1模块 (SPO2接收) - 提速至 921600 */
   InitKeyOne();        /* 初始化KeyOne模块 */
   InitProcKeyOne();    /* 初始化ProcKeyOne模块 */
   LCD_Init();          /* 初始化LCD模块 */
   // SPO2_DisplayInit();  /* 初始化血氧显示 */
   UI_Init();           /* 初始化UI管理器 */
+  SPO2_Algo_Init();    /* 初始化血氧算法 */
 }
 
 
@@ -190,6 +192,13 @@ int main(void)
 
   printf("Init System has been finished.\r\n" );  /* 打印系统状态 */
   
+  // 设置波形工具的参数显示名称：参数名配置命令
+  printf("{{1,SPO2}}\r\n");
+  printf("{{2,HR}}\r\n");
+  printf("{{3,PI_IR}}\r\n");
+  printf("{{4,R_Val}}\r\n");
+  printf("{{5,Gain}}\r\n");
+  
   printf("LCD Display Test Start.\r\n");
   
   while(1)
@@ -200,14 +209,63 @@ int main(void)
       Clr2msFlag();
     }
 
+    // 处理串口1接收数据 (波形转发与解析)
+    UART1_ProcessSPO2Data();
+
+    // 执行血氧计算
+    if(UART1_GetRCalibMode())
+    {
+        SPO2_Algo_ProcessCalib();
+    }
+    else
+    {
+        SPO2_Algo_Process();
+    }
+
+    // 检查是否有计算结果
+    {
+        uint8_t spo2, hr, pi_ir, pi_red;
+        float r_val;
+        if(SPO2_Algo_GetResult(&spo2, &hr, &pi_ir, &pi_red, &r_val))
+        {
+            SPO2Data_t data;
+            data.spo2 = spo2;
+            data.heart_rate = hr;
+            data.pi = pi_ir;
+            data.status = pi_red;
+            // 将 R 值 (0.4~1.2) 放大1000倍显示 (400~1200)
+            data.filter_status = (uint16_t)(r_val * 1000); 
+            data.gain_level = 0xFF;
+            data.pwm_red = 0;
+            data.pwm_ir = 0;
+            
+            // 更新 UI
+            UI_UpdateData(&data);
+
+            if(UART1_GetRCalibMode())
+            {
+                printf("%d,0\r\n", data.filter_status);
+            }
+            else
+            {
+                // 打印到串口调试 (适配波形工具参数显示)
+                // 格式: [[index,value]]
+                printf("[[1,%d]]\r\n", spo2);
+                printf("[[2,%d]]\r\n", hr);
+                printf("[[3,%d]]\r\n", pi_ir);
+                printf("[[4,%d]]\r\n", data.filter_status); // R值 * 1000
+              //  if(data.gain_level != 0xFF) printf("[[5,%d]]\r\n", data.gain_level);
+            }
+        }
+    }
+
     if(Get1SecFlag())              /* 检查1s标志状态 */
     {
       Proc1SecTask();             /* 1s周期处理任务 */
       Clr1SecFlag();             /* 清除1s标志 */
     }
-
-    UART1_ProcessSPO2Data();  /* 处理UART1接收到的SPO2数据 */
-    UI_Update();              /* 实时更新UI */
+    
+    UI_Process(); // 处理UI逻辑
 
   }
 }

@@ -59,13 +59,17 @@ typedef long                LONG;
 *********************************************************************************************************/
 #define SPO2_PACKET_HEAD      0xAA    // 包头
 #define SPO2_PACKET_TAIL      0x55    // 包尾
-#define SPO2_PACKET_LENGTH    0x03    // 数据长度
+#define SPO2_PACKET_LENGTH    0x06    // 数据长度 (SPO2, HR, PI, Status, Filter, Gain)
 
 typedef struct {
     u8 spo2;       // 血氧饱和度
     u8 heart_rate; // 心率
     u8 pi;         // 灌注指数
     u8 status;     // 状态 (0:正常, 1:未佩戴/手指脱落)
+    u16 filter_status; // 滤波器状态 (复用为 R 值 * 1000)
+    u8 gain_level;    // 增益等级
+    u8 pwm_red;       // 红光PWM
+    u8 pwm_ir;        // 红外PWM
     u8 update_flag;// 更新标志
 } SPO2Data_t;
 

@@ -14,7 +14,7 @@
 /*********************************************************************************************************
 *                                              宏定义
 *********************************************************************************************************/
-#define UART1_BUF_SIZE 100           // 用户缓冲队列的大小
+#define UART1_BUF_SIZE 2048           // 用户缓冲队列的大小 (增大以防止 UI 刷新时溢出)
 
 /*********************************************************************************************************
 *                                              API函数声明
@@ -26,5 +26,9 @@ unsigned char UART1_GetLastParsed(SPO2Data_t *pData);
 void UART1_ReceiveSelfCheck(void);                                  // 串口1接收自检
 void UART1_ProcessSPO2Data(void);                                   // 处理 SPO2 数据 (新增)
 void UART1_SendCmd(unsigned char cmd, unsigned char value);         // 发送控制命令 (新增)
+void UART1_SetWaveFilterEnable(unsigned char enable);               // 设置波形滤波开关
+unsigned char UART1_GetWaveFilterEnable(void);                      // 获取波形滤波开关
+void UART1_SetRCalibMode(unsigned char enable);                     // 设置R值标定模式
+unsigned char UART1_GetRCalibMode(void);                            // 获取R值标定模式
 
 #endif

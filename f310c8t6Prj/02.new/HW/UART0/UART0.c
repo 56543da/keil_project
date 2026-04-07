@@ -136,16 +136,19 @@ unsigned char  WriteUART0(unsigned char *pBuf, unsigned char len)
 *********************************************************************************************************/
 void UART0_SendSPO2Data(SPO2Data_t *pData)
 {
-    u8 sendBuf[6];
+    u8 sendBuf[9];
     
     sendBuf[0] = SPO2_PACKET_HEAD;
     sendBuf[1] = SPO2_PACKET_LENGTH;
     sendBuf[2] = pData->spo2;
     sendBuf[3] = pData->heart_rate;
     sendBuf[4] = pData->pi;
-    sendBuf[5] = SPO2_PACKET_TAIL;
+    sendBuf[5] = pData->status;
+    sendBuf[6] = pData->filter_status;
+    sendBuf[7] = pData->gain_level;
+    sendBuf[8] = SPO2_PACKET_TAIL;
     
-    WriteUART0(sendBuf, 6);
+    WriteUART0(sendBuf, 9);
 }
 
 /*********************************************************************************************************

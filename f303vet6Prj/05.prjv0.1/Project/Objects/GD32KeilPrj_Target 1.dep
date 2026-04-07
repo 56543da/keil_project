@@ -1,9 +1,9 @@
 Dependencies for Project 'GD32KeilPrj', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
-F (..\App\Main\Main.c)(0x69830346)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (..\App\Main\Main.c)(0x69ABFB25)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (..\App\Main\Main.h)(0x69809FF7)
 I (..\App\LED\LED.h)(0x69809FF7)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
@@ -48,12 +48,13 @@ I (..\HW\RCU\RCU.h)(0x69809FF7)
 I (..\ARM\NVIC\NVIC.h)(0x69809FF7)
 I (..\HW\Timer\Timer.h)(0x69809FF7)
 I (..\HW\UART0\UART0.h)(0x697DFBF3)
-I (..\HW\UART1\UART1.h)(0x69A97533)
-I (..\App\UI\UI_Manager.h)(0x69A97283)
+I (..\HW\UART1\UART1.h)(0x69ABE2FA)
+I (..\App\UI\UI_Manager.h)(0x69ABEFCA)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\string.h)(0x5E53505C)
-F (..\App\LED\LED.c)(0x6954B9CE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\led.o --omf_browse .\objects\led.crf --depend .\objects\led.d)
+I (..\App\SPO2\SPO2_Algo.h)(0x69ABF805)
+F (..\App\LED\LED.c)(0x6954B9CE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\led.o --omf_browse .\objects\led.crf --depend .\objects\led.d)
 I (..\App\LED\LED.h)(0x69809FF7)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
@@ -87,9 +88,9 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\App\KeyOne\KeyOne.c)(0x6983160E)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\keyone.o --omf_browse .\objects\keyone.crf --depend .\objects\keyone.d)
+F (..\App\KeyOne\KeyOne.c)(0x6983160E)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\keyone.o --omf_browse .\objects\keyone.crf --depend .\objects\keyone.d)
 I (..\App\KeyOne\KeyOne.h)(0x6982E92A)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
@@ -126,11 +127,11 @@ I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (..\ARM\SysTick\SysTick.h)(0x69809FF7)
 I (..\App\LED\LED.h)(0x69809FF7)
-F (..\App\KeyOne\ProcKeyOne.c)(0x69A97293)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\prockeyone.o --omf_browse .\objects\prockeyone.crf --depend .\objects\prockeyone.d)
+F (..\App\KeyOne\ProcKeyOne.c)(0x69ABB523)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\prockeyone.o --omf_browse .\objects\prockeyone.crf --depend .\objects\prockeyone.d)
 I (..\App\KeyOne\ProcKeyOne.h)(0x69A97613)
-I (..\HW\UART1\UART1.h)(0x69A97533)
+I (..\HW\UART1\UART1.h)(0x69ABE2FA)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
@@ -165,8 +166,8 @@ I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 I (..\App\LED\LED.h)(0x69809FF7)
-I (..\App\UI\UI_Manager.h)(0x69A97283)
-F (..\App\LCD\LCD.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\lcd.o --omf_browse .\objects\lcd.crf --depend .\objects\lcd.d)
+I (..\App\UI\UI_Manager.h)(0x69ABEFCA)
+F (..\App\LCD\LCD.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\lcd.o --omf_browse .\objects\lcd.crf --depend .\objects\lcd.d)
 I (..\App\LCD\LCD.h)(0x69809FF7)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
@@ -203,11 +204,11 @@ I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdlib.h)(0x5E53505C)
-I (..\App\DataType\Datatype.h)(0x69809FF7)
+I (..\App\DataType\Datatype.h)(0x69ABE4F1)
 I (..\App\LCD\Font.h)(0x69809FF7)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\math.h)(0x5E53505A)
 I (..\ARM\SysTick\SysTick.h)(0x69809FF7)
-F (..\App\SPO2_Display\SPO2_Display.c)(0x69859EFE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\spo2_display.o --omf_browse .\objects\spo2_display.crf --depend .\objects\spo2_display.d)
+F (..\App\SPO2_Display\SPO2_Display.c)(0x69859EFE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\spo2_display.o --omf_browse .\objects\spo2_display.crf --depend .\objects\spo2_display.d)
 I (..\App\SPO2_Display\SPO2_Display.h)(0x69809FF7)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
@@ -245,9 +246,9 @@ I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 I (..\App\LCD\LCD.h)(0x69809FF7)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdlib.h)(0x5E53505C)
-I (..\App\DataType\Datatype.h)(0x69809FF7)
-F (..\App\UI\UI_Manager.c)(0x69A97774)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\ui_manager.o --omf_browse .\objects\ui_manager.crf --depend .\objects\ui_manager.d)
-I (..\App\UI\UI_Manager.h)(0x69A97283)
+I (..\App\DataType\Datatype.h)(0x69ABE4F1)
+F (..\App\UI\UI_Manager.c)(0x69ABEFF1)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\ui_manager.o --omf_browse .\objects\ui_manager.crf --depend .\objects\ui_manager.d)
+I (..\App\UI\UI_Manager.h)(0x69ABEFCA)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdint.h)(0x5E53505C)
@@ -280,13 +281,17 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\App\LCD\LCD.h)(0x69809FF7)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdlib.h)(0x5E53505C)
-I (..\HW\UART1\UART1.h)(0x69A97533)
-F (..\HW\RCU\RCU.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\rcu.o --omf_browse .\objects\rcu.crf --depend .\objects\rcu.d)
+I (..\HW\UART1\UART1.h)(0x69ABE2FA)
+F (..\App\SPO2\SPO2_Algo.c)(0x69ABF5B3)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\spo2_algo.o --omf_browse .\objects\spo2_algo.crf --depend .\objects\spo2_algo.d)
+I (..\App\SPO2\SPO2_Algo.h)(0x69ABF805)
+I (E:\E_tools\keil\core\ARM\ARMCC\include\stdint.h)(0x5E53505C)
+I (E:\E_tools\keil\core\ARM\ARMCC\include\string.h)(0x5E53505C)
+F (..\HW\RCU\RCU.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\rcu.o --omf_browse .\objects\rcu.crf --depend .\objects\rcu.d)
 I (..\HW\RCU\RCU.h)(0x69809FF7)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
@@ -321,7 +326,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\HW\Timer\Timer.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
+F (..\HW\Timer\Timer.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
 I (..\HW\Timer\Timer.h)(0x69809FF7)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
@@ -356,12 +361,12 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\HW\UART0\Queue.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\queue.o --omf_browse .\objects\queue.crf --depend .\objects\queue.d)
+F (..\HW\UART0\Queue.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\queue.o --omf_browse .\objects\queue.crf --depend .\objects\queue.d)
 I (..\HW\UART0\Queue.h)(0x69809FF7)
-F (..\HW\UART1\UART1.c)(0x69A9753C)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\uart1.o --omf_browse .\objects\uart1.crf --depend .\objects\uart1.d)
-I (..\HW\UART1\UART1.h)(0x69A97533)
+F (..\HW\UART1\UART1.c)(0x69ABF5C0)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\uart1.o --omf_browse .\objects\uart1.crf --depend .\objects\uart1.d)
+I (..\HW\UART1\UART1.h)(0x69ABE2FA)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
@@ -396,8 +401,9 @@ I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 I (..\HW\UART0\Queue.h)(0x69809FF7)
-I (..\App\UI\UI_Manager.h)(0x69A97283)
-F (..\HW\UART0\UART0.c)(0x69807700)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\uart0.o --omf_browse .\objects\uart0.crf --depend .\objects\uart0.d)
+I (..\App\UI\UI_Manager.h)(0x69ABEFCA)
+I (..\App\SPO2\SPO2_Algo.h)(0x69ABF805)
+F (..\HW\UART0\UART0.c)(0x69807700)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\uart0.o --omf_browse .\objects\uart0.crf --depend .\objects\uart0.d)
 I (..\HW\UART0\UART0.h)(0x697DFBF3)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
@@ -434,11 +440,11 @@ I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 I (..\HW\UART0\Queue.h)(0x69809FF7)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\App\SPO2_Display\SPO2_Display.h)(0x69809FF7)
 I (..\App\LCD\LCD.h)(0x69809FF7)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdlib.h)(0x5E53505C)
-F (..\FW\Source\gd32f30x_fmc.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_fmc.o --omf_browse .\objects\gd32f30x_fmc.crf --depend .\objects\gd32f30x_fmc.d)
+F (..\FW\Source\gd32f30x_fmc.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_fmc.o --omf_browse .\objects\gd32f30x_fmc.crf --depend .\objects\gd32f30x_fmc.d)
 I (..\FW\Include\gd32f30x_fmc.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -471,7 +477,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\FW\Source\gd32f30x_gpio.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_gpio.o --omf_browse .\objects\gd32f30x_gpio.crf --depend .\objects\gd32f30x_gpio.d)
+F (..\FW\Source\gd32f30x_gpio.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_gpio.o --omf_browse .\objects\gd32f30x_gpio.crf --depend .\objects\gd32f30x_gpio.d)
 I (..\FW\Include\gd32f30x_gpio.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -504,7 +510,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\FW\Source\gd32f30x_exti.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_exti.o --omf_browse .\objects\gd32f30x_exti.crf --depend .\objects\gd32f30x_exti.d)
+F (..\FW\Source\gd32f30x_exti.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_exti.o --omf_browse .\objects\gd32f30x_exti.crf --depend .\objects\gd32f30x_exti.d)
 I (..\FW\Include\gd32f30x_exti.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -537,7 +543,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\FW\Source\gd32f30x_misc.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_misc.o --omf_browse .\objects\gd32f30x_misc.crf --depend .\objects\gd32f30x_misc.d)
+F (..\FW\Source\gd32f30x_misc.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_misc.o --omf_browse .\objects\gd32f30x_misc.crf --depend .\objects\gd32f30x_misc.d)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -570,7 +576,7 @@ I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\FW\Source\gd32f30x_rcu.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_rcu.o --omf_browse .\objects\gd32f30x_rcu.crf --depend .\objects\gd32f30x_rcu.d)
+F (..\FW\Source\gd32f30x_rcu.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_rcu.o --omf_browse .\objects\gd32f30x_rcu.crf --depend .\objects\gd32f30x_rcu.d)
 I (..\FW\Include\gd32f30x_rcu.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -603,7 +609,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\FW\Source\gd32f30x_timer.c)(0x5FDC4DCD)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_timer.o --omf_browse .\objects\gd32f30x_timer.crf --depend .\objects\gd32f30x_timer.d)
+F (..\FW\Source\gd32f30x_timer.c)(0x5FDC4DCD)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_timer.o --omf_browse .\objects\gd32f30x_timer.crf --depend .\objects\gd32f30x_timer.d)
 I (..\FW\Include\gd32f30x_timer.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -636,7 +642,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\FW\Source\gd32f30x_usart.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_usart.o --omf_browse .\objects\gd32f30x_usart.crf --depend .\objects\gd32f30x_usart.d)
+F (..\FW\Source\gd32f30x_usart.c)(0x5FDC4DCE)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_usart.o --omf_browse .\objects\gd32f30x_usart.crf --depend .\objects\gd32f30x_usart.d)
 I (..\FW\Include\gd32f30x_usart.h)(0x5FDC4DCE)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -669,7 +675,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\ARM\System\gd32f30x_it.c)(0x6055A808)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_it.o --omf_browse .\objects\gd32f30x_it.crf --depend .\objects\gd32f30x_it.d)
+F (..\ARM\System\gd32f30x_it.c)(0x6055A808)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\gd32f30x_it.o --omf_browse .\objects\gd32f30x_it.crf --depend .\objects\gd32f30x_it.d)
 I (..\ARM\System\gd32f30x_it.h)(0x5FDC4DCA)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
@@ -705,7 +711,7 @@ I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 I (..\App\Main\main.h)(0x69809FF7)
 I (..\App\LED\LED.h)(0x69809FF7)
-I (..\App\DataType\DataType.h)(0x69809FF7)
+I (..\App\DataType\DataType.h)(0x69ABE4F1)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\App\KeyOne\KeyOne.h)(0x6982E92A)
 I (..\App\KeyOne\ProcKeyOne.h)(0x69A97613)
@@ -714,7 +720,7 @@ I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdlib.h)(0x5E53505C)
 I (..\App\SPO2_Display\SPO2_Display.h)(0x69809FF7)
 I (..\ARM\SysTick\systick.h)(0x69809FF7)
-F (..\ARM\System\system_gd32f30x.c)(0x697E094A)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\system_gd32f30x.o --omf_browse .\objects\system_gd32f30x.crf --depend .\objects\system_gd32f30x.d)
+F (..\ARM\System\system_gd32f30x.c)(0x697E094A)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\system_gd32f30x.o --omf_browse .\objects\system_gd32f30x.crf --depend .\objects\system_gd32f30x.d)
 I (..\ARM\System\gd32f30x.h)(0x64AFC600)
 I (..\ARM\System\core_cm4.h)(0x5F72A14D)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdint.h)(0x5E53505C)
@@ -748,7 +754,7 @@ I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
 F (..\ARM\System\startup_gd32f30x_hd.s)(0x5BC68A4C)(--cpu Cortex-M4.fp.sp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include--pd "__UVISION_VERSION SETA 530" --pd "_RTE_ SETA 1" --pd "GD32F30X_HD SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_gd32f30x_hd.lst --xref -o .\objects\startup_gd32f30x_hd.o --depend .\objects\startup_gd32f30x_hd.d)
-F (..\ARM\NVIC\NVIC.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\nvic.o --omf_browse .\objects\nvic.crf --depend .\objects\nvic.d)
+F (..\ARM\NVIC\NVIC.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\nvic.o --omf_browse .\objects\nvic.crf --depend .\objects\nvic.d)
 I (..\ARM\NVIC\NVIC.h)(0x69809FF7)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)
@@ -783,7 +789,7 @@ I (..\FW\Include\gd32f30x_wwdgt.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_misc.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_enet.h)(0x5FDC4DCE)
 I (..\FW\Include\gd32f30x_exmc.h)(0x5FDC4DCE)
-F (..\ARM\SysTick\SysTick.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\systick.o --omf_browse .\objects\systick.crf --depend .\objects\systick.d)
+F (..\ARM\SysTick\SysTick.c)(0x69809FF7)(-c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\FW\Include -I ..\App\Main -I ..\App\LED -I ..\ARM\SysTick -I ..\ARM\System -I ..\App\DataType -I ..\ARM\NVIC -I ..\HW\RCU -I ..\HW\Timer -I ..\HW\UART0 -I ..\App\KeyOne -I ..\App\DataType -I ..\App\LCD -I ..\HW\UART2 -I ..\App\SPO2_Display -I ..\HW\UART1 -I ..\App\UI -I ..\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F30x_DFP\2.2.1\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F30X_HD-o .\objects\systick.o --omf_browse .\objects\systick.crf --depend .\objects\systick.d)
 I (..\ARM\SysTick\SysTick.h)(0x69809FF7)
 I (..\ARM\System\gd32f30x_conf.h)(0x6221B693)
 I (..\FW\Include\gd32f30x_adc.h)(0x5FDC4DCE)

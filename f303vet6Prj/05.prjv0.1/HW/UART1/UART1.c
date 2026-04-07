@@ -12,6 +12,7 @@
 #include "DataType.h"
 #include "UI_Manager.h" // 添加头文件引用
 #include <stdio.h>
+#include "SPO2_Algo.h"
 
 /*********************************************************************************************************
 *                                              宏定义
@@ -29,6 +30,11 @@ static SPO2Data_t s_spo2Data;                             // 血氧数据
 static unsigned char s_arrUART1MonBuf[UART1_MON_SIZE];
 static unsigned char s_u8UART1MonPos = 0;
 static unsigned char s_u8UART1MonCount = 0;
+static unsigned char s_waveFilterEnable = 1;
+static int32_t s_filterRed = 0;
+static int32_t s_filterIr = 0;
+static unsigned char s_filterInit = 0;
+static unsigned char s_rCalibMode = 0;
 
 /*********************************************************************************************************
 *                                              内部函数声明
@@ -38,6 +44,8 @@ static  unsigned char WriteReceiveBuf1(unsigned char d);   // 写接收缓冲区
 static  void  ConfigUART1(unsigned int bound);             // 配置 UART1
 static  void  ParseSPO2Packet(unsigned char data);         // 解析 SPO2 数据包
 static  void  UART1_MonPush(unsigned char d);
+static  void  UART1_ForwardWave(uint16_t red, uint16_t ir);
+static  void  UART1_ApplyFilter(uint16_t red, uint16_t ir, uint16_t *out_red, uint16_t *out_ir);
 
 /*********************************************************************************************************
 *                                              内部函数实现
@@ -112,6 +120,14 @@ static void ParseSPO2Packet(unsigned char data)
     // 调试打印：输出每一个接收到的字节
     // printf("Rx: %02X State: %d\r\n", data, s_parseState);
 
+    // 增加缓冲区来存储波形数据
+    static char s_waveBuf[32]; 
+    static uint8_t s_waveIdx = 0;
+    int red_val = 0, ir_val = 0;
+    int pwm_red = 0, pwm_ir = 0;
+    int gain_code = 0;
+    uint16_t out_red = 0, out_ir = 0;
+
     switch(s_parseState)
     {
         case 0: // Wait for Header
@@ -121,23 +137,56 @@ static void ParseSPO2Packet(unsigned char data)
             }
             else
             {
-                // 转发非协议数据的字符，用于调试 f310 的日志
-                printf("%c", data);
+                if(data == '\n')
+                {
+                    s_waveBuf[s_waveIdx] = 0;
+                    if(sscanf(s_waveBuf, "P,%d,%d", &pwm_red, &pwm_ir) == 2)
+                    {
+                        UI_UpdatePwm((u8)pwm_red, (u8)pwm_ir);
+                    }
+                    else if(sscanf(s_waveBuf, "G,%d", &gain_code) == 1)
+                    {
+                        UI_UpdateGain((u8)gain_code);
+                    }
+                    else if(sscanf(s_waveBuf, "%d,%d", &red_val, &ir_val) == 2)
+                    {
+                        UART1_ApplyFilter((uint16_t)red_val, (uint16_t)ir_val, &out_red, &out_ir);
+                        if(UART1_GetRCalibMode())
+                        {
+                            SPO2_Algo_PushDataCalib(out_red, out_ir);
+                        }
+                        else
+                        {
+                            SPO2_Algo_PushData(out_red, out_ir);
+                        }
+                        UART1_ForwardWave(out_red, out_ir);
+                    }
+                    s_waveIdx = 0;
+                }
+                else if(s_waveIdx < 30)
+                {
+                    s_waveBuf[s_waveIdx++] = data;
+                }
             }
             break;
         case 1: // Wait for Length
-             if(data == SPO2_PACKET_LENGTH) // 0x03
+             if(data == SPO2_PACKET_LENGTH) // 0x06
              {
                  s_packetLen = data;
                  s_packetIndex = 0;
                  s_parseState = 2;
              }
-             else if (data == SPO2_PACKET_HEAD) // 容错
+             else if (data == SPO2_PACKET_HEAD) // 容错：可能是连续的 AA
              {
                  s_parseState = 1; 
              }
              else
              {
+                 // 解析失败，说明之前的 0xAA 可能是数据的一部分
+                 // 把刚才吞掉的 0xAA 补发出去 (虽然有点晚，但能减少丢包感)
+                 // 以及当前的 data 也转发出去
+                 putchar(SPO2_PACKET_HEAD); 
+                 putchar(data);
                  s_parseState = 0; 
              }
              break;
@@ -154,11 +203,12 @@ static void ParseSPO2Packet(unsigned char data)
                 s_spo2Data.spo2 = s_packetBuffer[0];
                 s_spo2Data.heart_rate = s_packetBuffer[1];
                 s_spo2Data.pi = s_packetBuffer[2];
-                s_spo2Data.status = 0; // Valid
+                s_spo2Data.status = s_packetBuffer[3];
+                s_spo2Data.filter_status = s_packetBuffer[4];
+                s_spo2Data.gain_level = s_packetBuffer[5];
                 s_spo2Data.update_flag = 1;
                 
-                // 成功解析：打印结果
-                printf("Parsed: SPO2=%d HR=%d PI=%d\r\n", s_spo2Data.spo2, s_spo2Data.heart_rate, s_spo2Data.pi);
+                // 成功解析：不再打印 Parsed 调试信息，以免干扰波形工具
                 
                 // 立即更新到UI
                 UI_UpdateData(&s_spo2Data);
@@ -166,12 +216,12 @@ static void ParseSPO2Packet(unsigned char data)
             }
             else if (data == SPO2_PACKET_HEAD) // 容错
             {
-                printf("Parse Error: Tail mismatch, restart.\r\n");
+                // printf("Parse Error: Tail mismatch, restart.\r\n");
                 s_parseState = 1; // 尝试重新同步
             }
             else
             {
-                printf("Parse Error: Tail=%02X\r\n", data);
+                // printf("Parse Error: Tail=%02X\r\n", data);
                 s_parseState = 0; // 失败，复位
             }
             break;
@@ -179,6 +229,35 @@ static void ParseSPO2Packet(unsigned char data)
             s_parseState = 0;
             break;
     }
+}
+
+static void UART1_ForwardWave(uint16_t red, uint16_t ir)
+{
+    if(s_rCalibMode) return;
+    printf("%u,%u\r\n", red, ir);
+}
+
+static void UART1_ApplyFilter(uint16_t red, uint16_t ir, uint16_t *out_red, uint16_t *out_ir)
+{
+    if(!s_waveFilterEnable)
+    {
+        *out_red = red;
+        *out_ir = ir;
+        return;
+    }
+    if(!s_filterInit)
+    {
+        s_filterRed = red;
+        s_filterIr = ir;
+        s_filterInit = 1;
+    }
+    else
+    {
+        s_filterRed += ((int32_t)red - s_filterRed) >> 2;
+        s_filterIr += ((int32_t)ir - s_filterIr) >> 2;
+    }
+    *out_red = (uint16_t)s_filterRed;
+    *out_ir = (uint16_t)s_filterIr;
 }
 
 /*********************************************************************************************************
@@ -206,6 +285,27 @@ void UART1_SendCmd(unsigned char cmd, unsigned char value)
         usart_data_transmit(USART1, sendBuf[i]);
         while(RESET == usart_flag_get(USART1, USART_FLAG_TBE));
     }
+}
+
+void UART1_SetWaveFilterEnable(unsigned char enable)
+{
+    s_waveFilterEnable = (enable != 0);
+    s_filterInit = 0;
+}
+
+unsigned char UART1_GetWaveFilterEnable(void)
+{
+    return s_waveFilterEnable;
+}
+
+void UART1_SetRCalibMode(unsigned char enable)
+{
+    s_rCalibMode = (enable != 0);
+}
+
+unsigned char UART1_GetRCalibMode(void)
+{
+    return s_rCalibMode;
 }
 
 /*********************************************************************************************************

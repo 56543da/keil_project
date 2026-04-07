@@ -6,6 +6,7 @@
 ".\objects\lcd.o"
 ".\objects\spo2_display.o"
 ".\objects\ui_manager.o"
+".\objects\spo2_algo.o"
 ".\objects\rcu.o"
 ".\objects\timer.o"
 ".\objects\queue.o"

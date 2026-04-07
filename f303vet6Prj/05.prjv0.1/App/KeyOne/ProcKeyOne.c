@@ -86,7 +86,6 @@ void  ProcKeyDownLL(void)
 **********************************************************************************************************/
 void  ProcKeyUpLL(void)
 {
-  printf("LL RELEASE\r\n");     /* 打印调试信息 */
 }
 
 /*********************************************************************************************************
@@ -101,7 +100,7 @@ void  ProcKeyUpLL(void)
 void  ProcKeyDownRL(void)
 {
   /* LEDFlicker();  启动LED闪烁 - 暂时屏蔽或修改为对应LED */
-  printf("RL PUSH DOWN\r\n");   /* 打印调试信息 */
+ // printf("RL PUSH DOWN\r\n");   /* 打印调试信息 */
   UI_OnKeyRL();
 }
 
@@ -116,7 +115,6 @@ void  ProcKeyDownRL(void)
 **********************************************************************************************************/
 void  ProcKeyUpRL(void)
 {
-  printf("RL RELEASE\r\n");     /* 打印调试信息 */
 }
 
 /*********************************************************************************************************
@@ -131,7 +129,7 @@ void  ProcKeyUpRL(void)
 void  ProcKeyDownLeftHigh(void)
 {
   /* LEDFlicker();  启动LED闪烁 - 暂时屏蔽或修改为对应LED */
-  printf("LEFT HIGH KEY PUSH DOWN\r\n");   /* 打印调试信息 */
+ // printf("LEFT HIGH KEY PUSH DOWN\r\n");   /* 打印调试信息 */
   UI_OnKeyLH();
 }
 
@@ -146,7 +144,6 @@ void  ProcKeyDownLeftHigh(void)
 **********************************************************************************************************/
 void  ProcKeyUpLeftHigh(void)
 {
-  printf("LEFT HIGH KEY RELEASE\r\n");     /* 打印调试信息 */
 }
 
 /*********************************************************************************************************
@@ -160,7 +157,7 @@ void  ProcKeyUpLeftHigh(void)
 **********************************************************************************************************/
 void  ProcKeyDownRightHigh(void)
 {
-  printf("RIGHT HIGH KEY PUSH DOWN\r\n");   /* 打印调试信息 */
+ // printf("RIGHT HIGH KEY PUSH DOWN\r\n");   /* 打印调试信息 */
   UI_OnKeyRH();
 }
 
@@ -175,7 +172,6 @@ void  ProcKeyDownRightHigh(void)
 **********************************************************************************************************/
 void  ProcKeyUpRightHigh(void)
 {
-  printf("RIGHT HIGH KEY RELEASE\r\n");     /* 打印调试信息 */
 }
 
 /*********************************************************************************************************
@@ -189,7 +185,7 @@ void  ProcKeyUpRightHigh(void)
 **********************************************************************************************************/
 void  ProcKeyDownMenu(void)
 {
-  printf("MENU KEY PUSH DOWN\r\n");   /* 打印调试信息 */
+ // printf("MENU KEY PUSH DOWN\r\n");   /* 打印调试信息 */
   UI_OnKeyMenu();
 }
 
@@ -204,5 +200,4 @@ void  ProcKeyDownMenu(void)
 **********************************************************************************************************/
 void  ProcKeyUpMenu(void)
 {
-  printf("MENU KEY RELEASE\r\n");     /* 打印调试信息 */
 }

@@ -10,36 +10,14 @@
  * 移植自参考代码的血氧算法 - Timer中断版本
  */
 
-// FIR滤波器系数 (Order 4) - 低阶低通滤波器
-static float fir_coeffs[FIR_ORDER + 1] = {
-    0.10f, 0.20f, 0.40f, 0.20f, 0.10f
-};
-
-// 滤波相关变量
-static float red_buffer[FIR_ORDER + 1] = {0};
-static float ir_buffer[FIR_ORDER + 1] = {0};
-
-// DC Removal (High Pass) variables
-static float red_dc_val = 0.0f;
-static float ir_dc_val = 0.0f;
-#define DC_ALPHA 0.95f // High pass filter coefficient
-
-// 波形缓存
-static float red_wave_buf[WAVE_BUF_SIZE] = {0};
-static float ir_wave_buf[WAVE_BUF_SIZE] = {0};
-static uint16_t wave_index = 0;
-static uint16_t wave_count = 0;
-
-// 结果存储
-static volatile SPO2_Result_t g_spo2_result = {0, 0, 0, 0};
+ 
 static volatile uint16_t g_raw_red_adc = 0;
 static volatile uint16_t g_raw_ir_adc = 0;
 static volatile uint16_t g_raw_ambient_adc = 0; // 新增环境光变量
 static volatile uint8_t g_gain_code = 0;
-static volatile uint8_t g_filter_enable = 1;
 static volatile uint16_t g_wave_red_seq = 0;
 static volatile uint16_t g_wave_ir_seq = 0;
-static volatile uint8_t g_agc_enable = 1;
+static volatile uint8_t g_agc_enable = 0;///自动调光
 
 // PWM Period (ARR)
 // Target Frequency: 500kHz
@@ -50,19 +28,28 @@ static volatile uint8_t g_agc_enable = 1;
 
 // PWM Pulse Values (Duty Cycle)
 // Note: 3.3V supply, max Vref=300mV => max duty ~9% (144*0.09 = 13)
-// Red: Try ~4.5% duty => 144 * 0.045 = 6
-// IR:  Try ~1% duty (to fix saturation) => 144 * 0.01 = 1-2
-#define SPO2_RED_PWM_PULSE  1//6
-#define SPO2_IR_PWM_PULSE   6//2
-
-void SPO2_SetFilterEnable(uint8_t enable)
-{
-    g_filter_enable = (enable != 0) ? 1U : 0U;
-}
+// With Complementary Output (Push-Pull), drive efficiency is higher.
+// Reduce Pulse width to prevent saturation.
+// RANGE: 0 ~ 13 (DO NOT EXCEED 13)
+// Red: Set to 6 (Start low)
+// IR:  Set to 2
+#define SPO2_RED_PWM_PULSE  4
+#define SPO2_IR_PWM_PULSE   5
+#define SPO2_PWM_PULSE_MIN  1
+#define SPO2_PWM_PULSE_MAX  13
+#define SPO2_DC_TARGET_LOW  1500
+#define SPO2_DC_TARGET_HIGH 3000
+static volatile uint8_t g_red_pwm_pulse = SPO2_RED_PWM_PULSE;
+static volatile uint8_t g_ir_pwm_pulse = SPO2_IR_PWM_PULSE;
 
 void SPO2_SetAGCEnable(uint8_t enable)
 {
     g_agc_enable = (enable != 0) ? 1U : 0U;
+    if(!g_agc_enable)
+    {
+        g_red_pwm_pulse = SPO2_RED_PWM_PULSE;
+        g_ir_pwm_pulse = SPO2_IR_PWM_PULSE;
+    }
 }
 
 uint8_t SPO2_GetAGCEnable(void)
@@ -74,6 +61,12 @@ void SPO2_GetWaveSeq(uint16_t *red_seq, uint16_t *ir_seq)
 {
     if(red_seq) *red_seq = g_wave_red_seq;
     if(ir_seq) *ir_seq = g_wave_ir_seq;
+}
+
+void SPO2_GetPwmPulse(uint8_t *red_pulse, uint8_t *ir_pulse)
+{
+    if(red_pulse) *red_pulse = g_red_pwm_pulse;
+    if(ir_pulse) *ir_pulse = g_ir_pwm_pulse;
 }
 
 // 函数入参gain_code：增益控制码，3位有效（0~7），对应CD4051的8个通道
@@ -101,14 +94,6 @@ void SPO2_SetGain(uint8_t gain_code)
     // 【保存当前增益码】只保留低3位（0~7），存入全局变量，方便后续读取当前增益
     g_gain_code = gain_code & 0x07U;
 
-    // 当增益改变时，重置滤波器缓存，避免旧增益数据干扰新采样结果
-    {
-        int i;
-        for(i = 0; i <= FIR_ORDER; i++) {
-            red_buffer[i] = 0.0f;
-            ir_buffer[i] = 0.0f;
-        }
-    }
 }
 
 uint8_t SPO2_GetGain(void)
@@ -147,24 +132,18 @@ static void SPO2_PWM_Init(void)
     /* CH0 and CH1 configuration */
     timer_channel_output_struct_para_init(&timer_ocintpara);
     timer_ocintpara.outputstate  = TIMER_CCX_ENABLE;
-    timer_ocintpara.outputnstate = TIMER_CCXN_DISABLE;
+    timer_ocintpara.outputnstate = TIMER_CCXN_ENABLE;
     timer_ocintpara.ocpolarity   = TIMER_OC_POLARITY_HIGH;
     timer_ocintpara.ocnpolarity  = TIMER_OCN_POLARITY_HIGH;
     timer_ocintpara.ocidlestate  = TIMER_OC_IDLE_STATE_LOW;
     timer_ocintpara.ocnidlestate = TIMER_OCN_IDLE_STATE_LOW;
 
     timer_channel_output_config(TIMER14, TIMER_CH_0, &timer_ocintpara);
-    timer_channel_output_config(TIMER14, TIMER_CH_1, &timer_ocintpara);
 
-    /* CH0 (IR) configuration: PWM1 mode, Pulse = 0 (OFF initially) */
+    /* CH0 (Common Driver) configuration: PWM1 mode, Pulse = 0 (OFF initially) */
     timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_0, 0);
     timer_channel_output_mode_config(TIMER14, TIMER_CH_0, TIMER_OC_MODE_PWM0);
     timer_channel_output_shadow_config(TIMER14, TIMER_CH_0, TIMER_OC_SHADOW_DISABLE);
-
-    /* CH1 (Red) configuration: PWM1 mode, Pulse = 0 (OFF initially) */
-    timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_1, 0);
-    timer_channel_output_mode_config(TIMER14, TIMER_CH_1, TIMER_OC_MODE_PWM0);
-    timer_channel_output_shadow_config(TIMER14, TIMER_CH_1, TIMER_OC_SHADOW_DISABLE);
 
 
 
@@ -203,7 +182,7 @@ void SPO2_Driver_Init(void)
 
     gpio_mode_set(SPO2_GAIN_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, SPO2_GAIN_A_PIN | SPO2_GAIN_B_PIN | SPO2_GAIN_C_PIN);
     gpio_output_options_set(SPO2_GAIN_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, SPO2_GAIN_A_PIN | SPO2_GAIN_B_PIN | SPO2_GAIN_C_PIN);
-    SPO2_SetGain(0);
+    SPO2_SetGain(SPO2_GAIN_LEVEL_5);
 
     /* Initialize PWM for LED Intensity Control */
     SPO2_PWM_Init();
@@ -227,15 +206,6 @@ void SPO2_Driver_Init(void)
     
     adc_enable();
     adc_calibration_enable();
-    
-    // 复位滤波器 buffer
-    {
-        int i;
-        for(i=0; i<=FIR_ORDER; i++) {
-            red_buffer[i] = 0.0f;
-            ir_buffer[i] = 0.0f;
-        }
-    }
 }
 
 /**
@@ -265,34 +235,11 @@ static uint16_t ADC_Read_Fast(void)
     return adc_regular_data_read();
 }
 
-// FIR滤波器实现
-static float fir_filter(float input, float *buffer, float *coeffs, int order)
-{
-    float output = 0.0f;
-    int i;
-    
-    // 移位
-    for(i = order; i > 0; i--) {
-        buffer[i] = buffer[i-1];
-    }
-    
-    // 存入新数据
-    buffer[0] = input;
-    
-    // 卷积
-    for(i = 0; i <= order; i++) {
-        output += buffer[i] * coeffs[i];
-    }
-    
-    return output;
-}
-
 // 供Timer中断调用，每0.5ms调用一次
 void SPO2_Timer_Handler(void)
 {
     static uint8_t time_slot = 0;
     uint16_t adc_val;
-    float filtered_val;
     
     time_slot++;
     if(time_slot >= 20) // 10ms周期
@@ -307,7 +254,7 @@ void SPO2_Timer_Handler(void)
             break;
 
         case 2: // 1ms时刻，开始RED LED发光
-            timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_1, SPO2_RED_PWM_PULSE);
+            timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_0, g_red_pwm_pulse);
             gpio_bit_set(SPO2_RED_CS_PORT, SPO2_RED_CS_PIN);
             break;
             
@@ -318,27 +265,15 @@ void SPO2_Timer_Handler(void)
             else g_raw_red_adc = 0;
             
             g_wave_red_seq++;
-            
-            // 简单的低通滤波 (FIR)
-            if(g_filter_enable) {
-                filtered_val = fir_filter((float)g_raw_red_adc, red_buffer, fir_coeffs, FIR_ORDER);
-            } else {
-                filtered_val = (float)g_raw_red_adc;
-            }
-            
-            // 存入 buffer (原始数据，仅用于调试)
-            if (wave_index < WAVE_BUF_SIZE) {
-                red_wave_buf[wave_index] = filtered_val;
-            }
             break;
             
         case 6: // 3ms时刻，关闭RED LED
-            timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_1, 0);
+            timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_0, 0);
             gpio_bit_reset(SPO2_RED_CS_PORT, SPO2_RED_CS_PIN);
             break;
             
         case 10: // 5ms时刻，开始IR LED发光
-            timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_0, SPO2_IR_PWM_PULSE);
+            timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_0, g_ir_pwm_pulse);
             gpio_bit_set(SPO2_IR_CS_PORT, SPO2_IR_CS_PIN);
             break;
             
@@ -349,19 +284,30 @@ void SPO2_Timer_Handler(void)
             else g_raw_ir_adc = 0;
             
             g_wave_ir_seq++;
-            
-            // 简单的低通滤波 (FIR)
-            if(g_filter_enable) {
-                filtered_val = fir_filter((float)g_raw_ir_adc, ir_buffer, fir_coeffs, FIR_ORDER);
-            } else {
-                filtered_val = (float)g_raw_ir_adc;
-            }
-            
-            // 存入 buffer (原始数据，仅用于调试)
-            if (wave_index < WAVE_BUF_SIZE) {
-                ir_wave_buf[wave_index] = filtered_val;
-                wave_index++;
-                if (wave_count < WAVE_BUF_SIZE) wave_count++;
+            if(g_agc_enable)
+            {
+                static uint8_t adjust_cnt = 0;
+                adjust_cnt++;
+                if(adjust_cnt >= 20)
+                {
+                    adjust_cnt = 0;
+                    if(g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse < SPO2_PWM_PULSE_MAX) g_red_pwm_pulse++;
+                    else if(g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse > SPO2_PWM_PULSE_MIN) g_red_pwm_pulse--;
+
+                    if(g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse < SPO2_PWM_PULSE_MAX) g_ir_pwm_pulse++;
+                    else if(g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse > SPO2_PWM_PULSE_MIN) g_ir_pwm_pulse--;
+
+                    if((g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse == SPO2_PWM_PULSE_MAX) ||
+                       (g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse == SPO2_PWM_PULSE_MAX))
+                    {
+                        if(g_gain_code < 7) SPO2_SetGain(g_gain_code + 1);
+                    }
+                    else if((g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse == SPO2_PWM_PULSE_MIN) ||
+                            (g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse == SPO2_PWM_PULSE_MIN))
+                    {
+                        if(g_gain_code > 0) SPO2_SetGain(g_gain_code - 1);
+                    }
+                }
             }
             break;
             
@@ -370,139 +316,9 @@ void SPO2_Timer_Handler(void)
             gpio_bit_reset(SPO2_IR_CS_PORT, SPO2_IR_CS_PIN);
             break;
             
-        case 15: // 7.5ms时刻，计算逻辑
-            // 每1秒(100点)计算一次
-            if (wave_index >= WAVE_BUF_SIZE) {
-                wave_index = 0; // 重置索引
-                
-                if(wave_count > 0) {
-                    float red_max = red_wave_buf[0], red_min = red_wave_buf[0];
-                    float ir_max = ir_wave_buf[0], ir_min = ir_wave_buf[0];
-                    float ir_dc, ir_ac, red_dc, red_ac, R, spo2_calc, threshold_ir;
-                    int pulse_count, last_peak_index, heart_rate;
-                    uint8_t next_gain;
-                    uint16_t i;
-
-                    // 寻找极值
-                    for(i = 1; i < wave_count; i++) {
-                        if(red_wave_buf[i] > red_max) red_max = red_wave_buf[i];
-                        if(red_wave_buf[i] < red_min) red_min = red_wave_buf[i];
-                        if(ir_wave_buf[i] > ir_max) ir_max = ir_wave_buf[i];
-                        if(ir_wave_buf[i] < ir_min) ir_min = ir_wave_buf[i];
-                    }
-
-                    // 简单的脱落判断
-                    ir_dc = (ir_max + ir_min) / 2.0f;
-                    // 注意：因为wave_buf现在存储的是放大且去直流后的值，所以不能直接用max/min计算DC和AC
-                    // 我们需要使用之前计算的真实 DC 值
-                    ir_dc = ir_dc_val;
-                    red_dc = red_dc_val;
-                    
-                    // AC分量大约是 max - min (因为波形已经去直流并放大了，这里要反算或者直接用波形幅度估算)
-                    // 由于 wave_buf = (val - dc) * 4 + 2048
-                    // 所以 AC_real = (max - min) / 4
-                    ir_ac = (ir_max - ir_min) / 4.0f;
-                    red_ac = (red_max - red_min) / 4.0f;
-                    
-                    if (ir_dc < 100.0f || ir_ac < 5.0f) { // 阈值相应调整
-                        g_spo2_result.spo2 = 0;
-                        g_spo2_result.heart_rate = 0;
-                        g_spo2_result.pi = 0;
-                        g_spo2_result.updated = 1;
-                    } 
-                    else {
-                        if(g_agc_enable) {
-                            next_gain = g_gain_code;
-                            
-                            /* 
-                             * 增益表参考 (A2A1A0):
-                             * 000: 498x  | 001: 747x  | 010: 996x  | 011: 1493x
-                             * 100: 1942x | 101: 2739x | 110: 2739x | 111: 3984x
-                             */
-                            
-                            // 减小增益的情况：信号过强或接近饱和 (使用 ir_dc 判断饱和更准确)
-                            if(ir_dc > 3800.0f) {
-                                if(next_gain > 0U) next_gain--;
-                            } 
-                            // 增大增益的情况：信号太弱 (AC分量过小)
-                            else if(ir_ac < 40.0f && ir_dc < 3000.0f) {
-                                if(next_gain < 7U) {
-                                    if(next_gain == 0x05) next_gain = 0x07; // 101->111 (Skip 110 duplicate)
-                                    else next_gain++;
-                                }
-                            }
-                            
-                            if(next_gain != g_gain_code) {
-                                SPO2_SetGain(next_gain);
-                            }
-                        }
-
-                        // red_dc 和 red_ac 已经在前面计算了
-                        
-                        // 修正 R 值计算: R = (AC_Red/DC_Red) / (AC_IR/DC_IR)
-                        R = (red_ac / red_dc) / (ir_ac / ir_dc);
-                        
-                        // 使用标准线性近似公式: SpO2 = 110 - 25 * R
-                        spo2_calc = 110.0f - 25.0f * R;
-                        
-                        if(spo2_calc > 100.0f) spo2_calc = 100.0f;
-                        if(spo2_calc < 70.0f) spo2_calc = 70.0f;
-                        
-                        // 心率计算 (使用IR信号，增加简单的距离判断防抖)
-                        pulse_count = 0;
-                        threshold_ir = ir_dc;
-                        last_peak_index = -100;
-                        
-                        for(i = 1; i < wave_count - 1; i++) {
-                            if(ir_wave_buf[i] > threshold_ir && 
-                               ir_wave_buf[i] > ir_wave_buf[i-1] && 
-                               ir_wave_buf[i] > ir_wave_buf[i+1]) {
-                                
-                                // 最小峰值间隔检查 (25点 = 250ms, 对应最高心率约240bpm)
-                                if ((i - last_peak_index) > 25) {
-                                    pulse_count++;
-                                    last_peak_index = i;
-                                }
-                            }
-                        }
-                        
-                        // 1秒窗口: BPM = count * 60
-                        heart_rate = pulse_count * 60;
-                        if(heart_rate > 250) heart_rate = 250;
-
-                        g_spo2_result.heart_rate = (uint8_t)heart_rate;
-                        g_spo2_result.spo2 = (uint8_t)spo2_calc;
-                        
-                        if(ir_dc != 0) {
-                            g_spo2_result.pi = (uint8_t)((ir_ac / ir_dc) * 100.0f); 
-                            if(g_spo2_result.pi == 0) g_spo2_result.pi = 1;
-                        } else {
-                            g_spo2_result.pi = 0;
-                        }
-                        
-                        g_spo2_result.updated = 1;
-                    }
-                }
-                wave_count = 0;
-            }
-            break;
-            
         default:
             break;
     }
-}
-
-uint8_t SPO2_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi)
-{
-    if(g_spo2_result.updated)
-    {
-        *spo2 = g_spo2_result.spo2;
-        *hr = g_spo2_result.heart_rate;
-        *pi = g_spo2_result.pi;
-        g_spo2_result.updated = 0;
-        return 1;
-    }
-    return 0;
 }
 
 void SPO2_GetRawADC(uint16_t *red, uint16_t *ir)

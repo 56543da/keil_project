@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,GD32F30X_HD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\FW\Include;..\App\Main;..\App\LED;..\ARM\SysTick;..\ARM\System;..\App\DataType;..\ARM\NVIC;..\HW\RCU;..\HW\Timer;..\HW\UART0;..\App\KeyOne;..\App\DataType;..\App\LCD;..\HW\UART2;..\App\SPO2_Display;..\HW\UART1;..\App\UI</IncludePath>
+              <IncludePath>..\FW\Include;..\App\Main;..\App\LED;..\ARM\SysTick;..\ARM\System;..\App\DataType;..\ARM\NVIC;..\HW\RCU;..\HW\Timer;..\HW\UART0;..\App\KeyOne;..\App\DataType;..\App\LCD;..\HW\UART2;..\App\SPO2_Display;..\HW\UART1;..\App\UI;..\App\SPO2</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -417,6 +417,11 @@
               <FileName>UI_Manager.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\UI\UI_Manager.c</FilePath>
+            </File>
+            <File>
+              <FileName>SPO2_Algo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\SPO2\SPO2_Algo.c</FilePath>
             </File>
           </Files>
         </Group>

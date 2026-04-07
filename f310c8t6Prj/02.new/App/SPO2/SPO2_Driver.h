@@ -40,6 +40,7 @@ typedef struct {
     uint8_t spo2;
     uint8_t heart_rate;
     uint8_t pi;
+    float r_val;   // Added R value
     uint8_t updated;
 } SPO2_Result_t;
 
@@ -47,9 +48,6 @@ void SPO2_Driver_Init(void);
 
 // Call this function in Timer Interrupt (every 0.5ms)
 void SPO2_Timer_Handler(void);
-
-// Get the latest result
-uint8_t SPO2_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi);
 
 // Get raw ADC values for debugging
 void SPO2_GetRawADC(uint16_t *red, uint16_t *ir);
@@ -60,8 +58,8 @@ uint8_t SPO2_GetGain(void);
 void SPO2_SetAGCEnable(uint8_t enable);
 uint8_t SPO2_GetAGCEnable(void);
 
-void SPO2_SetFilterEnable(uint8_t enable);
-
 void SPO2_GetWaveSeq(uint16_t *red_seq, uint16_t *ir_seq);
+void SPO2_GetPwmPulse(uint8_t *red_pulse, uint8_t *ir_pulse);
+
 
 #endif
