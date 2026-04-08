@@ -28,7 +28,5 @@ void UART1_ProcessSPO2Data(void);                                   // 处理 SP
 void UART1_SendCmd(unsigned char cmd, unsigned char value);         // 发送控制命令 (新增)
 void UART1_SetWaveFilterEnable(unsigned char enable);               // 设置波形滤波开关
 unsigned char UART1_GetWaveFilterEnable(void);                      // 获取波形滤波开关
-void UART1_SetRCalibMode(unsigned char enable);                     // 设置R值标定模式
-unsigned char UART1_GetRCalibMode(void);                            // 获取R值标定模式
 
 #endif

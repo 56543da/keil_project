@@ -170,13 +170,11 @@ void UI_UpdateData(SPO2Data_t *data)
     else
     {
         s_curData = *data;
-        if(s_uiState == UI_STATE_R_CALIB)
+        switch(s_uiState)
         {
-            UI_UpdateRCalibValue();
-        }
-        else if(s_uiState == UI_STATE_DATA_REVIEW)
-        {
-            UI_UpdateDataReviewValue();
+            case UI_STATE_R_CALIB:      UI_UpdateRCalibValue(); break;
+            case UI_STATE_DATA_REVIEW:   UI_UpdateDataReviewValue(); break;
+            default: break;
         }
     }
 }
@@ -200,16 +198,20 @@ void UI_UpdatePwm(uint8_t pwm_red, uint8_t pwm_ir)
     s_curData.pwm_red = pwm_red;
     s_curData.pwm_ir = pwm_ir;
 
-    if(s_uiState == UI_STATE_MAIN)
+    switch(s_uiState)
     {
-        POINT_COLOR = GRAY;
-        BACK_COLOR = UI_COLOR_PANEL_BG;
-        sprintf(buf, "PWM R:%d I:%d   ", s_curData.pwm_red, s_curData.pwm_ir);
-        LCD_ShowString(120, 310, 96, 16, 16, (u8*)buf);
-    }
-    else if(s_uiState == UI_STATE_R_CALIB)
-    {
-        UI_UpdateRCalibValue();
+        case UI_STATE_MAIN:
+            POINT_COLOR = GRAY;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
+            sprintf(buf, "PWM R:%d I:%d   ", s_curData.pwm_red, s_curData.pwm_ir);
+            LCD_ShowString(120, 310, 96, 16, 16, (u8*)buf);
+            break;
+            
+        case UI_STATE_R_CALIB:
+            UI_UpdateRCalibValue();
+            break;
+            
+        default: break;
     }
 }
 
@@ -218,16 +220,20 @@ void UI_UpdateGain(uint8_t gain_level)
     char buf[20];
     s_curData.gain_level = gain_level;
 
-    if(s_uiState == UI_STATE_MAIN)
+    switch(s_uiState)
     {
-        POINT_COLOR = GRAY;
-        BACK_COLOR = UI_COLOR_PANEL_BG;
-        sprintf(buf, "Gain: %d   ", s_curData.gain_level);
-        LCD_ShowString(240, 310, 64, 16, 16, (u8*)buf);
-    }
-    else if(s_uiState == UI_STATE_SPO2_SET)
-    {
-        UI_UpdateGainValue();
+        case UI_STATE_MAIN:
+            POINT_COLOR = GRAY;
+            BACK_COLOR = UI_COLOR_PANEL_BG;
+            sprintf(buf, "Gain: %d   ", s_curData.gain_level);
+            LCD_ShowString(240, 310, 64, 16, 16, (u8*)buf);
+            break;
+            
+        case UI_STATE_SPO2_SET:
+            UI_UpdateGainValue();
+            break;
+            
+        default: break;
     }
 }
 
@@ -235,49 +241,20 @@ void UI_Update(void)
 {
     if(!s_needRefresh) return;
 
-    if(s_uiState == UI_STATE_MAIN)
+    switch(s_uiState)
     {
-        UI_DrawMainScreen();
-    }
-    else if(s_uiState == UI_STATE_SETTINGS)
-    {
-        UI_DrawSettingsScreen();
-    }
-    else if(s_uiState == UI_STATE_WORK_MODE)
-    {
-        UI_DrawWorkModeScreen();
-    }
-    else if(s_uiState == UI_STATE_ALARM_SET)
-    {
-        UI_DrawAlarmSetScreen();
-    }
-    else if(s_uiState == UI_STATE_SPO2_SET)
-    {
-        UI_DrawSpO2SetScreen();
-    }
-    else if(s_uiState == UI_STATE_FILTER_SET)
-    {
-        UI_DrawFilterSetScreen();
-    }
-    else if(s_uiState == UI_STATE_R_CALIB)
-    {
-        UI_DrawRCalibScreen();
-    }
-    else if(s_uiState == UI_STATE_AUTO_LIGHT)
-    {
-        UI_DrawAutoLightScreen();
-    }
-    else if(s_uiState == UI_STATE_ETCO2_SET)
-    {
-        UI_DrawEtCO2SetScreen();
-    }
-    else if(s_uiState == UI_STATE_SYSTEM_SET)
-    {
-        UI_DrawSystemSetScreen();
-    }
-    else if(s_uiState == UI_STATE_DATA_REVIEW)
-    {
-        UI_DrawDataReviewScreen();
+        case UI_STATE_MAIN:         UI_DrawMainScreen(); break;
+        case UI_STATE_SETTINGS:     UI_DrawSettingsScreen(); break;
+        case UI_STATE_WORK_MODE:    UI_DrawWorkModeScreen(); break;
+        case UI_STATE_ALARM_SET:    UI_DrawAlarmSetScreen(); break;
+        case UI_STATE_SPO2_SET:     UI_DrawSpO2SetScreen(); break;
+        case UI_STATE_FILTER_SET:   UI_DrawFilterSetScreen(); break;
+        case UI_STATE_R_CALIB:      UI_DrawRCalibScreen(); break;
+        case UI_STATE_AUTO_LIGHT:   UI_DrawAutoLightScreen(); break;
+        case UI_STATE_ETCO2_SET:    UI_DrawEtCO2SetScreen(); break;
+        case UI_STATE_SYSTEM_SET:   UI_DrawSystemSetScreen(); break;
+        case UI_STATE_DATA_REVIEW:  UI_DrawDataReviewScreen(); break;
+        default: break;
     }
     
     s_needRefresh = 0;
@@ -776,263 +753,214 @@ static void UI_UpdateDataReviewValue(void)
     char buf[32];
     POINT_COLOR = WHITE;
     BACK_COLOR = UI_COLOR_BG;
-    if(s_dataReviewPage == 0)
+    
+    switch(s_dataReviewPage)
     {
-        LCD_ShowString(50, 120, 180, 16, 16, (u8*)"Page 1: SPO2/PR");
-        sprintf(buf, "SPO2: %d    ", s_curData.spo2);
-        LCD_ShowString(50, 148, 180, 16, 16, (u8*)buf);
-        sprintf(buf, "PR: %d      ", s_curData.heart_rate);
-        LCD_ShowString(50, 170, 180, 16, 16, (u8*)buf);
-    }
-    else if(s_dataReviewPage == 1)
-    {
-        LCD_ShowString(50, 120, 180, 16, 16, (u8*)"Page 2: PI/R");
-        sprintf(buf, "PI R:%d I:%d   ", s_curData.status, s_curData.pi);
-        LCD_ShowString(50, 148, 180, 16, 16, (u8*)buf);
-        sprintf(buf, "R: %d         ", s_curData.filter_status);
-        LCD_ShowString(50, 170, 180, 16, 16, (u8*)buf);
-    }
-    else
-    {
-        LCD_ShowString(50, 120, 180, 16, 16, (u8*)"Page 3: Drive");
-        sprintf(buf, "PWM R:%d I:%d  ", s_curData.pwm_red, s_curData.pwm_ir);
-        LCD_ShowString(50, 148, 180, 16, 16, (u8*)buf);
-        sprintf(buf, "Gain: %d       ", s_curData.gain_level);
-        LCD_ShowString(50, 170, 180, 16, 16, (u8*)buf);
+        case 0:
+            LCD_ShowString(50, 120, 180, 16, 16, (u8*)"Page 1: SPO2/PR");
+            sprintf(buf, "SPO2: %d    ", s_curData.spo2);
+            LCD_ShowString(50, 148, 180, 16, 16, (u8*)buf);
+            sprintf(buf, "PR: %d      ", s_curData.heart_rate);
+            LCD_ShowString(50, 170, 180, 16, 16, (u8*)buf);
+            break;
+            
+        case 1:
+            LCD_ShowString(50, 120, 180, 16, 16, (u8*)"Page 2: PI/R");
+            sprintf(buf, "PI R:%d I:%d   ", s_curData.status, s_curData.pi);
+            LCD_ShowString(50, 148, 180, 16, 16, (u8*)buf);
+            sprintf(buf, "R: %d         ", s_curData.filter_status);
+            LCD_ShowString(50, 170, 180, 16, 16, (u8*)buf);
+            break;
+            
+        default:
+            LCD_ShowString(50, 120, 180, 16, 16, (u8*)"Page 3: Drive");
+            sprintf(buf, "PWM R:%d I:%d  ", s_curData.pwm_red, s_curData.pwm_ir);
+            LCD_ShowString(50, 148, 180, 16, 16, (u8*)buf);
+            sprintf(buf, "Gain: %d       ", s_curData.gain_level);
+            LCD_ShowString(50, 170, 180, 16, 16, (u8*)buf);
+            break;
     }
 }
 
 void UI_OnKeyLL(void) // Up
 {
-    if(s_uiState == UI_STATE_SETTINGS)
+    switch(s_uiState)
     {
-        if(s_settingsIndex > 0)
-        {
-            uint8_t prev = s_settingsIndex;
-            s_settingsIndex--;
-            UI_DrawSettingsItem(prev, 0);
-            UI_DrawSettingsItem(s_settingsIndex, 1);
-        }
-    }
-    else if(s_uiState == UI_STATE_SPO2_SET)
-    {
-        // 增益调整逻辑...
-        // 发送命令给 F310
-        UART1_SendCmd(0x02, 0); // Gain ++
-        s_curData.gain_level++;
-        UI_UpdateGainValue();
-    }
-    else if(s_uiState == UI_STATE_FILTER_SET)
-    {
-        UART1_SetWaveFilterEnable(1);
-        UI_UpdateFilterStatus();
-    }
-    else if(s_uiState == UI_STATE_AUTO_LIGHT)
-    {
-        s_autoLightEnable = 1;
-        UART1_SendCmd(0x05, 1);
-        UI_UpdateAutoLightStatus();
-    }
-    else if(s_uiState == UI_STATE_WORK_MODE)
-    {
-        s_workMode = 0;
-        UI_UpdateWorkModeStatus();
-    }
-    else if(s_uiState == UI_STATE_ALARM_SET)
-    {
-        if(s_alarmProfile < 2) s_alarmProfile++;
-        UI_UpdateAlarmSetStatus();
-    }
-    else if(s_uiState == UI_STATE_ETCO2_SET)
-    {
-        s_etco2Enable = 1;
-        UI_UpdateEtCO2Status();
-    }
-    else if(s_uiState == UI_STATE_SYSTEM_SET)
-    {
-        if(s_systemBrightness < 5) s_systemBrightness++;
-        if(s_systemBrightness >= 3) s_systemBeepEnable = 1;
-        UI_UpdateSystemSetStatus();
-    }
-    else if(s_uiState == UI_STATE_DATA_REVIEW)
-    {
-        if(s_dataReviewPage < 2) s_dataReviewPage++;
-        else s_dataReviewPage = 0;
-        UI_UpdateDataReviewValue();
+        case UI_STATE_SETTINGS:
+            if(s_settingsIndex > 0)
+            {
+                uint8_t prev = s_settingsIndex;
+                s_settingsIndex--;
+                UI_DrawSettingsItem(prev, 0);
+                UI_DrawSettingsItem(s_settingsIndex, 1);
+            }
+            break;
+            
+        case UI_STATE_SPO2_SET:
+            UART1_SendCmd(0x02, 0); // Gain ++
+            s_curData.gain_level++;
+            UI_UpdateGainValue();
+            break;
+            
+        case UI_STATE_FILTER_SET:
+            UART1_SetWaveFilterEnable(1);
+            UI_UpdateFilterStatus();
+            break;
+            
+        case UI_STATE_AUTO_LIGHT:
+            s_autoLightEnable = 1;
+            UART1_SendCmd(0x05, 1);
+            UI_UpdateAutoLightStatus();
+            break;
+            
+        case UI_STATE_WORK_MODE:
+            s_workMode = 0;
+            UI_UpdateWorkModeStatus();
+            break;
+            
+        case UI_STATE_ALARM_SET:
+            if(s_alarmProfile < 2) s_alarmProfile++;
+            UI_UpdateAlarmSetStatus();
+            break;
+            
+        case UI_STATE_ETCO2_SET:
+            s_etco2Enable = 1;
+            UI_UpdateEtCO2Status();
+            break;
+            
+        case UI_STATE_SYSTEM_SET:
+            if(s_systemBrightness < 5) s_systemBrightness++;
+            if(s_systemBrightness >= 3) s_systemBeepEnable = 1;
+            UI_UpdateSystemSetStatus();
+            break;
+            
+        case UI_STATE_DATA_REVIEW:
+            if(s_dataReviewPage < 2) s_dataReviewPage++;
+            else s_dataReviewPage = 0;
+            UI_UpdateDataReviewValue();
+            break;
+            
+        default: break;
     }
 }
 
 void UI_OnKeyRL(void) // Down
 {
-    if(s_uiState == UI_STATE_SETTINGS)
+    switch(s_uiState)
     {
-        if(s_settingsIndex < SETTINGS_ITEM_COUNT - 1)
-        {
-            uint8_t prev = s_settingsIndex;
-            s_settingsIndex++;
-            UI_DrawSettingsItem(prev, 0);
-            UI_DrawSettingsItem(s_settingsIndex, 1);
-        }
-    }
-    else if(s_uiState == UI_STATE_SPO2_SET)
-    {
-        UART1_SendCmd(0x03, 0); // Gain --
-        if(s_curData.gain_level > 0) s_curData.gain_level--;
-        UI_UpdateGainValue();
-    }
-    else if(s_uiState == UI_STATE_FILTER_SET)
-    {
-        UART1_SetWaveFilterEnable(0);
-        UI_UpdateFilterStatus();
-    }
-    else if(s_uiState == UI_STATE_AUTO_LIGHT)
-    {
-        s_autoLightEnable = 0;
-        UART1_SendCmd(0x05, 0);
-        UI_UpdateAutoLightStatus();
-    }
-    else if(s_uiState == UI_STATE_WORK_MODE)
-    {
-        s_workMode = 1;
-        UI_UpdateWorkModeStatus();
-    }
-    else if(s_uiState == UI_STATE_ALARM_SET)
-    {
-        if(s_alarmProfile > 0) s_alarmProfile--;
-        UI_UpdateAlarmSetStatus();
-    }
-    else if(s_uiState == UI_STATE_ETCO2_SET)
-    {
-        s_etco2Enable = 0;
-        UI_UpdateEtCO2Status();
-    }
-    else if(s_uiState == UI_STATE_SYSTEM_SET)
-    {
-        if(s_systemBrightness > 1) s_systemBrightness--;
-        if(s_systemBrightness < 3) s_systemBeepEnable = 0;
-        UI_UpdateSystemSetStatus();
-    }
-    else if(s_uiState == UI_STATE_DATA_REVIEW)
-    {
-        if(s_dataReviewPage > 0) s_dataReviewPage--;
-        else s_dataReviewPage = 2;
-        UI_UpdateDataReviewValue();
+        case UI_STATE_SETTINGS:
+            if(s_settingsIndex < SETTINGS_ITEM_COUNT - 1)
+            {
+                uint8_t prev = s_settingsIndex;
+                s_settingsIndex++;
+                UI_DrawSettingsItem(prev, 0);
+                UI_DrawSettingsItem(s_settingsIndex, 1);
+            }
+            break;
+            
+        case UI_STATE_SPO2_SET:
+            UART1_SendCmd(0x03, 0); // Gain --
+            if(s_curData.gain_level > 0) s_curData.gain_level--;
+            UI_UpdateGainValue();
+            break;
+            
+        case UI_STATE_FILTER_SET:
+            UART1_SetWaveFilterEnable(0);
+            UI_UpdateFilterStatus();
+            break;
+            
+        case UI_STATE_AUTO_LIGHT:
+            s_autoLightEnable = 0;
+            UART1_SendCmd(0x05, 0);
+            UI_UpdateAutoLightStatus();
+            break;
+            
+        case UI_STATE_WORK_MODE:
+            s_workMode = 1;
+            UI_UpdateWorkModeStatus();
+            break;
+            
+        case UI_STATE_ALARM_SET:
+            if(s_alarmProfile > 0) s_alarmProfile--;
+            UI_UpdateAlarmSetStatus();
+            break;
+            
+        case UI_STATE_ETCO2_SET:
+            s_etco2Enable = 0;
+            UI_UpdateEtCO2Status();
+            break;
+            
+        case UI_STATE_SYSTEM_SET:
+            if(s_systemBrightness > 1) s_systemBrightness--;
+            if(s_systemBrightness < 3) s_systemBeepEnable = 0;
+            UI_UpdateSystemSetStatus();
+            break;
+            
+        case UI_STATE_DATA_REVIEW:
+            if(s_dataReviewPage > 0) s_dataReviewPage--;
+            else s_dataReviewPage = 2;
+            UI_UpdateDataReviewValue();
+            break;
+            
+        default: break;
     }
 }
 
 void UI_OnKeyLH(void) // Enter / Settings
 {
-    if(s_uiState == UI_STATE_MAIN)
+    switch(s_uiState)
     {
-        s_uiState = UI_STATE_SETTINGS;
-        s_settingsIndex = 0;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_SETTINGS)
-    {
-        if(s_settingsIndex == 0)
-        {
-            s_uiState = UI_STATE_WORK_MODE;
+        case UI_STATE_MAIN:
+            s_uiState = UI_STATE_SETTINGS;
+            s_settingsIndex = 0;
             s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 1)
-        {
-            s_uiState = UI_STATE_ALARM_SET;
+            break;
+            
+        case UI_STATE_SETTINGS:
+            switch(s_settingsIndex)
+            {
+                case 0: s_uiState = UI_STATE_WORK_MODE; break;
+                case 1: s_uiState = UI_STATE_ALARM_SET; break;
+                case 2: s_uiState = UI_STATE_SPO2_SET;  break;
+                case 3: s_uiState = UI_STATE_FILTER_SET; break;
+                case 4: s_uiState = UI_STATE_R_CALIB;   break;
+                case 5: s_uiState = UI_STATE_AUTO_LIGHT; break;
+                case 6: s_uiState = UI_STATE_ETCO2_SET; break;
+                case 7: s_uiState = UI_STATE_SYSTEM_SET; break;
+                case 8: s_uiState = UI_STATE_DATA_REVIEW; break;
+                default: break;
+            }
             s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 2)
-        {
-            s_uiState = UI_STATE_SPO2_SET;
-            s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 3)
-        {
-            s_uiState = UI_STATE_FILTER_SET;
-            s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 4)
-        {
-            s_uiState = UI_STATE_R_CALIB;
-            UART1_SetRCalibMode(1);
-            s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 5)
-        {
-            s_uiState = UI_STATE_AUTO_LIGHT;
-            s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 6)
-        {
-            s_uiState = UI_STATE_ETCO2_SET;
-            s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 7)
-        {
-            s_uiState = UI_STATE_SYSTEM_SET;
-            s_needRefresh = 1;
-        }
-        else if(s_settingsIndex == 8)
-        {
-            s_uiState = UI_STATE_DATA_REVIEW;
-            s_needRefresh = 1;
-        }
+            break;
+            
+        default: break;
     }
     UI_Update();
 }
 
 void UI_OnKeyRH(void) // Back
 {
-    if(s_uiState == UI_STATE_SETTINGS)
+    switch(s_uiState)
     {
-        s_uiState = UI_STATE_MAIN;
-        s_needRefresh = 1;
+        case UI_STATE_SETTINGS:
+            s_uiState = UI_STATE_MAIN;
+            break;
+            
+        case UI_STATE_WORK_MODE:
+        case UI_STATE_ALARM_SET:
+        case UI_STATE_SPO2_SET:
+        case UI_STATE_FILTER_SET:
+        case UI_STATE_R_CALIB:
+        case UI_STATE_AUTO_LIGHT:
+        case UI_STATE_ETCO2_SET:
+        case UI_STATE_SYSTEM_SET:
+        case UI_STATE_DATA_REVIEW:
+            s_uiState = UI_STATE_SETTINGS;
+            break;
+            
+        default: break;
     }
-    else if(s_uiState == UI_STATE_SPO2_SET)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_FILTER_SET)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_R_CALIB)
-    {
-        UART1_SetRCalibMode(0);
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_AUTO_LIGHT)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_WORK_MODE)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_ALARM_SET)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_ETCO2_SET)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_SYSTEM_SET)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
-    else if(s_uiState == UI_STATE_DATA_REVIEW)
-    {
-        s_uiState = UI_STATE_SETTINGS;
-        s_needRefresh = 1;
-    }
+    s_needRefresh = 1;
     UI_Update();
 }
 

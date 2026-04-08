@@ -34,7 +34,7 @@ static volatile uint8_t g_agc_enable = 0;///自动调光
 // Red: Set to 6 (Start low)
 // IR:  Set to 2
 #define SPO2_RED_PWM_PULSE  4
-#define SPO2_IR_PWM_PULSE   5
+#define SPO2_IR_PWM_PULSE   6
 #define SPO2_PWM_PULSE_MIN  1
 #define SPO2_PWM_PULSE_MAX  13
 #define SPO2_DC_TARGET_LOW  1500
@@ -156,6 +156,7 @@ static void SPO2_PWM_Init(void)
     timer_enable(TIMER14);
 }
 
+////初始化增益等级
 void SPO2_Driver_Init(void)
 {
     /* Enable Clocks */
@@ -182,7 +183,8 @@ void SPO2_Driver_Init(void)
 
     gpio_mode_set(SPO2_GAIN_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, SPO2_GAIN_A_PIN | SPO2_GAIN_B_PIN | SPO2_GAIN_C_PIN);
     gpio_output_options_set(SPO2_GAIN_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, SPO2_GAIN_A_PIN | SPO2_GAIN_B_PIN | SPO2_GAIN_C_PIN);
-    SPO2_SetGain(SPO2_GAIN_LEVEL_5);
+		
+    SPO2_SetGain(SPO2_GAIN_LEVEL_4);////初始化增益等级
 
     /* Initialize PWM for LED Intensity Control */
     SPO2_PWM_Init();
@@ -250,7 +252,11 @@ void SPO2_Timer_Handler(void)
     switch(time_slot)
     {
         case 1: // 0.5ms时刻，采样环境光 (此时两灯皆灭)
-            g_raw_ambient_adc = ADC_Read_Fast();
+            adc_val = ADC_Read_Fast();
+            if(adc_val != 0xFFFF)
+            {
+                g_raw_ambient_adc = adc_val;
+            }
             break;
 
         case 2: // 1ms时刻，开始RED LED发光
@@ -260,9 +266,12 @@ void SPO2_Timer_Handler(void)
             
         case 5: // 2.5ms时刻，RED LED ADC采样 (给1ms稳定时间)
             adc_val = ADC_Read_Fast();
-            // 减去环境光，防止负值溢出
-            if(adc_val >= g_raw_ambient_adc) g_raw_red_adc = adc_val - g_raw_ambient_adc;
-            else g_raw_red_adc = 0;
+            if(adc_val != 0xFFFF)
+            {
+                // 减去环境光，防止负值溢出
+                // 如果本次采样异常小于环境光，不直接写 0，避免在波形上形成单点突降毛刺
+                if(adc_val >= g_raw_ambient_adc) g_raw_red_adc = adc_val - g_raw_ambient_adc;
+            }
             
             g_wave_red_seq++;
             break;
@@ -279,9 +288,12 @@ void SPO2_Timer_Handler(void)
             
         case 13: // 6.5ms时刻，IR LED ADC采样 (给1ms稳定时间)
             adc_val = ADC_Read_Fast();
-            // 减去环境光
-            if(adc_val >= g_raw_ambient_adc) g_raw_ir_adc = adc_val - g_raw_ambient_adc;
-            else g_raw_ir_adc = 0;
+            if(adc_val != 0xFFFF)
+            {
+                // 减去环境光
+                // 如果本次采样异常小于环境光，不直接写 0，避免在波形上形成单点突降毛刺
+                if(adc_val >= g_raw_ambient_adc) g_raw_ir_adc = adc_val - g_raw_ambient_adc;
+            }
             
             g_wave_ir_seq++;
             if(g_agc_enable)

@@ -34,7 +34,6 @@ static unsigned char s_waveFilterEnable = 1;
 static int32_t s_filterRed = 0;
 static int32_t s_filterIr = 0;
 static unsigned char s_filterInit = 0;
-static unsigned char s_rCalibMode = 0;
 
 /*********************************************************************************************************
 *                                              内部函数声明
@@ -152,14 +151,7 @@ static void ParseSPO2Packet(unsigned char data)
                     {
                         UART1_ApplyFilter((uint16_t)red_val, (uint16_t)ir_val, &out_red, &out_ir);
                         UI_UpdateWave(out_red);
-                        if(UART1_GetRCalibMode())
-                        {
-                            SPO2_Algo_PushDataCalib(out_red, out_ir);
-                        }
-                        else
-                        {
-                            SPO2_Algo_PushData(out_red, out_ir);
-                        }
+                        SPO2_Algo_PushData(out_red, out_ir);
                         UART1_ForwardWave(out_red, out_ir);
                     }
                     s_waveIdx = 0;
@@ -234,7 +226,6 @@ static void ParseSPO2Packet(unsigned char data)
 
 static void UART1_ForwardWave(uint16_t red, uint16_t ir)
 {
-    if(s_rCalibMode) return;
     printf("%u,%u\r\n", red, ir);
 }
 
@@ -297,16 +288,6 @@ void UART1_SetWaveFilterEnable(unsigned char enable)
 unsigned char UART1_GetWaveFilterEnable(void)
 {
     return s_waveFilterEnable;
-}
-
-void UART1_SetRCalibMode(unsigned char enable)
-{
-    s_rCalibMode = (enable != 0);
-}
-
-unsigned char UART1_GetRCalibMode(void)
-{
-    return s_rCalibMode;
 }
 
 /*********************************************************************************************************

@@ -31,7 +31,7 @@
 /*********************************************************************************************************
 *                                              宏定义
 **********************************************************************************************************/
-#define SPO2_WAVE_TOOL_ENABLE 1     // 是否启用波形工具，1：启用，0：禁用，启用时会发送波形数据
+#define SPO2_WAVE_TOOL_ENABLE 1     // 是否启用波形发送工具，1：启用，0：禁用，启用时会发送波形数据
 #define SPO2_AUTO_GAIN_ENABLE 0     // 是否启用自动增益控制 (AGC)，1：启用，0：禁用
 #define SPO2_SEND_BINARY_PACKET 1   // 是否发送二进制数据包，1：启用，0：禁用
 
@@ -155,8 +155,9 @@ int main(void)
   /* 配置算法参数 */
   SPO2_SetAGCEnable(SPO2_AUTO_GAIN_ENABLE);
   
-  // 初始设置为 5 级增益 
-  SPO2_SetGain(SPO2_GAIN_LEVEL_5);
+  // 初始设置为 4 级增益
+  // 注意：这里会覆盖 SPO2_Driver_Init 内的默认设置，因此必须与驱动侧保持一致
+  SPO2_SetGain(SPO2_GAIN_LEVEL_5);//上位机把他设置为5级增益
 
   wave_red_seq_last = 0;
   wave_ir_seq_last = 0;
