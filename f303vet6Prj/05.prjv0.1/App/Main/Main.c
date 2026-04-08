@@ -250,10 +250,13 @@ int main(void)
             {
                 // 打印到串口调试 (适配波形工具参数显示)
                 // 格式: [[index,value]]
-                printf("[[1,%d]]\r\n", spo2);
-                printf("[[2,%d]]\r\n", hr);
-                printf("[[3,%d]]\r\n", pi_ir);
-                printf("[[4,%d]]\r\n", data.filter_status); // R值 * 1000
+
+
+                  printf("[[1,%d]]\r\n", spo2);
+                  printf("[[2,%d]]\r\n", hr);
+                  printf("[[3,%d]]\r\n", pi_ir);
+                  printf("[[4,%d]]\r\n", data.filter_status); // R值 * 1000
+
               //  if(data.gain_level != 0xFF) printf("[[5,%d]]\r\n", data.gain_level);
             }
         }

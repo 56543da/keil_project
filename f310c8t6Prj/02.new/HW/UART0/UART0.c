@@ -76,7 +76,7 @@ static  void  ConfigUART(unsigned int bound)
   
   // 配置中断
   usart_interrupt_enable(USART0, USART_INT_RBNE);       //使能接收中断
-  nvic_irq_enable(USART0_IRQn, 0, 0);                   //配置中断优先级
+  nvic_irq_enable(USART0_IRQn, 2, 0);                   //配置中断优先级 (降低至 1，让位给采样定时器)
   
   usart_enable(USART0);                                 //使能USART
 }

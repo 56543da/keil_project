@@ -39,3 +39,4 @@
 .\objects\spo2_display.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\spo2_display.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\spo2_display.o: ..\App\DataType\Datatype.h
+.\objects\spo2_display.o: ..\App\UI\UI_Manager.h

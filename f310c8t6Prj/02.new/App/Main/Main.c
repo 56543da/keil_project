@@ -99,12 +99,7 @@ static  void  InitHardware(void)
 **********************************************************************************************************/
 static void InitLED(void)
 {
-//  rcu_periph_clock_enable(RCU_GPIOA);
-//  gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO_PIN_6);
-//  gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_6);
-//  
-//  /* 初始状态输出低电平 */
-//  gpio_bit_reset(GPIOA, GPIO_PIN_6);
+
 }
 
 /*********************************************************************************************************
@@ -202,8 +197,7 @@ int main(void)
         }
     }
     
-    // 0.5 处理算法 (已移除)
-    // SPO2_Process();
+
 
     // 1. 波形数据输出 (用于上位机绘图)
     if (SPO2_WAVE_TOOL_ENABLE) {

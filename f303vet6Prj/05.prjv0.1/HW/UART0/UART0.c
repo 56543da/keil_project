@@ -109,7 +109,7 @@ static  void  ConfigUART(unsigned int bound)
   usart_interrupt_enable(USART0, USART_INT_TBE);        
   usart_enable(USART0);                                 
   
-  nvic_irq_enable(USART0_IRQn, 0, 0);                   
+  nvic_irq_enable(USART0_IRQn, 2, 0);                   // 降低优先级至 2 (让位给 UART1 采样接收)
                                                                      
   s_iUARTTxSts = UART_STATE_OFF;                        
 }

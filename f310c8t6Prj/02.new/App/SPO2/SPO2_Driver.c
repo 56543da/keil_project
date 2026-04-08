@@ -289,24 +289,24 @@ void SPO2_Timer_Handler(void)
                 static uint8_t adjust_cnt = 0;
                 adjust_cnt++;
                 if(adjust_cnt >= 20)
-                {
-                    adjust_cnt = 0;
-                    if(g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse < SPO2_PWM_PULSE_MAX) g_red_pwm_pulse++;
-                    else if(g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse > SPO2_PWM_PULSE_MIN) g_red_pwm_pulse--;
+                {//自动增益调整
+                    // adjust_cnt = 0;
+                    // if(g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse < SPO2_PWM_PULSE_MAX) g_red_pwm_pulse++;
+                    // else if(g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse > SPO2_PWM_PULSE_MIN) g_red_pwm_pulse--;
 
-                    if(g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse < SPO2_PWM_PULSE_MAX) g_ir_pwm_pulse++;
-                    else if(g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse > SPO2_PWM_PULSE_MIN) g_ir_pwm_pulse--;
+                    // if(g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse < SPO2_PWM_PULSE_MAX) g_ir_pwm_pulse++;
+                    // else if(g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse > SPO2_PWM_PULSE_MIN) g_ir_pwm_pulse--;
 
-                    if((g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse == SPO2_PWM_PULSE_MAX) ||
-                       (g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse == SPO2_PWM_PULSE_MAX))
-                    {
-                        if(g_gain_code < 7) SPO2_SetGain(g_gain_code + 1);
-                    }
-                    else if((g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse == SPO2_PWM_PULSE_MIN) ||
-                            (g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse == SPO2_PWM_PULSE_MIN))
-                    {
-                        if(g_gain_code > 0) SPO2_SetGain(g_gain_code - 1);
-                    }
+                    // if((g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse == SPO2_PWM_PULSE_MAX) ||
+                    //    (g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse == SPO2_PWM_PULSE_MAX))
+                    // {
+                    //     if(g_gain_code < 7) SPO2_SetGain(g_gain_code + 1);
+                    // }
+                    // else if((g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse == SPO2_PWM_PULSE_MIN) ||
+                    //         (g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse == SPO2_PWM_PULSE_MIN))
+                    // {
+                    //     if(g_gain_code > 0) SPO2_SetGain(g_gain_code - 1);
+                    // }
                 }
             }
             break;

@@ -24,7 +24,7 @@ static  void ConfigTimer2(unsigned short arr, unsigned short psc)
   timer_init(TIMER2, &timer_initpara);                 //初始化定时器
 
   timer_interrupt_enable(TIMER2, TIMER_INT_UP);        //使能更新中断
-  nvic_irq_enable(TIMER2_IRQn, 1, 0);                  //配置NVIC中断优先级
+  nvic_irq_enable(TIMER2_IRQn, 0, 0);                  //配置NVIC中断优先级 (最高优先级 0，保证采样定时准确)
   timer_enable(TIMER2);                                //使能定时器
 }
 

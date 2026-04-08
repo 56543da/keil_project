@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "gd32f30x_conf.h": "c",
-        "gd32f30x_adc.h": "c",
-        "datatype.h": "c",
-        "rcu.h": "c"
-    }
-}

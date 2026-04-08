@@ -104,7 +104,7 @@ static void ConfigUART1(unsigned int bound)
     // 4. 配置中断
     usart_interrupt_enable(USART1, USART_INT_RBNE); // 使能接收非空中断
     usart_interrupt_enable(USART1, USART_INT_ERR);  // 使能错误中断(ORE/NE/FE/PE)
-    nvic_irq_enable(USART1_IRQn, 1, 0);             // 抢占优先级 1 (低于 UART0 的优先级)
+    nvic_irq_enable(USART1_IRQn, 0, 0);             // 提升抢占优先级至 0 (最高，确保数据接收不丢失)
 
     // 5. 使能 USART1
     usart_enable(USART1);
@@ -151,6 +151,7 @@ static void ParseSPO2Packet(unsigned char data)
                     else if(sscanf(s_waveBuf, "%d,%d", &red_val, &ir_val) == 2)
                     {
                         UART1_ApplyFilter((uint16_t)red_val, (uint16_t)ir_val, &out_red, &out_ir);
+                        UI_UpdateWave(out_red);
                         if(UART1_GetRCalibMode())
                         {
                             SPO2_Algo_PushDataCalib(out_red, out_ir);
