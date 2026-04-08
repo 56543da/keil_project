@@ -29,6 +29,6 @@ void SPO2_Algo_PushData(uint16_t red, uint16_t ir);
 void SPO2_Algo_Process(void);
 
 /* 获取最新计算结果 */
-uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t *pi_red, float *r_val);
+uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t *pi_red, float *r_val, int32_t *ac_val);
 
 #endif

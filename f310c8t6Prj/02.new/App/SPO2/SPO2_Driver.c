@@ -13,7 +13,6 @@
  
 static volatile uint16_t g_raw_red_adc = 0;
 static volatile uint16_t g_raw_ir_adc = 0;
-static volatile uint16_t g_raw_ambient_adc = 0; // 新增环境光变量
 static volatile uint8_t g_gain_code = 0;
 static volatile uint16_t g_wave_red_seq = 0;
 static volatile uint16_t g_wave_ir_seq = 0;
@@ -251,12 +250,7 @@ void SPO2_Timer_Handler(void)
     
     switch(time_slot)
     {
-        case 1: // 0.5ms时刻，采样环境光 (此时两灯皆灭)
-            adc_val = ADC_Read_Fast();
-            if(adc_val != 0xFFFF)
-            {
-                g_raw_ambient_adc = adc_val;
-            }
+        case 1: // 0.5ms时刻，空闲 (取消环境光采样)
             break;
 
         case 2: // 1ms时刻，开始RED LED发光
@@ -268,9 +262,7 @@ void SPO2_Timer_Handler(void)
             adc_val = ADC_Read_Fast();
             if(adc_val != 0xFFFF)
             {
-                // 减去环境光，防止负值溢出
-                // 如果本次采样异常小于环境光，不直接写 0，避免在波形上形成单点突降毛刺
-                if(adc_val >= g_raw_ambient_adc) g_raw_red_adc = adc_val - g_raw_ambient_adc;
+                g_raw_red_adc = adc_val;
             }
             
             g_wave_red_seq++;
@@ -290,9 +282,7 @@ void SPO2_Timer_Handler(void)
             adc_val = ADC_Read_Fast();
             if(adc_val != 0xFFFF)
             {
-                // 减去环境光
-                // 如果本次采样异常小于环境光，不直接写 0，避免在波形上形成单点突降毛刺
-                if(adc_val >= g_raw_ambient_adc) g_raw_ir_adc = adc_val - g_raw_ambient_adc;
+                g_raw_ir_adc = adc_val;
             }
             
             g_wave_ir_seq++;

@@ -81,7 +81,7 @@ static  void  InitSoftware(void)
 static  void  InitHardware(void)
 {  
   InitNVIC();          /* 初始化NVIC模块 */  
-  InitUART0(921600);   /* 初始化UART模块 - 提速至 921600 */
+  InitUART0(115200);   /* 初始化UART模块 - 降速至 115200 */
   InitLED();           /* 初始化LED (PA6) */
   SPO2_Driver_Init();  /* 初始化SPO2驱动 (PA1, PC13, PC14) */
   InitTimer();         /* 初始化Timer模块 - 开启定时器中断 */

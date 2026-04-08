@@ -46,6 +46,11 @@
 /*********************************************************************************************************
 *                                              内部变量声明
 **********************************************************************************************************/
+// 引用 UART1 定义的异步更新变量
+extern uint8_t g_u8PwmRed;
+extern uint8_t g_u8PwmIr;
+extern uint8_t g_u8GainCode;
+extern uint8_t g_u8Uart1UpdateFlag;
 
 /*********************************************************************************************************
 *                                              内部函数声明
@@ -85,11 +90,11 @@ static  void  InitHardware(void)
   SystemInit();        /* 系统初始化 */
   InitRCU();           /* 初始化RCU模块 */
   InitNVIC();          /* 初始化NVIC模块 */  
-  InitUART0(921600);   /* 初始化UART模块 - 提速至 921600 */
+  InitUART0(115200);   /* 初始化UART模块 - 降速至 115200 */
   InitTimer();         /* 初始化Timer模块 */
   InitLED();           /* 初始化LED模块 */
   InitSysTick();       /* 初始化SysTick模块 */
-  InitUART1(921600);   /* 初始化UART1模块 (SPO2接收) - 提速至 921600 */
+  InitUART1(115200);   /* 初始化UART1模块 (SPO2接收) - 降速至 115200 */
   InitKeyOne();        /* 初始化KeyOne模块 */
   InitProcKeyOne();    /* 初始化ProcKeyOne模块 */
   LCD_Init();          /* 初始化LCD模块 */
@@ -153,6 +158,23 @@ int main(void)
     // 处理串口1接收数据 (波形转发与解析)
     UART1_ProcessSPO2Data();
 
+    // 异步更新 UI (PWM 和 Gain)
+    // 放在 main loop 中处理，避免在 UART 解析过程中调用耗时的 LCD 刷新函数导致接收丢包
+    if(g_u8Uart1UpdateFlag)
+    {
+        if(g_u8Uart1UpdateFlag & 0x01) // PWM Changed
+        {
+            UI_UpdatePwm(g_u8PwmRed, g_u8PwmIr);
+            g_u8Uart1UpdateFlag &= ~0x01;
+        }
+        
+        if(g_u8Uart1UpdateFlag & 0x02) // Gain Changed
+        {
+            UI_UpdateGain(g_u8GainCode);
+            g_u8Uart1UpdateFlag &= ~0x02;
+        }
+    }
+
     // 执行血氧计算
     SPO2_Algo_Process();
 
@@ -160,7 +182,8 @@ int main(void)
     {
         uint8_t spo2, hr, pi_ir, pi_red;
         float r_val;
-        if(SPO2_Algo_GetResult(&spo2, &hr, &pi_ir, &pi_red, &r_val))
+        int32_t ac_val;
+        if(SPO2_Algo_GetResult(&spo2, &hr, &pi_ir, &pi_red, &r_val, &ac_val))
         {
             SPO2Data_t data;
             data.spo2 = spo2;
@@ -176,12 +199,14 @@ int main(void)
             // 更新 UI
             UI_UpdateData(&data);
 
-            // 打印到串口调试 (适配波形工具参数显示)
-            // 格式: [[index,value]]
-            // printf("[[1,%d]]\r\n", (int)spo2);
+           //  打印到串口调试 (适配波形工具参数显示)
+           //  格式: [[index,value]]
+					
+           //  printf("[[1,%d]]\r\n", (int)spo2);
             // printf("[[2,%d]]\r\n", (int)hr);
-            // printf("[[3,%d]]\r\n", (int)pi_ir);
+           //  printf("[[3,%d]]\r\n", (int)pi_ir);
             // printf("[[4,%d]]\r\n", (int)data.filter_status); // R值 * 1000
+           //  printf("[[5,%d]]\r\n", (int)ac_val); // AC 峰峰值
         }
     }
 

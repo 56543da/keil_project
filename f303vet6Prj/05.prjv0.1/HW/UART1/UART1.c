@@ -26,6 +26,12 @@ static  unsigned char  s_arrUART1RecBuf[UART1_BUF_SIZE];  // 接收缓冲区
 
 static SPO2Data_t s_spo2Data;                             // 血氧数据
 
+// 全调变量：用于 PWM 和 Gain 的异步更新
+uint8_t g_u8PwmRed = 0;
+uint8_t g_u8PwmIr = 0;
+uint8_t g_u8GainCode = 0;
+uint8_t g_u8Uart1UpdateFlag = 0; // BIT0: PWM changed, BIT1: Gain changed
+
 #define UART1_MON_SIZE 32
 static unsigned char s_arrUART1MonBuf[UART1_MON_SIZE];
 static unsigned char s_u8UART1MonPos = 0;
@@ -141,11 +147,16 @@ static void ParseSPO2Packet(unsigned char data)
                     s_waveBuf[s_waveIdx] = 0;
                     if(sscanf(s_waveBuf, "P,%d,%d", &pwm_red, &pwm_ir) == 2)
                     {
-                        UI_UpdatePwm((u8)pwm_red, (u8)pwm_ir);
+                        // 异步更新：仅存入全局变量并置标志位
+                        g_u8PwmRed = (uint8_t)pwm_red;
+                        g_u8PwmIr = (uint8_t)pwm_ir;
+                        g_u8Uart1UpdateFlag |= 0x01; // PWM changed
                     }
                     else if(sscanf(s_waveBuf, "G,%d", &gain_code) == 1)
                     {
-                        UI_UpdateGain((u8)gain_code);
+                        // 异步更新：仅存入全局变量并置标志位
+                        g_u8GainCode = (uint8_t)gain_code;
+                        g_u8Uart1UpdateFlag |= 0x02; // Gain changed
                     }
                     else if(sscanf(s_waveBuf, "%d,%d", &red_val, &ir_val) == 2)
                     {
