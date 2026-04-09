@@ -1,6 +1,6 @@
 Dependencies for Project '02.new', Target 'Target 1': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
-F (.\App\Main\Main.c)(0x69D5F6F7)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\App\Main\Main.c)(0x69D626AB)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (App\Main\Main.h)(0x69809FF7)
 I (.\App\DataType\DataType.h)(0x69AA7EBA)
 I (.\ARM\System\gd32f3x0_conf.h)(0x697E0866)
@@ -41,7 +41,7 @@ I (.\HW\Timer\Timer.h)(0x69809FF7)
 I (.\HW\UART0\UART0.h)(0x69A97545)
 I (E:\E_tools\keil\core\ARM\ARMCC\include\stdio.h)(0x5E53505C)
 I (.\App\SPO2\SPO2_Driver.h)(0x69ABE6ED)
-F (.\App\SPO2\SPO2_Driver.c)(0x69D5FB48)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\spo2_driver.o --omf_browse .\objects\spo2_driver.crf --depend .\objects\spo2_driver.d)
+F (.\App\SPO2\SPO2_Driver.c)(0x69D626AB)(--c99 -c --cpu Cortex-M4.fp.sp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I .\App\DataType -I .\App\Main -I .\App\LED -I .\HW\RCU -I .\HW\Timer -I .\HW\UART0 -I .\FW\Include -I .\ARM\NVIC -I .\ARM\System -I .\ARM\SysTick -I .\App\SPO2-I.\RTE\_Target_1-IE:\E_tools\keil\pack\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IE:\E_tools\keil\pack\GigaDevice\GD32F3x0_DFP\3.0.2\Device\Include-D__UVISION_VERSION="530" -D_RTE_ -DGD32F310 -D_RTE_ -DUSE_STDPERIPH_DRIVER -DGD32F3X0_LD-o .\objects\spo2_driver.o --omf_browse .\objects\spo2_driver.crf --depend .\objects\spo2_driver.d)
 I (App\SPO2\SPO2_Driver.h)(0x69ABE6ED)
 I (.\ARM\System\gd32f3x0.h)(0x697E0866)
 I (.\ARM\System\core_cm4.h)(0x5F72A14D)
