@@ -24,7 +24,7 @@ void UI_Init(void);
 void UI_Process(void); // 新增 UI 处理函数
 void UI_Update(void);
 void UI_UpdateData(SPO2Data_t *data); // 新增数据更新接口
-void UI_UpdateWave(uint16_t red_filtered);
+void UI_UpdateWave(uint16_t red_raw, uint16_t ir_raw);
 void UI_UpdatePwm(uint8_t pwm_red, uint8_t pwm_ir);
 void UI_UpdateGain(uint8_t gain_level);
 void UI_OnKeyLL(void);

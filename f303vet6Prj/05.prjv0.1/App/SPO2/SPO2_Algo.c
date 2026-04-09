@@ -5,14 +5,9 @@
 #define SPO2_HIST_SIZE 5
 
 /* --- 脉率算法优化补充宏定义 --- */
-#define HR_BPM_MIN 30
-#define HR_BPM_MAX 210
-#define HR_PERIOD_MIN (60 * SPO2_SAMPLE_RATE / HR_BPM_MAX) /* 28点@100Hz */
-#define HR_PERIOD_MAX (60 * SPO2_SAMPLE_RATE / HR_BPM_MIN) /* 200点@100Hz */
-#define HR_PEAK_REFRACTORY HR_PERIOD_MIN  /* 波峰不应期 */
-#define HR_SQI_THRESHOLD 10                /* 信号质量AC阈值 */
-#define HR_PERIOD_TOLERANCE 25             /* 周期异常容忍度±25% */
+#define HR_SQI_THRESHOLD 3                /* 信号质量AC阈值 */
 #define HR_HIST_SIZE 5                      /* 结果平滑历史长度 */
+#define SPO2_DROPOUT_AC_THRESHOLD 200
 
 /* --- 环形缓冲区与处理状态 --- */
 static int32_t red_wave_buf[WAVE_BUF_SIZE];
@@ -21,15 +16,11 @@ static uint16_t wave_head = 0;        /* 环形缓冲区当前写入指针 */
 static uint16_t wave_len = 0;         /* 缓冲区内有效数据总量 */
 static uint16_t wave_process_cnt = 0; /* 自上次计算后新增的数据点数 */
 static volatile uint8_t g_calc_ready = 0; /* 算法触发标志 */
-
-/* --- 优化后滤波器历史状态 --- */
-static int32_t ir_bp_prev1 = 0, ir_bp_prev2 = 0;
-static int32_t ir_bp_prev_in1 = 0, ir_bp_prev_in2 = 0;
-static int32_t red_bp_prev1 = 0, red_bp_prev2 = 0;
-static int32_t red_bp_prev_in1 = 0, red_bp_prev_in2 = 0;
+static volatile uint8_t g_abnormal_segment_flag = 0;
 
 /* --- 结果与平滑历史 --- */
 static SPO2_Result_t g_result = {0, 0, 0, 0, 0.0f, 0};
+static int32_t g_last_ac = 0;         /* 记录最近一次计算的 AC 幅值 */
 static uint8_t hr_hist_index = 0;
 static uint8_t hr_hist_count = 0;
 static uint16_t hr_result_hist[HR_HIST_SIZE];
@@ -40,13 +31,25 @@ static uint16_t s_spo2_hist[SPO2_HIST_SIZE];
 static uint16_t s_pi_ir_hist[SPO2_HIST_SIZE];
 static uint16_t s_r_hist[SPO2_HIST_SIZE];
 
+/* --- 滤波器状态与缓存 --- */
+static int32_t s_red_filter_out = 0;
+static int32_t s_ir_filter_out = 0;
+
 /* --- 内部函数声明 (遵循 C89 变量声明置于块首原则) --- */
-static int32_t iir_bandpass_ir(int32_t input);
-static int32_t iir_bandpass_red(int32_t input);
+static void spo2_simple_iir_filter(uint16_t red_in, uint16_t ir_in, int32_t *red_out, int32_t *ir_out);
 static uint8_t spo2_calc_hr_period(const int32_t *ir_buf, uint16_t head, uint16_t len, uint16_t *period);
 static void spo2_find_minmax_in_period(const int32_t *red_buf, const int32_t *ir_buf, uint16_t head, uint16_t period, int32_t *red_max, int32_t *red_min, int32_t *ir_max, int32_t *ir_min);
 static void spo2_update_history(uint16_t spo2, uint16_t hr, uint16_t pi_ir, uint16_t pi_red, uint16_t r_scaled);
 static void hr_update_smooth(uint16_t hr_new);
+/**
+ * @brief 判断最近 5 秒窗口是否发生手指脱落 (Dropout)
+ *        通过检测红外光 (IR) 的交流摆幅 (AC)，如果摆幅过大（如拔出手指时的剧烈变化），则认为是异常段
+ * @param ir_buf 红外信号环形缓冲区
+ * @param head 缓冲区当前写入头指针
+ * @param len 计算窗口长度
+ * @return 1=异常段(Dropout)，0=正常段
+ */
+static uint8_t spo2_is_dropout_by_ac(const int32_t *ir_buf, uint16_t head, uint16_t len);
 
 /* --- 对外接口实现 --- */
 
@@ -61,11 +64,7 @@ void SPO2_Algo_Init(void)
     wave_len = 0;
     wave_process_cnt = 0;
     g_calc_ready = 0;
-    
-    ir_bp_prev1 = 0; ir_bp_prev2 = 0;
-    ir_bp_prev_in1 = 0; ir_bp_prev_in2 = 0;
-    red_bp_prev1 = 0; red_bp_prev2 = 0;
-    red_bp_prev_in1 = 0; red_bp_prev_in2 = 0;
+    g_abnormal_segment_flag = 0;
     
     hr_hist_index = 0;
     hr_hist_count = 0;
@@ -76,24 +75,34 @@ void SPO2_Algo_Init(void)
     memset(s_spo2_hist, 0, sizeof(s_spo2_hist));
     memset(s_pi_ir_hist, 0, sizeof(s_pi_ir_hist));
     memset(s_r_hist, 0, sizeof(s_r_hist));
+    g_last_ac = 0;
+    
+    s_red_filter_out = 0;
+    s_ir_filter_out = 0;
 }
 
 /**
  * @brief 存入最新的红光与红外光数据
- *        执行二阶 IIR 带通滤波，并填入环形缓冲区。当新数据积累满 1 秒时，触发算法计算。
+ *        经过简单一阶 IIR 低通滤波后存入环形缓冲区。
+ *        当新数据积累满 5 秒时，触发算法计算。
+ * @param red 原始红光 ADC 值
+ * @param ir  原始红外光 ADC 值
+ * @param red_out 传出参数：滤波后的红光值，用于 UI 或串口转发
+ * @param ir_out  传出参数：滤波后的红外光值，用于 UI 或串口转发
  */
-void SPO2_Algo_PushData(uint16_t red, uint16_t ir)
+void SPO2_Algo_PushData(uint16_t red, uint16_t ir, uint16_t *red_out, uint16_t *ir_out)
 {
-    int32_t filtered_red;
-    int32_t filtered_ir;
+    int32_t f_red, f_ir;
+    
+    /* 1. 简单低通滤波滤除高频噪声 */
+    spo2_simple_iir_filter(red, ir, &f_red, &f_ir);
+    
+    if (red_out) *red_out = (uint16_t)f_red;
+    if (ir_out)  *ir_out  = (uint16_t)f_ir;
 
-    /* 1. 二阶 IIR 带通滤波 (0.5~3.5Hz)：滤除基线漂移与高频噪声 */
-    filtered_red = iir_bandpass_red((int32_t)red);
-    filtered_ir  = iir_bandpass_ir((int32_t)ir);
-
-    /* 2. 存入环形缓冲区 */
-    red_wave_buf[wave_head] = filtered_red;
-    ir_wave_buf[wave_head]  = filtered_ir;
+    /* 2. 存入环形缓冲区参与后续计算 */
+    red_wave_buf[wave_head] = f_red;
+    ir_wave_buf[wave_head]  = f_ir;
     
     /* 3. 更新写入指针与有效长度 */
     wave_head = (wave_head + 1) % WAVE_BUF_SIZE;
@@ -101,9 +110,9 @@ void SPO2_Algo_PushData(uint16_t red, uint16_t ir)
         wave_len++;
     }
     
-    /* 4. 每累积 100 个新点（对应 100Hz 下的 1 秒），触发一次滑动窗口计算 */
+    /* 3. 每累积 500 个新点（对应 100Hz 下的 5 秒），触发一次滑动窗口计算 */
     wave_process_cnt++;
-    if(wave_len >= SPO2_WINDOW_SIZE && wave_process_cnt >= 100)
+    if(wave_len >= SPO2_ALGO_WINDOW_SIZE && wave_process_cnt >= SPO2_ALGO_WINDOW_SIZE)
     {
         g_calc_ready = 1;
         wave_process_cnt = 0;
@@ -111,7 +120,7 @@ void SPO2_Algo_PushData(uint16_t red, uint16_t ir)
 }
 
 /**
- * @brief 核心算法处理：在最近 4 秒窗口中提取心跳特征、交直流分量并计算 R 值和血氧
+ * @brief 核心算法处理：在最近 5 秒窗口中提取心跳特征、交直流分量并计算 R 值和血氧
  */
 void SPO2_Algo_Process(void)
 {
@@ -130,16 +139,18 @@ void SPO2_Algo_Process(void)
     }
     g_calc_ready = 0;
 
-    /* --- 步骤 1：寻找心率周期 (优化版) ---
-     * 使用自适应阈值和中位数过滤提取心率
-     */
-    hr_val = spo2_calc_hr_period(ir_wave_buf, wave_head, SPO2_WINDOW_SIZE, &period);
+    if(spo2_is_dropout_by_ac(ir_wave_buf, wave_head, SPO2_ALGO_WINDOW_SIZE))
+    {
+        g_abnormal_segment_flag = 1;
+        return;
+    }
+
+    /* --- 步骤 1：寻找心率周期 (使用红外光 IR) --- */
+    hr_val = spo2_calc_hr_period(ir_wave_buf, wave_head, SPO2_ALGO_WINDOW_SIZE, &period);
 
     if(hr_val > 0 && period > 0)
     {
-        /* --- 步骤 2：提取局部特征 ---
-         * 根据上一步得到的心跳周期，在最近的一个完整周期内找出信号的最大值和最小值
-         */
+        /* --- 步骤 2：提取局部特征 --- */
         spo2_find_minmax_in_period(red_wave_buf, ir_wave_buf, wave_head, period, &r_max, &r_min, &i_max, &i_min);
         
         /* --- 步骤 3：交直流分离 (AC/DC Extraction) --- */
@@ -148,24 +159,19 @@ void SPO2_Algo_Process(void)
         ac_ir  = i_max - i_min;
         dc_ir  = (i_max + i_min) / 2;
 
-        /* 确保存在有效的交流脉动信号才进行后续计算 (AC 阈值已在 HR 计算中校验过一次) */
-        if(ac_ir >= HR_SQI_THRESHOLD && dc_red > 0 && dc_ir > 0)
+        /* 确保分母不为 0 */
+        if(ac_ir > 0 && dc_red > 0 && dc_ir > 0)
         {
-            /* --- 步骤 4：计算特征比值 R ---
-             * R_scaled = (AC_red * DC_ir * 1000) / (AC_ir * dc_red)
-             */
+            /* --- 步骤 4：计算特征比值 R --- */
             r_scaled = (ac_red * dc_ir * 1000) / (ac_ir * dc_red);
             
-            /* --- 步骤 5：计算血氧 SpO2 ---
-             * 根据经验公式计算: SpO2 = 110 - 25 * R
-             */
+            /* --- 步骤 5：计算血氧 SpO2 --- */
             if (r_scaled >= 400 && r_scaled <= 1500) {
                 spo2_calc = 110 - (25 * r_scaled) / 1000;
             } else {
                 spo2_calc = 0;
             }
             
-            /* 范围限幅：合法范围 70% ~ 100% */
             if(spo2_calc > 100) spo2_calc = 100;
             if(spo2_calc < 70 && spo2_calc != 0) spo2_calc = 70;
             spo2_val = (uint8_t)spo2_calc;
@@ -176,31 +182,30 @@ void SPO2_Algo_Process(void)
             if(pi_ir > 99) pi_ir = 99;
             if(pi_red > 99) pi_red = 99;
             
-            /* --- 步骤 7：历史平滑更新 (集成跳变限制) --- */
-            if(spo2_val >= 70) {
-                spo2_update_history(spo2_val, hr_val, pi_ir, pi_red, (uint16_t)r_scaled);
-                g_result.updated = 1;
-            }
+            /* --- 步骤 7：历史平滑更新 --- */
+            spo2_update_history(spo2_val, hr_val, pi_ir, pi_red, (uint16_t)r_scaled);
         }
     }
     else
     {
-        /* 信号质量差或未检测到心跳，将数值清零或保持，此处选择清零触发 UI 更新 */
+        /* 未检测到心跳，将数值清零 */
         g_result.spo2 = 0;
         g_result.heart_rate = 0;
-        g_result.updated = 1;
         
         /* 信号断开，清空滑动平均历史队列 */
         s_hist_count = 0; 
         hr_hist_count = 0;
     }
+    
+    /* 强制数据链路通畅：无论结果如何，每 5 秒都触发一次更新 */
+    g_result.updated = 1;
 }
 
 /**
  * @brief 获取算法结果
  * @return 1=有新结果, 0=暂无更新
  */
-uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t *pi_red, float *r_val)
+uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t *pi_red, float *r_val, int32_t *ac_val)
 {
     if(g_result.updated)
     {
@@ -209,6 +214,7 @@ uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t 
         if(pi_ir)  *pi_ir = g_result.pi_ir;
         if(pi_red) *pi_red = g_result.pi_red;
         if(r_val)  *r_val = g_result.r_val;
+        if(ac_val) *ac_val = g_last_ac;
         
         g_result.updated = 0;
         return 1;
@@ -216,165 +222,156 @@ uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t 
     return 0;
 }
 
+uint8_t SPO2_Algo_PopAnomalyFlag(void)
+{
+    uint8_t ret = g_abnormal_segment_flag;
+    g_abnormal_segment_flag = 0;
+    return ret;
+}
+
 /* =====================================================================
  * ======================= 内部功能子函数实现 ==========================
  * ===================================================================== */
 
 /**
- * @brief 二阶 IIR 带通滤波器 0.5~3.5Hz@100Hz 采样率 (红外光)
- */
-static int32_t iir_bandpass_ir(int32_t input)
-{
-    const int32_t b0 = 1527;
-    const int32_t b1 = 0;
-    const int32_t b2 = -1527;
-    const int32_t a1 = 32604;
-    const int32_t a2 = -30541;
-    const int32_t scale = 32768;
-
-    int32_t output;
-    output = (b0 * input + b1 * ir_bp_prev_in1 + b2 * ir_bp_prev_in2 
-            - a1 * ir_bp_prev1 - a2 * ir_bp_prev2) / scale;
-
-    ir_bp_prev_in2 = ir_bp_prev_in1;
-    ir_bp_prev_in1 = input;
-    ir_bp_prev2 = ir_bp_prev1;
-    ir_bp_prev1 = output;
-
-    return output;
-}
-
-/**
- * @brief 二阶 IIR 带通滤波器 0.5~3.5Hz@100Hz 采样率 (红光)
- */
-static int32_t iir_bandpass_red(int32_t input)
-{
-    const int32_t b0 = 1527;
-    const int32_t b1 = 0;
-    const int32_t b2 = -1527;
-    const int32_t a1 = 32604;
-    const int32_t a2 = -30541;
-    const int32_t scale = 32768;
-
-    int32_t output;
-    output = (b0 * input + b1 * red_bp_prev_in1 + b2 * red_bp_prev_in2 
-            - a1 * red_bp_prev1 - a2 * red_bp_prev2) / scale;
-
-    red_bp_prev_in2 = red_bp_prev_in1;
-    red_bp_prev_in1 = input;
-    red_bp_prev2 = red_bp_prev1;
-    red_bp_prev1 = output;
-
-    return output;
-}
-
-/**
- * @brief 优化版：红外信号脉率计算，自适应波峰检测+异常剔除
+ * @brief 周期法：计算脉率，取最近 3 个周期的平均值 (使用红外光 IR)
  * @param ir_buf 红外信号环形缓冲区
  * @param head 缓冲区当前写入头指针
- * @param len 计算窗口长度（固定400点=4秒）
+ * @param len 计算窗口长度 (500点=5秒)
  * @param period 传出参数：平均心跳周期（采样点数）
  * @return 有效心率值(bpm)，0=信号无效/未检测到
  */
 static uint8_t spo2_calc_hr_period(const int32_t *ir_buf, uint16_t head, uint16_t len, uint16_t *period)
 {
     uint16_t i;
+    uint16_t write_idx;
     int32_t max_v = -1000000, min_v = 1000000;
-    int32_t peak_threshold, ac_amplitude;
-    uint16_t idx, idx_prev, idx_next;
-    int32_t last_peak_pos = -1;
-    uint16_t period_list[20]; /* 4秒窗口最多8个波峰，预留足够空间 */
-    uint16_t period_cnt = 0;
-    uint16_t p, median_p;
-    uint32_t sum_valid_p = 0;
-    uint16_t valid_period_cnt = 0;
+    int32_t ac_amplitude, thr_up, thr_down, prom_min;
+    uint16_t peak_indices[20];
+    uint16_t peak_cnt = 0;
+    uint16_t last_peak_pos = 0xFFFF;
+    const uint16_t refractory_points = (SPO2_SAMPLE_RATE / 4); /* 约250ms，避免二次峰/重搏波 */
     uint8_t hr_result = 0;
 
-    /* --- 步骤1：窗口内信号极值与质量评估 --- */
-    for(i = 0; i < len; i++) {
-        idx = (head + WAVE_BUF_SIZE - 1 - i) % WAVE_BUF_SIZE;
-        if(ir_buf[idx] > max_v) max_v = ir_buf[idx];
-        if(ir_buf[idx] < min_v) min_v = ir_buf[idx];
+    if(len < 3 || len > WAVE_BUF_SIZE) {
+        *period = 0;
+        return 0;
     }
+
+    write_idx = (uint16_t)((head + WAVE_BUF_SIZE - len) % WAVE_BUF_SIZE);
+    for(i = 0; i < len; i++) {
+        int32_t curr = ir_buf[(write_idx + i) % WAVE_BUF_SIZE];
+        if(curr > max_v) max_v = curr;
+        if(curr < min_v) min_v = curr;
+    }
+
     ac_amplitude = max_v - min_v;
-    /* 信号质量不达标，直接返回无效 */
+    g_last_ac = ac_amplitude; /* 记录 AC 摆幅供监控 */
+    
     if(ac_amplitude < HR_SQI_THRESHOLD) {
         *period = 0;
         return 0;
     }
 
-    /* --- 步骤2：自适应峰值阈值 --- */
-    /* 阈值 = 最小值 + 振幅的60%，自适应信号幅度变化 */
-    peak_threshold = min_v + (ac_amplitude * 3) / 5;
+    /* 自适应阈值与滞回，降低误检双峰（如重搏波、平台峰） */
+    thr_up   = min_v + (ac_amplitude * 6) / 10;  /* 上阈值约60% */
+    thr_down = min_v + (ac_amplitude * 5) / 10;  /* 下阈值约50% */
+    prom_min = (ac_amplitude * 15) / 100;        /* 最小显著性约15%幅度 */
 
-    /* --- 步骤3：带不应期的波峰检测 --- */
-    for(i = 2; i < len - 2; i++) {
-        idx = (head + WAVE_BUF_SIZE - 1 - i) % WAVE_BUF_SIZE;
-        idx_prev = (idx + WAVE_BUF_SIZE - 1) % WAVE_BUF_SIZE;
-        idx_next = (idx + 1) % WAVE_BUF_SIZE;
+    /* 状态机峰值检测：带滞回与显著性、以及不应期约束 */
+    {
+        uint8_t above = 0;
+        uint16_t candidate_pos = 0;
+        int32_t  candidate_val = -1000000;
+        int32_t  valley_val = 1000000; /* 上一个峰后的最近谷值，用于显著性判定 */
 
-        /* 波峰判定3重条件：
-         * 1. 大于自适应阈值 2. 大于左右邻点（波峰特征）3. 满足不应期限制
-         */
-        if(ir_buf[idx] > peak_threshold 
-            && ir_buf[idx] > ir_buf[idx_prev] 
-            && ir_buf[idx] > ir_buf[idx_next]
-            && (last_peak_pos == -1 || (i - (uint16_t)last_peak_pos) >= HR_PEAK_REFRACTORY))
-        {
-            if(last_peak_pos != -1) {
-                p = i - (uint16_t)last_peak_pos;
-                /* 周期先做基础范围过滤 */
-                if(p >= HR_PERIOD_MIN && p <= HR_PERIOD_MAX) {
-                    if(period_cnt < 20) {
-                        period_list[period_cnt++] = p;
+        for(i = 1; i < len - 1; i++) {
+            int32_t prev = ir_buf[(write_idx + i - 1) % WAVE_BUF_SIZE];
+            int32_t curr = ir_buf[(write_idx + i) % WAVE_BUF_SIZE];
+            int32_t next = ir_buf[(write_idx + i + 1) % WAVE_BUF_SIZE];
+
+            if(!above) {
+                if(curr < valley_val) valley_val = curr;
+                if(curr >= thr_up && curr >= prev && curr >= next) {
+                    above = 1;
+                    candidate_pos = i;
+                    candidate_val = curr;
+                }
+            } else {
+                if(curr > candidate_val) {
+                    candidate_val = curr;
+                    candidate_pos = i;
+                }
+                /* 离开峰值区域：跌破下阈值时确认一次峰 */
+                if(curr < thr_down) {
+                    if((candidate_val - valley_val) >= prom_min) {
+                        if(last_peak_pos == 0xFFFF || (uint16_t)(candidate_pos - last_peak_pos) > refractory_points) {
+                            if(peak_cnt < 20) {
+                                peak_indices[peak_cnt++] = candidate_pos;
+                                last_peak_pos = candidate_pos;
+                            }
+                        }
                     }
+                    above = 0;
+                    valley_val = curr;      /* 重置谷值跟踪 */
+                    candidate_val = -1000000;
                 }
             }
-            last_peak_pos = (int32_t)i;
         }
     }
 
-    /* 有效波峰数量不足，返回无效 */
-    if(period_cnt < 2) {
-        *period = 0;
-        return 0;
-    }
-
-    /* --- 步骤4：异常周期剔除（中位数法）--- */
-    /* 先对周期排序，取中位数作为基准 */
-    for(i = 0; i < period_cnt - 1; i++) {
-        uint16_t j, temp;
-        for(j = 0; j < period_cnt - i - 1; j++) {
-            if(period_list[j] > period_list[j+1]) {
-                temp = period_list[j];
-                period_list[j] = period_list[j+1];
-                period_list[j+1] = temp;
-            }
+    if (peak_cnt >= 2) {
+        /* 采用最近3个周期的稳健估计：若>=3个间隔取后三个的中位数，否则取平均 */
+        uint16_t intervals[19];
+        uint16_t interval_cnt = 0;
+        for(i = 1; i < peak_cnt; i++) {
+            intervals[interval_cnt++] = (uint16_t)(peak_indices[i] - peak_indices[i-1]);
         }
-    }
-    median_p = period_list[period_cnt / 2];
-
-    /* 剔除与中位数偏差超过±25%的异常周期 */
-    for(i = 0; i < period_cnt; i++) {
-        int32_t diff = (int32_t)period_list[i] - (int32_t)median_p;
-        if(diff < 0) diff = -diff;
-        if(diff * 100 / (int32_t)median_p <= HR_PERIOD_TOLERANCE) {
-            sum_valid_p += period_list[i];
-            valid_period_cnt++;
+        if(interval_cnt >= 3) {
+            uint16_t a = intervals[interval_cnt - 3];
+            uint16_t b = intervals[interval_cnt - 2];
+            uint16_t c = intervals[interval_cnt - 1];
+            uint16_t med;
+            if ((a >= b && a <= c) || (a <= b && a >= c)) med = a;
+            else if ((b >= a && b <= c) || (b <= a && b >= c)) med = b;
+            else med = c;
+            *period = med;
+        } else {
+            uint32_t sum_intervals = 0;
+            for(i = 0; i < interval_cnt; i++) sum_intervals += intervals[i];
+            *period = (interval_cnt > 0) ? (uint16_t)(sum_intervals / interval_cnt) : 0;
+        }
+        if(*period > 0) {
+            hr_result = (uint8_t)(6000 / *period);
+            return hr_result;
         }
     }
 
-    /* 有效周期不足，返回无效 */
-    if(valid_period_cnt < 2) {
-        *period = 0;
-        return 0;
+    *period = 0;
+    return 0;
+}
+
+static uint8_t spo2_is_dropout_by_ac(const int32_t *ir_buf, uint16_t head, uint16_t len)
+{
+    uint16_t i;
+    uint16_t write_idx;
+    int32_t curr;
+    int32_t max_v = -1000000;
+    int32_t min_v = 1000000;
+    int32_t ac;
+
+    if(len < 3 || len > WAVE_BUF_SIZE) return 0;
+
+    write_idx = (uint16_t)((head + WAVE_BUF_SIZE - len) % WAVE_BUF_SIZE);
+    for(i = 0; i < len; i++)
+    {
+        curr = ir_buf[(write_idx + i) % WAVE_BUF_SIZE];
+        if(curr > max_v) max_v = curr;
+        if(curr < min_v) min_v = curr;
     }
-
-    /* --- 步骤5：计算平均周期与心率 --- */
-    *period = (uint16_t)(sum_valid_p / valid_period_cnt);
-    hr_result = (uint8_t)(60 * SPO2_SAMPLE_RATE / (*period));
-
-    return hr_result;
+    ac = max_v - min_v;
+    g_last_ac = ac;
+    return (ac > SPO2_DROPOUT_AC_THRESHOLD) ? 1 : 0;
 }
 
 /**
@@ -462,4 +459,31 @@ static void spo2_update_history(uint16_t spo2, uint16_t hr, uint16_t pi_ir, uint
     g_result.pi_ir = (uint8_t)(sum_pi / s_hist_count);
     g_result.pi_red = (uint8_t)pi_red; /* PI_RED 作为参考辅助值，不平滑直接输出实时状态 */
     g_result.r_val = (float)sum_r / (s_hist_count * 1000.0f);
+}
+
+/**
+ * @brief 简单一阶 IIR 低通滤波器
+ *        用于滤除原始 ADC 信号中的高频毛刺噪声，提升波形显示和平滑计算质量
+ *        Y[n] = 0.125 * X[n] + 0.875 * Y[n-1]
+ *        截止频率约 fc ≈ 100Hz * (1-a) / (2π) ≈ 12Hz，可通过 50Hz/60Hz 工频干扰
+ */
+static void spo2_simple_iir_filter(uint16_t red_in, uint16_t ir_in, int32_t *red_out, int32_t *ir_out)
+{
+    if (s_red_filter_out == 0 && s_ir_filter_out == 0) {
+        // 初始状态，直接赋值
+        s_red_filter_out = (int32_t)red_in << 8;
+        s_ir_filter_out = (int32_t)ir_in << 8;
+    } else {
+        // y(n) = a * x(n) + (1-a) * y(n-1)
+        // 取 a = 0.125，系数更轻，减少信号延迟，避免心率计算偏大
+        // 为保证整数精度：y(n) = y(n-1) + ( (x<<8) - y(n-1) ) >> 3
+        int32_t red_scaled = (int32_t)red_in << 8;
+        int32_t ir_scaled = (int32_t)ir_in << 8;
+        
+        s_red_filter_out = s_red_filter_out + ((red_scaled - s_red_filter_out) >> 3);
+        s_ir_filter_out = s_ir_filter_out + ((ir_scaled - s_ir_filter_out) >> 3);
+    }
+    
+    *red_out = s_red_filter_out >> 8;
+    *ir_out = s_ir_filter_out >> 8;
 }

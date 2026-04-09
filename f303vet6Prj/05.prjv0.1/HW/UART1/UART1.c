@@ -12,6 +12,7 @@
 #include "DataType.h"
 #include "UI_Manager.h" // 添加头文件引用
 #include <stdio.h>
+#include <string.h>
 #include "SPO2_Algo.h"
 
 /*********************************************************************************************************
@@ -26,14 +27,21 @@ static  unsigned char  s_arrUART1RecBuf[UART1_BUF_SIZE];  // 接收缓冲区
 
 static SPO2Data_t s_spo2Data;                             // 血氧数据
 
+// 异步 UI 更新全局变量
+uint8_t g_u8PwmRed = 0;
+uint8_t g_u8PwmIr = 0;
+uint8_t g_u8GainCode = 0;
+uint16_t g_u16WaveDataRed = 0;
+uint16_t g_u16WaveDataIr = 0;
+SPO2Data_t g_spo2Data; 
+uint8_t g_u8Uart1UpdateFlag = 0; // BIT0: PWM, BIT1: Gain, BIT2: Wave, BIT3: DataPacket
+
 #define UART1_MON_SIZE 32
 static unsigned char s_arrUART1MonBuf[UART1_MON_SIZE];
 static unsigned char s_u8UART1MonPos = 0;
 static unsigned char s_u8UART1MonCount = 0;
-static unsigned char s_waveFilterEnable = 1;
-static int32_t s_filterRed = 0;
-static int32_t s_filterIr = 0;
-static unsigned char s_filterInit = 0;
+static unsigned char s_waveFilterEnable = 0;
+static unsigned char s_uart1RxOverflow = 0;
 
 /*********************************************************************************************************
 *                                              内部函数声明
@@ -44,7 +52,7 @@ static  void  ConfigUART1(unsigned int bound);             // 配置 UART1
 static  void  ParseSPO2Packet(unsigned char data);         // 解析 SPO2 数据包
 static  void  UART1_MonPush(unsigned char d);
 static  void  UART1_ForwardWave(uint16_t red, uint16_t ir);
-static  void  UART1_ApplyFilter(uint16_t red, uint16_t ir, uint16_t *out_red, uint16_t *out_ir);
+static  unsigned char UART1_ParseFixedWaveLine(const char *line, uint16_t *red, uint16_t *ir);
 
 /*********************************************************************************************************
 *                                              内部函数实现
@@ -122,10 +130,9 @@ static void ParseSPO2Packet(unsigned char data)
     // 增加缓冲区来存储波形数据
     static char s_waveBuf[32]; 
     static uint8_t s_waveIdx = 0;
-    int red_val = 0, ir_val = 0;
     int pwm_red = 0, pwm_ir = 0;
     int gain_code = 0;
-    uint16_t out_red = 0, out_ir = 0;
+    uint16_t raw_red = 0, raw_ir = 0;
 
     switch(s_parseState)
     {
@@ -141,22 +148,33 @@ static void ParseSPO2Packet(unsigned char data)
                     s_waveBuf[s_waveIdx] = 0;
                     if(sscanf(s_waveBuf, "P,%d,%d", &pwm_red, &pwm_ir) == 2)
                     {
-                        UI_UpdatePwm((u8)pwm_red, (u8)pwm_ir);
+                        g_u8PwmRed = (u8)pwm_red;
+                        g_u8PwmIr = (u8)pwm_ir;
+                        g_u8Uart1UpdateFlag |= 0x01; // PWM Changed
                     }
                     else if(sscanf(s_waveBuf, "G,%d", &gain_code) == 1)
                     {
-                        UI_UpdateGain((u8)gain_code);
+                        g_u8GainCode = (u8)gain_code;
+                        g_u8Uart1UpdateFlag |= 0x02; // Gain Changed
                     }
-                    else if(sscanf(s_waveBuf, "%d,%d", &red_val, &ir_val) == 2)
+                    else if(UART1_ParseFixedWaveLine(s_waveBuf, &raw_red, &raw_ir))
                     {
-                        UART1_ApplyFilter((uint16_t)red_val, (uint16_t)ir_val, &out_red, &out_ir);
-                        UI_UpdateWave(out_red);
-                        SPO2_Algo_PushData(out_red, out_ir);
-                        UART1_ForwardWave(out_red, out_ir);
+                        uint16_t f_red, f_ir;
+                        
+                        // 先推入算法模块进行低通滤波，并获取滤波后的波形值
+                        SPO2_Algo_PushData(raw_red, raw_ir, &f_red, &f_ir);
+                        
+                        // 异步更新波形（使用滤波后的平滑值）
+                        g_u16WaveDataRed = f_red;
+                        g_u16WaveDataIr = f_ir;
+                        g_u8Uart1UpdateFlag |= 0x04; // Wave Changed
+                        
+                        // 转发滤波后的波形给上位机
+                        UART1_ForwardWave(f_red, f_ir);
                     }
                     s_waveIdx = 0;
                 }
-                else if(s_waveIdx < 30)
+                else if(data != '\r' && s_waveIdx < 30)
                 {
                     s_waveBuf[s_waveIdx++] = data;
                 }
@@ -201,10 +219,10 @@ static void ParseSPO2Packet(unsigned char data)
                 s_spo2Data.gain_level = s_packetBuffer[5];
                 s_spo2Data.update_flag = 1;
                 
-                // 成功解析：不再打印 Parsed 调试信息，以免干扰波形工具
+                // 异步更新数据包
+                g_spo2Data = s_spo2Data;
+                g_u8Uart1UpdateFlag |= 0x08; // DataPacket Changed
                 
-                // 立即更新到UI
-                UI_UpdateData(&s_spo2Data);
                 s_parseState = 0; // 成功，复位
             }
             else if (data == SPO2_PACKET_HEAD) // 容错
@@ -229,27 +247,25 @@ static void UART1_ForwardWave(uint16_t red, uint16_t ir)
     printf("%u,%u\r\n", red, ir);
 }
 
-static void UART1_ApplyFilter(uint16_t red, uint16_t ir, uint16_t *out_red, uint16_t *out_ir)
+static unsigned char UART1_ParseFixedWaveLine(const char *line, uint16_t *red, uint16_t *ir)
 {
-    if(!s_waveFilterEnable)
+    unsigned char i;
+    unsigned int rv = 0;
+    unsigned int iv = 0;
+    if(line == 0 || red == 0 || ir == 0) return 0;
+    if(strlen(line) != 9) return 0;
+    if(line[4] != ',') return 0;
+    for(i = 0; i < 4; i++)
     {
-        *out_red = red;
-        *out_ir = ir;
-        return;
+        if(line[i] < '0' || line[i] > '9') return 0;
+        if(line[5 + i] < '0' || line[5 + i] > '9') return 0;
+        rv = rv * 10 + (unsigned int)(line[i] - '0');
+        iv = iv * 10 + (unsigned int)(line[5 + i] - '0');
     }
-    if(!s_filterInit)
-    {
-        s_filterRed = red;
-        s_filterIr = ir;
-        s_filterInit = 1;
-    }
-    else
-    {
-        s_filterRed += ((int32_t)red - s_filterRed) >> 2;
-        s_filterIr += ((int32_t)ir - s_filterIr) >> 2;
-    }
-    *out_red = (uint16_t)s_filterRed;
-    *out_ir = (uint16_t)s_filterIr;
+    if(rv > 4095U || iv > 4095U) return 0;
+    *red = (uint16_t)rv;
+    *ir = (uint16_t)iv;
+    return 1;
 }
 
 /*********************************************************************************************************
@@ -282,7 +298,6 @@ void UART1_SendCmd(unsigned char cmd, unsigned char value)
 void UART1_SetWaveFilterEnable(unsigned char enable)
 {
     s_waveFilterEnable = (enable != 0);
-    s_filterInit = 0;
 }
 
 unsigned char UART1_GetWaveFilterEnable(void)
@@ -359,11 +374,17 @@ void UART1_ProcessSPO2Data(void)
     unsigned char data;
     // 限制单次处理最大字节数，防止主循环被大量数据积压卡死
     // 假设波特率115200，每秒约11KB，每次主循环处理64字节足以消化
-    uint32_t limit = 64; 
+    uint32_t limit = 512; 
     
     while(ReadUART1(&data, 1) && limit--)
     {
         ParseSPO2Packet(data);
+    }
+
+    if(s_uart1RxOverflow)
+    {
+        s_uart1RxOverflow = 0;
+        printf("UART_RX_OVERFLOW\r\n");
     }
 }
 
@@ -384,7 +405,10 @@ void USART1_IRQHandler(void)
         
         // 增加缓冲区保护：只有当队列未满时才写入
         // 虽然 WriteReceiveBuf1 内部有保护，但显式检查更安全
-        WriteReceiveBuf1(uData);
+        if(WriteReceiveBuf1(uData) == 0)
+        {
+            s_uart1RxOverflow = 1;
+        }
         
         UART1_MonPush(uData); // 放入监控缓冲区
         usart_interrupt_flag_clear(USART1, USART_INT_FLAG_RBNE);

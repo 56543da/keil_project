@@ -27,7 +27,18 @@ Project File Date:  04/08/2026
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\E_tools\keil\core\ARM\ARMCC\Bin'
 Build target 'Target 1'
-".\Objects\02.new" - 0 Error(s), 0 Warning(s).
+compiling UART0.c...
+HW\UART0\UART0.c(29): warning:  #177-D: variable "s_rxBuf"  was declared but never referenced
+  static uint8_t s_rxBuf[UART0_RX_BUF_SIZE];
+HW\UART0\UART0.c(30): warning:  #177-D: variable "s_rxHead"  was declared but never referenced
+  static uint8_t s_rxHead = 0;
+HW\UART0\UART0.c(31): warning:  #177-D: variable "s_rxTail"  was declared but never referenced
+  static uint8_t s_rxTail = 0;
+HW\UART0\UART0.c: 3 warnings, 0 errors
+linking...
+Program Size: Code=8380 RO-data=368 RW-data=40 ZI-data=1024  
+FromELF: creating hex file...
+".\Objects\02.new" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -50,7 +61,7 @@ Package Vendor: GigaDevice
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:6.1.1
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>

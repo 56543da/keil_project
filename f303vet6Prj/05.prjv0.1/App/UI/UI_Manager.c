@@ -24,6 +24,13 @@
 #define UI_WAVE_X_STEP      2
 #define UI_WAVE_POINTS      (UI_WAVE_W / UI_WAVE_X_STEP)
 #define UI_WAVE_DECIM       (((UI_WAVE_EXPECTED_HZ * UI_WAVE_SECONDS) + UI_WAVE_POINTS - 1) / UI_WAVE_POINTS)
+#define UI_WAVE_RAW_MIN     0
+#define UI_WAVE_RAW_MAX     4095
+
+static uint16_t s_waveMin = 4095;
+static uint16_t s_waveMax = 0;
+static uint16_t s_waveDispMin = 0;
+static uint16_t s_waveDispMax = 4095;
 
 static UI_State_t s_uiState = UI_STATE_MAIN;
 static uint8_t s_settingsIndex = 0;
@@ -37,10 +44,8 @@ static uint8_t s_systemBeepEnable = 1;
 static uint8_t s_dataReviewPage = 0;
 static uint8_t s_wavePlotInited = 0;
 static uint16_t s_waveXPos = 0;
-static uint16_t s_wavePrevY = UI_WAVE_Y + (UI_WAVE_H / 2);
-static int32_t s_waveDcQ8 = 0;
-static int32_t s_waveAcQ8 = 0;
-static uint8_t s_waveAcInit = 0;
+static uint16_t s_wavePrevYRed = UI_WAVE_Y + (UI_WAVE_H / 2);
+static uint16_t s_wavePrevYIr = UI_WAVE_Y + (UI_WAVE_H / 2);
 static uint8_t s_waveDecimCnt = 0;
 static SPO2Data_t s_curData = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // 缓存当前数据
 
@@ -72,8 +77,8 @@ static void UI_DrawScreenBackground(void);
 static void UI_DrawCard(u16 x, u16 y, u16 w, u16 h, u16 borderColor, u16 titleColor, char* title);
 static void UI_DrawSettingsItem(uint8_t index, uint8_t selected);
 static void UI_WaveReset(void);
-static void UI_WaveTrackDcAc(uint16_t sample);
-static void UI_WavePushSample(uint16_t sample);
+static uint16_t UI_WaveMapY(uint16_t sample);
+static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw);
 static void UI_UpdateWorkModeStatus(void);
 static void UI_UpdateAlarmSetStatus(void);
 static void UI_UpdateGainValue(void);
@@ -179,15 +184,14 @@ void UI_UpdateData(SPO2Data_t *data)
     }
 }
 
-void UI_UpdateWave(uint16_t red_filtered)
+void UI_UpdateWave(uint16_t red_raw, uint16_t ir_raw)
 {
-    UI_WaveTrackDcAc(red_filtered);
     if(s_uiState == UI_STATE_MAIN)
     {
         s_waveDecimCnt++;
         if(s_waveDecimCnt < UI_WAVE_DECIM) return;
         s_waveDecimCnt = 0;
-        UI_WavePushSample(red_filtered);
+        UI_WavePushSample(red_raw, ir_raw);
     }
 }
 
@@ -269,61 +273,82 @@ static void UI_WaveReset(void)
 {
     s_wavePlotInited = 0;
     s_waveXPos = 0;
-    s_wavePrevY = UI_WAVE_Y + (UI_WAVE_H / 2);
+    s_wavePrevYRed = UI_WAVE_Y + (UI_WAVE_H / 2);
+    s_wavePrevYIr = UI_WAVE_Y + (UI_WAVE_H / 2);
     s_waveDecimCnt = 0;
+    s_waveMin = 4095;
+    s_waveMax = 0;
+    s_waveDispMin = UI_WAVE_RAW_MIN;
+    s_waveDispMax = UI_WAVE_RAW_MAX;
     LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_PANEL_BG);
     POINT_COLOR = UI_COLOR_BORDER;
-    LCD_DrawLine(UI_WAVE_X, UI_WAVE_Y + UI_WAVE_H / 2, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H / 2);
+    LCD_DrawRectangle(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1);
 }
 
-static void UI_WaveTrackDcAc(uint16_t sample)
+static uint16_t UI_WaveMapY(uint16_t sample)
 {
-    int32_t sample_q8 = ((int32_t)sample) << 8;
-    int32_t diff;
-    if(!s_waveAcInit)
-    {
-        s_waveDcQ8 = sample_q8;
-        s_waveAcQ8 = 8 << 8;
-        s_waveAcInit = 1;
+    uint32_t h = (uint32_t)(UI_WAVE_H - 1);
+    uint32_t y_off;
+    
+    // 动态更新极值，留一点裕量
+    if(sample < s_waveMin) s_waveMin = sample;
+    if(sample > s_waveMax) s_waveMax = sample;
+    
+    if(sample > s_waveDispMax) sample = s_waveDispMax;
+    if(sample < s_waveDispMin) sample = s_waveDispMin;
+    
+    if (s_waveDispMax == s_waveDispMin) {
+        y_off = h / 2;
+    } else {
+        y_off = (uint32_t)(sample - s_waveDispMin) * h / (s_waveDispMax - s_waveDispMin);
     }
-    s_waveDcQ8 += (sample_q8 - s_waveDcQ8) >> 5;
-    diff = sample_q8 - s_waveDcQ8;
-    if(diff < 0) diff = -diff;
-    s_waveAcQ8 += (diff - s_waveAcQ8) >> 4;
-    if(s_waveAcQ8 < (8 << 8)) s_waveAcQ8 = 8 << 8;
+    return (uint16_t)(UI_WAVE_Y + h - y_off);
 }
 
-static void UI_WavePushSample(uint16_t sample)
+static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw)
 {
-    int32_t sample_q8;
-    int32_t ac;
-    int32_t half;
-    int32_t norm;
     uint16_t x;
-    uint16_t y;
-    uint16_t center;
-    if(!s_waveAcInit) return;
+    uint16_t y_red;
+    uint16_t y_ir;
     if(!s_wavePlotInited)
     {
         UI_WaveReset();
         s_wavePlotInited = 1;
     }
-    sample_q8 = ((int32_t)sample) << 8;
-    ac = s_waveAcQ8 >> 8;
-    if(ac < 8) ac = 8;
-    half = (UI_WAVE_H - 4) / 2;
-    norm = ((sample_q8 - s_waveDcQ8) * half) / (ac << 8);
-    if(norm > half) norm = half;
-    if(norm < -half) norm = -half;
-    center = UI_WAVE_Y + (UI_WAVE_H / 2);
-    y = (uint16_t)(center - norm);
+    
+    // 一轮画完后，更新下一轮的显示极值，并重置统计极值
+    if(s_waveXPos == 0)
+    {
+        uint16_t margin = (s_waveMax - s_waveMin) / 10;
+        if(margin < 10) margin = 10;
+        
+        if (s_waveMin > margin) s_waveDispMin = s_waveMin - margin;
+        else s_waveDispMin = 0;
+        
+        s_waveDispMax = s_waveMax + margin;
+        if (s_waveDispMax > 4095) s_waveDispMax = 4095;
+        
+        // 限制最小显示窗口，避免噪声放大过大
+        if (s_waveDispMax - s_waveDispMin < 50) {
+            uint16_t mid = (s_waveDispMax + s_waveDispMin) / 2;
+            s_waveDispMax = mid + 25;
+            s_waveDispMin = (mid > 25) ? (mid - 25) : 0;
+        }
+        
+        s_waveMin = 4095;
+        s_waveMax = 0;
+    }
+    
+    y_red = UI_WaveMapY(red_raw);
+    y_ir = UI_WaveMapY(ir_raw);
     x = UI_WAVE_X + s_waveXPos;
     if(s_waveXPos == 0)
     {
         LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_PANEL_BG);
         POINT_COLOR = UI_COLOR_BORDER;
-        LCD_DrawLine(UI_WAVE_X, center, UI_WAVE_X + UI_WAVE_W - 1, center);
-        s_wavePrevY = y;
+        LCD_DrawRectangle(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1);
+        s_wavePrevYRed = y_red;
+        s_wavePrevYIr = y_ir;
     }
     else
     {
@@ -331,10 +356,14 @@ static void UI_WavePushSample(uint16_t sample)
         if(x2 > (UI_WAVE_X + UI_WAVE_W - 1)) x2 = UI_WAVE_X + UI_WAVE_W - 1;
         LCD_Fill(x, UI_WAVE_Y, x2, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_PANEL_BG);
         POINT_COLOR = UI_COLOR_BORDER;
-        LCD_DrawPoint(x, center);
-        POINT_COLOR = UI_COLOR_SPO2;
-        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevY, x, y);
-        s_wavePrevY = y;
+        LCD_DrawPoint(x, UI_WAVE_Y);
+        LCD_DrawPoint(x, UI_WAVE_Y + UI_WAVE_H - 1);
+        POINT_COLOR = RED;
+        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYRed, x, y_red);
+        POINT_COLOR = BLUE;
+        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYIr, x, y_ir);
+        s_wavePrevYRed = y_red;
+        s_wavePrevYIr = y_ir;
     }
     s_waveXPos = (uint16_t)(s_waveXPos + UI_WAVE_X_STEP);
     if(s_waveXPos >= UI_WAVE_W)
@@ -412,7 +441,7 @@ void UI_DrawMainScreen(void)
     UI_DrawCard(10, 130, 300, 70, UI_COLOR_PR, BLACK, "Pulse Rate");
     UI_DrawCard(10, 210, 300, 70, UI_COLOR_PI, BLACK, "Perfusion");
     UI_DrawCard(10, 290, 300, 40, UI_COLOR_ACCENT, WHITE, "Signal");
-    UI_DrawCard(10, 340, 300, 130, UI_COLOR_ACCENT, WHITE, "Pulse Wave(5s)");
+    UI_DrawCard(10, 340, 300, 130, UI_COLOR_ACCENT, WHITE, "Pulse Wave(0-4095)");
 
     POINT_COLOR = UI_COLOR_SPO2;
     BACK_COLOR = UI_COLOR_PANEL_BG;
@@ -447,6 +476,12 @@ void UI_DrawMainScreen(void)
     if(s_curData.gain_level == 0xFF) sprintf(buf, "Gain: --  ");
     else sprintf(buf, "Gain: %d   ", s_curData.gain_level);
     LCD_ShowString(240, 310, 64, 16, 16, (u8*)buf);
+
+    POINT_COLOR = RED;
+    BACK_COLOR = UI_COLOR_PANEL_BG;
+    LCD_ShowString(24, 350, 100, 16, 16, (u8*)"RED");
+    POINT_COLOR = BLUE;
+    LCD_ShowString(90, 350, 120, 16, 16, (u8*)"IR");
 
     UI_WaveReset();
 

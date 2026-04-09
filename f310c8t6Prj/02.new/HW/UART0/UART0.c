@@ -107,19 +107,11 @@ void InitUART0(unsigned int bound)
 unsigned char  WriteUART0(unsigned char *pBuf, unsigned char len)
 {
   unsigned char i;
-  uint32_t timeout = 0;
 
   for(i = 0; i < len; i++)
   {
     usart_data_transmit(USART0, pBuf[i]);
-    
-    // 等待发送缓冲区空，增加超时防止死循环
-    timeout = 0;
-    while(RESET == usart_flag_get(USART0, USART_FLAG_TBE))
-    {
-        timeout++;
-        if(timeout > 0xFFFF) break; // 简单超时机制
-    }
+    while(RESET == usart_flag_get(USART0, USART_FLAG_TBE));
   }
                                                                   
   return len;
@@ -246,14 +238,7 @@ unsigned char UART0_GetCmd(unsigned char *cmd, unsigned char *val)
 *********************************************************************************************************/
 int fputc(int ch, FILE *f)
 {
-  uint32_t timeout = 0;
   usart_data_transmit(USART0, (uint8_t)ch);
-  
-  // 等待发送缓冲区空，增加超时防止死循环
-  while(RESET == usart_flag_get(USART0, USART_FLAG_TBE))
-  {
-      timeout++;
-      if(timeout > 0xFFFF) break;
-  }
+  while(RESET == usart_flag_get(USART0, USART_FLAG_TBE));
   return ch;  
 }

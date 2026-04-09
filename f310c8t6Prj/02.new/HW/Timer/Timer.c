@@ -1,5 +1,6 @@
 #include "Timer.h"
 #include "gd32f3x0_conf.h"
+#include "gd32f3x0_fwdgt.h"
 #include "SPO2_Driver.h"
 
 static  unsigned char  s_i1secFlag = FALSE;    //标记1s标志位，初始化为FALSE
@@ -35,6 +36,9 @@ void TIMER2_IRQHandler(void)
   if(timer_interrupt_flag_get(TIMER2, TIMER_INT_FLAG_UP) == SET)   //判断是否产生更新中断
   {
     timer_interrupt_flag_clear(TIMER2, TIMER_INT_FLAG_UP);         //清除更新中断标志位
+    
+    // 喂狗 (移至中断中以确保系统鲁棒性，即使主循环由于 printf 阻塞，采样也不中断)
+    fwdgt_counter_reload();
     
     // 执行血氧算法状态机 (每0.5ms调用一次)
     SPO2_Timer_Handler();

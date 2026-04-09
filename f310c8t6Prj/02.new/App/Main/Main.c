@@ -81,7 +81,7 @@ static  void  InitSoftware(void)
 static  void  InitHardware(void)
 {  
   InitNVIC();          /* 初始化NVIC模块 */  
-  InitUART0(921600);   /* 初始化UART模块 - 提速至 921600 */
+  InitUART0(115200);   /* 初始化UART模块 - 115200 */
   InitLED();           /* 初始化LED (PA6) */
   SPO2_Driver_Init();  /* 初始化SPO2驱动 (PA1, PC13, PC14) */
   InitTimer();         /* 初始化Timer模块 - 开启定时器中断 */
@@ -128,7 +128,7 @@ static void SendWavePair(uint16_t a, uint16_t b)
 {
   // 优化：使用标准 printf 发送，减少手写转换的潜在 Bug，且利用标准库的缓冲机制
   // 注意：确保 printf 已重定向到 UART0
-  printf("%u,%u\r\n", a, b);
+  printf("%04u,%04u\r\n", a, b);
 }
 
 /*********************************************************************************************************
@@ -164,7 +164,7 @@ int main(void)
 	
   while(1)
   {
-    fwdgt_counter_reload(); /* 喂狗 */
+    // fwdgt_counter_reload(); /* 喂狗移至定时器中断，防止主循环 printf 阻塞导致复位 */
     
     // 0. 处理 UART 命令 (新增)
     {

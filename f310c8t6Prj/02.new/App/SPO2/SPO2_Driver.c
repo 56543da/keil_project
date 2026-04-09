@@ -13,7 +13,6 @@
  
 static volatile uint16_t g_raw_red_adc = 0;
 static volatile uint16_t g_raw_ir_adc = 0;
-static volatile uint16_t g_raw_ambient_adc = 0; // 新增环境光变量
 static volatile uint8_t g_gain_code = 0;
 static volatile uint16_t g_wave_red_seq = 0;
 static volatile uint16_t g_wave_ir_seq = 0;
@@ -211,29 +210,24 @@ void SPO2_Driver_Init(void)
 }
 
 /**
- * @brief  快速读取ADC采样值（静态函数，仅当前文件可见）
- * @note   该函数用于快速获取单次ADC常规通道的采样结果，带有超时保护，
- *         采用较长采样时间保证数据稳定性，适用于血氧仪（SPO2）等需要快速且稳定采样的场景
- * @retval uint16_t  返回ADC采样结果（16位数据），超时返回0
+ * @brief  触发ADC采样（非阻塞）
  */
-static uint16_t ADC_Read_Fast(void)
+static void ADC_Trigger(void)
 {
-    uint32_t timeout = 0x0400;
     adc_regular_channel_config(0, SPO2_ADC_CHANNEL, ADC_SAMPLETIME_239POINT5);
     adc_flag_clear(ADC_FLAG_EOC | ADC_FLAG_STRC);
     ADC_CTL1 &= ~((uint32_t)ADC_CTL1_SWRCST);
     adc_software_trigger_enable(ADC_REGULAR_CHANNEL);
-    
-    while(!adc_flag_get(ADC_FLAG_EOC))
-    {
-        // 超时计数器递减，若减至0仍未完成转换，返回0表示采样失败
-        if(timeout-- == 0) return 0xFFFF;
-    }
-    
-    // 清除ADC转换完成标志位，避免影响下一次采样判断
+}
+
+/**
+ * @brief  读取上一次触发的ADC结果（非阻塞，假设已转换完成）
+ * @retval uint16_t  返回ADC采样结果，未完成返回0xFFFF
+ */
+static uint16_t ADC_Read_Value(void)
+{
+    if(!adc_flag_get(ADC_FLAG_EOC)) return 0xFFFF;
     adc_flag_clear(ADC_FLAG_EOC);
-    
-    // 读取ADC常规通道转换结果并返回（16位无符号整数）
     return adc_regular_data_read();
 }
 
@@ -251,28 +245,21 @@ void SPO2_Timer_Handler(void)
     
     switch(time_slot)
     {
-        case 1: // 0.5ms时刻，采样环境光 (此时两灯皆灭)
-            adc_val = ADC_Read_Fast();
-            if(adc_val != 0xFFFF)
-            {
-                g_raw_ambient_adc = adc_val;
-            }
-            break;
-
         case 2: // 1ms时刻，开始RED LED发光
             timer_channel_output_pulse_value_config(TIMER14, TIMER_CH_0, g_red_pwm_pulse);
             gpio_bit_set(SPO2_RED_CS_PORT, SPO2_RED_CS_PIN);
             break;
             
-        case 5: // 2.5ms时刻，RED LED ADC采样 (给1ms稳定时间)
-            adc_val = ADC_Read_Fast();
+        case 4: // 2ms时刻，提前触发ADC，为Slot 5读取做准备 (给0.5ms转换时间，远超20us)
+            ADC_Trigger();
+            break;
+
+        case 5: // 2.5ms时刻，RED LED ADC采样读取
+            adc_val = ADC_Read_Value();
             if(adc_val != 0xFFFF)
             {
-                // 减去环境光，防止负值溢出
-                // 如果本次采样异常小于环境光，不直接写 0，避免在波形上形成单点突降毛刺
-                if(adc_val >= g_raw_ambient_adc) g_raw_red_adc = adc_val - g_raw_ambient_adc;
+                g_raw_red_adc = adc_val;
             }
-            
             g_wave_red_seq++;
             break;
             
@@ -286,40 +273,20 @@ void SPO2_Timer_Handler(void)
             gpio_bit_set(SPO2_IR_CS_PORT, SPO2_IR_CS_PIN);
             break;
             
-        case 13: // 6.5ms时刻，IR LED ADC采样 (给1ms稳定时间)
-            adc_val = ADC_Read_Fast();
+        case 12: // 6ms时刻，提前触发ADC，为Slot 13读取做准备
+            ADC_Trigger();
+            break;
+
+        case 13: // 6.5ms时刻，IR LED ADC采样读取
+            adc_val = ADC_Read_Value();
             if(adc_val != 0xFFFF)
             {
-                // 减去环境光
-                // 如果本次采样异常小于环境光，不直接写 0，避免在波形上形成单点突降毛刺
-                if(adc_val >= g_raw_ambient_adc) g_raw_ir_adc = adc_val - g_raw_ambient_adc;
+                g_raw_ir_adc = adc_val;
             }
-            
             g_wave_ir_seq++;
             if(g_agc_enable)
             {
-                static uint8_t adjust_cnt = 0;
-                adjust_cnt++;
-                if(adjust_cnt >= 20)
-                {//自动增益调整
-                    // adjust_cnt = 0;
-                    // if(g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse < SPO2_PWM_PULSE_MAX) g_red_pwm_pulse++;
-                    // else if(g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse > SPO2_PWM_PULSE_MIN) g_red_pwm_pulse--;
-
-                    // if(g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse < SPO2_PWM_PULSE_MAX) g_ir_pwm_pulse++;
-                    // else if(g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse > SPO2_PWM_PULSE_MIN) g_ir_pwm_pulse--;
-
-                    // if((g_raw_red_adc < SPO2_DC_TARGET_LOW && g_red_pwm_pulse == SPO2_PWM_PULSE_MAX) ||
-                    //    (g_raw_ir_adc < SPO2_DC_TARGET_LOW && g_ir_pwm_pulse == SPO2_PWM_PULSE_MAX))
-                    // {
-                    //     if(g_gain_code < 7) SPO2_SetGain(g_gain_code + 1);
-                    // }
-                    // else if((g_raw_red_adc > SPO2_DC_TARGET_HIGH && g_red_pwm_pulse == SPO2_PWM_PULSE_MIN) ||
-                    //         (g_raw_ir_adc > SPO2_DC_TARGET_HIGH && g_ir_pwm_pulse == SPO2_PWM_PULSE_MIN))
-                    // {
-                    //     if(g_gain_code > 0) SPO2_SetGain(g_gain_code - 1);
-                    // }
-                }
+                // ... (AGC logic remains commented/removed)
             }
             break;
             

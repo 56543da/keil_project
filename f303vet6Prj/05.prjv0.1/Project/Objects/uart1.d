@@ -39,4 +39,5 @@
 .\objects\uart1.o: ..\FW\Include\gd32f30x_exmc.h
 .\objects\uart1.o: ..\HW\UART0\Queue.h
 .\objects\uart1.o: ..\App\UI\UI_Manager.h
+.\objects\uart1.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\string.h
 .\objects\uart1.o: ..\App\SPO2\SPO2_Algo.h
