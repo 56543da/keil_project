@@ -26,7 +26,7 @@ UI状态机实现：
    - 底部提示：LH进入菜单，RH返回
    - 刷新策略：仅更新数值区域，减少全屏重绘闪烁
 2. 设置菜单（Settings Navigator）
-   - 菜单项：Work Mode / Alarm Set / SpO2 Set / Filter Set / R Calib / Auto Light / EtCO2 Set / System Set / Data Review
+   - 菜单项：Work Mode / Alarm Set / SpO2 Set / Filter Set / Filter Demo / R Calib / Auto Light / EtCO2 Set / System Set / Data Review
    - 显示策略：高亮选中项 + 非选中项分层底色
 3. 血氧增益设置（SpO2 Gain Set）
    - 功能：LL发送增益增加命令，RL发送增益减小命令
@@ -59,6 +59,10 @@ UI状态机实现：
      - Page2：PI/R
      - Page3：PWM/Gain
 
+12. 滤波演示（Filter Demo）
+   - 功能：展示红外光 IR 滤波前/后的波形对比
+   - 显示：同一波形框内，蓝色为原始 IR，红色为滤波后 IR，可叠加随机噪声和基线漂移干扰
+
 按键定义与页面行为：
 1. LL（上键）
    - 菜单页：上移选择
@@ -81,13 +85,14 @@ UI状态机实现：
 3. SETTINGS --(LH, index=1)--> ALARM_SET
 4. SETTINGS --(LH, index=2)--> SPO2_SET
 5. SETTINGS --(LH, index=3)--> FILTER_SET
-6. SETTINGS --(LH, index=4)--> R_CALIB
-7. SETTINGS --(LH, index=5)--> AUTO_LIGHT
-8. SETTINGS --(LH, index=6)--> ETCO2_SET
-9. SETTINGS --(LH, index=7)--> SYSTEM_SET
-10. SETTINGS --(LH, index=8)--> DATA_REVIEW
-11. 各子界面 --(RH)--> SETTINGS
-12. SETTINGS --(RH)--> MAIN
+6. SETTINGS --(LH, index=4)--> FILTER_DEMO
+7. SETTINGS --(LH, index=5)--> R_CALIB
+8. SETTINGS --(LH, index=6)--> AUTO_LIGHT
+9. SETTINGS --(LH, index=7)--> ETCO2_SET
+10. SETTINGS --(LH, index=8)--> SYSTEM_SET
+11. SETTINGS --(LH, index=9)--> DATA_REVIEW
+12. 各子界面 --(RH)--> SETTINGS
+13. SETTINGS --(RH)--> MAIN
 
 视觉优化说明（当前版本已落地）：
 1. 背景：由纯色改为纵向渐变背景，提升层次感与可读性
@@ -95,7 +100,7 @@ UI状态机实现：
 3. 主页面：指标卡片化（SPO2/PR/PI/Signal/Pulse Wave），关键值按模块分区展示
 4. 菜单页：9项菜单压缩重排，保证320高度内完整可见；非选中项改为高对比文字
 5. 提示区：底部统一操作提示色，降低视觉噪声
-6. 脉搏波区域：主页面最下方新增 Pulse Wave 区，同时绘制红光(红色)与红外(蓝色)原始实时波形
+6. 脉搏波区域：主页面最下方 Pulse Wave 区，仅显示红外光 IR 的滤波后波形（红色），自适应纵向缩放；原始/滤波对比在 Filter Demo 子界面实现
 
 波形与算法说明入口（避免多处重复描述）：
 1. 红光/红外数据链路、窗口参数、算法流程统一维护在：

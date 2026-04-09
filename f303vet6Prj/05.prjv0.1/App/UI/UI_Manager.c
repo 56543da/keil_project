@@ -6,9 +6,10 @@
 // UI Colors (RGB565)
 #define UI_COLOR_BG         0x0841
 #define UI_COLOR_PANEL_BG   0x10A2
+#define UI_COLOR_WAVE_BG    0x0000 // 纯黑波形底色，提升波形对比度
 #define UI_COLOR_HEADER_BG  0x18E3
 #define UI_COLOR_TEXT_W     WHITE
-#define UI_COLOR_SPO2       0x07FF
+#define UI_COLOR_SPO2       0xF800 // 饱和红 (与主界面波形颜色一致)
 #define UI_COLOR_PR         0x07E0
 #define UI_COLOR_PI         0xFFE0
 #define UI_COLOR_SELECT     0x22B8
@@ -26,6 +27,7 @@
 #define UI_WAVE_DECIM       (((UI_WAVE_EXPECTED_HZ * UI_WAVE_SECONDS) + UI_WAVE_POINTS - 1) / UI_WAVE_POINTS)
 #define UI_WAVE_RAW_MIN     0
 #define UI_WAVE_RAW_MAX     4095
+#define UI_COLOR_WAVE_BG    0x0000
 
 static uint16_t s_waveMin = 4095;
 static uint16_t s_waveMax = 0;
@@ -48,13 +50,20 @@ static uint16_t s_wavePrevYRed = UI_WAVE_Y + (UI_WAVE_H / 2);
 static uint16_t s_wavePrevYIr = UI_WAVE_Y + (UI_WAVE_H / 2);
 static uint8_t s_waveDecimCnt = 0;
 static SPO2Data_t s_curData = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // 缓存当前数据
+/* 滤波演示模式状态 */
+static uint8_t s_demoNoiseEnable = 0;
+static uint8_t s_demoDriftEnable = 0;
+static int16_t s_demoDriftVal = 0;
+static int8_t  s_demoDriftStep = 1;
+static uint16_t s_lfsr = 0xACE1;
 
-#define SETTINGS_ITEM_COUNT 9
+#define SETTINGS_ITEM_COUNT 10
 static const char* s_settingsItems[SETTINGS_ITEM_COUNT] = {
     "Work Mode",
     "Alarm Set",
     "SpO2 Set",
     "Filter Set",
+    "Filter Demo",
     "R Calib",
     "Auto Light",
     "EtCO2 Set",
@@ -68,6 +77,7 @@ void UI_DrawWorkModeScreen(void);
 void UI_DrawAlarmSetScreen(void);
 void UI_DrawSpO2SetScreen(void);
 void UI_DrawFilterSetScreen(void);
+void UI_DrawFilterDemoScreen(void);
 void UI_DrawRCalibScreen(void);
 void UI_DrawAutoLightScreen(void);
 void UI_DrawEtCO2SetScreen(void);
@@ -79,6 +89,8 @@ static void UI_DrawSettingsItem(uint8_t index, uint8_t selected);
 static void UI_WaveReset(void);
 static uint16_t UI_WaveMapY(uint16_t sample);
 static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw);
+static uint16_t UI_AddDemoNoise(uint16_t v);
+static uint16_t UI_AddDemoDrift(uint16_t v);
 static void UI_UpdateWorkModeStatus(void);
 static void UI_UpdateAlarmSetStatus(void);
 static void UI_UpdateGainValue(void);
@@ -186,12 +198,23 @@ void UI_UpdateData(SPO2Data_t *data)
 
 void UI_UpdateWave(uint16_t red_raw, uint16_t ir_raw)
 {
-    if(s_uiState == UI_STATE_MAIN)
+    if(s_uiState == UI_STATE_MAIN || s_uiState == UI_STATE_FILTER_DEMO)
     {
         s_waveDecimCnt++;
         if(s_waveDecimCnt < UI_WAVE_DECIM) return;
         s_waveDecimCnt = 0;
-        UI_WavePushSample(red_raw, ir_raw);
+        /* 约定：red_raw=原始IR，ir_raw=滤波IR */
+        if(s_uiState == UI_STATE_FILTER_DEMO)
+        {
+            uint16_t raw = red_raw;
+            if(s_demoNoiseEnable) raw = UI_AddDemoNoise(raw);
+            if(s_demoDriftEnable) raw = UI_AddDemoDrift(raw);
+            UI_WavePushSample(raw, ir_raw);
+        }
+        else
+        {
+            UI_WavePushSample(red_raw, ir_raw);
+        }
     }
 }
 
@@ -253,6 +276,7 @@ void UI_Update(void)
         case UI_STATE_ALARM_SET:    UI_DrawAlarmSetScreen(); break;
         case UI_STATE_SPO2_SET:     UI_DrawSpO2SetScreen(); break;
         case UI_STATE_FILTER_SET:   UI_DrawFilterSetScreen(); break;
+        case UI_STATE_FILTER_DEMO:  UI_DrawFilterDemoScreen(); break;
         case UI_STATE_R_CALIB:      UI_DrawRCalibScreen(); break;
         case UI_STATE_AUTO_LIGHT:   UI_DrawAutoLightScreen(); break;
         case UI_STATE_ETCO2_SET:    UI_DrawEtCO2SetScreen(); break;
@@ -280,7 +304,7 @@ static void UI_WaveReset(void)
     s_waveMax = 0;
     s_waveDispMin = UI_WAVE_RAW_MIN;
     s_waveDispMax = UI_WAVE_RAW_MAX;
-    LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_PANEL_BG);
+    LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_WAVE_BG); // 使用纯黑波形底色
     POINT_COLOR = UI_COLOR_BORDER;
     LCD_DrawRectangle(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1);
 }
@@ -344,7 +368,7 @@ static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw)
     x = UI_WAVE_X + s_waveXPos;
     if(s_waveXPos == 0)
     {
-        LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_PANEL_BG);
+        LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_WAVE_BG); // 使用纯黑波形底色
         POINT_COLOR = UI_COLOR_BORDER;
         LCD_DrawRectangle(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1);
         s_wavePrevYRed = y_red;
@@ -354,14 +378,24 @@ static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw)
     {
         uint16_t x2 = x + UI_WAVE_X_STEP - 1;
         if(x2 > (UI_WAVE_X + UI_WAVE_W - 1)) x2 = UI_WAVE_X + UI_WAVE_W - 1;
-        LCD_Fill(x, UI_WAVE_Y, x2, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_PANEL_BG);
+        LCD_Fill(x, UI_WAVE_Y, x2, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_WAVE_BG); // 使用纯黑波形底色
         POINT_COLOR = UI_COLOR_BORDER;
         LCD_DrawPoint(x, UI_WAVE_Y);
         LCD_DrawPoint(x, UI_WAVE_Y + UI_WAVE_H - 1);
-        POINT_COLOR = RED;
-        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYRed, x, y_red);
+        if(s_uiState == UI_STATE_FILTER_DEMO)
+    {
+        /* 在演示模式：红色=滤波后IR，蓝色=原始IR */
         POINT_COLOR = BLUE;
+        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYRed, x, y_red);
+        POINT_COLOR = UI_COLOR_SPO2;
         LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYIr, x, y_ir);
+    }
+    else
+    {
+        /* 主界面：仅显示滤波后IR波形 (红色) */
+        POINT_COLOR = UI_COLOR_SPO2;
+        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYIr, x, y_ir);
+    }
         s_wavePrevYRed = y_red;
         s_wavePrevYIr = y_ir;
     }
@@ -370,6 +404,31 @@ static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw)
     {
         s_waveXPos = 0;
     }
+}
+
+static uint16_t UI_AddDemoNoise(uint16_t v)
+{
+    /* 简易LFSR噪声，幅度±8 */
+    s_lfsr ^= s_lfsr << 7;
+    s_lfsr ^= s_lfsr >> 9;
+    s_lfsr ^= s_lfsr << 8;
+    int16_t n = (int16_t)((s_lfsr & 0x0F) - 8);
+    int32_t val = (int32_t)v + n;
+    if(val < 0) val = 0;
+    if(val > 4095) val = 4095;
+    return (uint16_t)val;
+}
+
+static uint16_t UI_AddDemoDrift(uint16_t v)
+{
+    /* 生成缓慢的三角波漂移，幅度±20，周期约一屏 */
+    s_demoDriftVal += s_demoDriftStep;
+    if(s_demoDriftVal > 20) { s_demoDriftVal = 20; s_demoDriftStep = -1; }
+    if(s_demoDriftVal < -20){ s_demoDriftVal = -20; s_demoDriftStep = 1; }
+    int32_t val = (int32_t)v + s_demoDriftVal;
+    if(val < 0) val = 0;
+    if(val > 4095) val = 4095;
+    return (uint16_t)val;
 }
 
 // 辅助函数：绘制圆角矩形风格的面板
@@ -407,11 +466,11 @@ static void UI_DrawScreenBackground(void)
     u16 b;
     for(y = 0; y < 480; y++)
     {
-        g = (u16)(8 + y / 16);
+        g = (u16)(12 + y / 18);
         if(g > 63) g = 63;
-        b = (u16)(10 + y / 15);
+        b = (u16)(20 + y / 20);
         if(b > 31) b = 31;
-        c = (u16)((1 << 11) | (g << 5) | b);
+        c = (u16)((g << 5) | b);
         LCD_Fill(0, y, 319, y, c);
     }
 }
@@ -439,7 +498,7 @@ void UI_DrawMainScreen(void)
 
     UI_DrawCard(10, 50, 300, 70, UI_COLOR_SPO2, BLACK, "SPO2");
     UI_DrawCard(10, 130, 300, 70, UI_COLOR_PR, BLACK, "Pulse Rate");
-    UI_DrawCard(10, 210, 300, 70, UI_COLOR_PI, BLACK, "Perfusion");
+    UI_DrawCard(10, 210, 300, 70, UI_COLOR_HEADER_BG, BLACK, "Perfusion");
     UI_DrawCard(10, 290, 300, 40, UI_COLOR_ACCENT, WHITE, "Signal");
     UI_DrawCard(10, 340, 300, 130, UI_COLOR_ACCENT, WHITE, "Pulse Wave(0-4095)");
 
@@ -477,11 +536,10 @@ void UI_DrawMainScreen(void)
     else sprintf(buf, "Gain: %d   ", s_curData.gain_level);
     LCD_ShowString(240, 310, 64, 16, 16, (u8*)buf);
 
-    POINT_COLOR = RED;
+    /* 底部波形演示区：仅保留 IR 提示 */
+    POINT_COLOR = UI_COLOR_SPO2;
     BACK_COLOR = UI_COLOR_PANEL_BG;
-    LCD_ShowString(24, 350, 100, 16, 16, (u8*)"RED");
-    POINT_COLOR = BLUE;
-    LCD_ShowString(90, 350, 120, 16, 16, (u8*)"IR");
+    LCD_ShowString(24, 350, 140, 16, 16, (u8*)"IR (filtered)");
 
     UI_WaveReset();
 
@@ -655,6 +713,27 @@ void UI_DrawFilterSetScreen(void)
     LCD_ShowString(70, 440, 200, 16, 16, (u8*)"Press BACK to Exit");
 }
 
+void UI_DrawFilterDemoScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
+    UI_DrawHeader("Filter Demo");
+    // 不再画带背景色的 Card，直接画边框并用纯黑底色覆盖整个波形区域
+    // Y=130 到 Y=470 作为超大波形显示区
+    LCD_Fill(10, 130, 310, 470, UI_COLOR_WAVE_BG); // 使用纯黑底色
+    POINT_COLOR = UI_COLOR_BORDER;
+    LCD_DrawRectangle(10, 130, 310, 470);
+    
+    POINT_COLOR = UI_COLOR_HINT;
+    LCD_ShowString(20, 60, 260, 16, 16, (u8*)"LL:Noise ON/OFF  RL:Drift ON/OFF");
+    POINT_COLOR = BLUE;
+    BACK_COLOR = UI_COLOR_BG;
+    LCD_ShowString(20, 80, 160, 16, 16, (u8*)"Blue: Raw (demo)");
+    POINT_COLOR = UI_COLOR_SPO2;
+    LCD_ShowString(20, 100, 160, 16, 16, (u8*)"Red:  Filtered");
+    
+    UI_WaveReset();
+}
 static void UI_UpdateFilterStatus(void)
 {
     POINT_COLOR = WHITE;
@@ -841,6 +920,9 @@ void UI_OnKeyLL(void) // Up
             UART1_SetWaveFilterEnable(1);
             UI_UpdateFilterStatus();
             break;
+        case UI_STATE_FILTER_DEMO:
+            s_demoNoiseEnable = !s_demoNoiseEnable;
+            break;
             
         case UI_STATE_AUTO_LIGHT:
             s_autoLightEnable = 1;
@@ -903,6 +985,9 @@ void UI_OnKeyRL(void) // Down
             UART1_SetWaveFilterEnable(0);
             UI_UpdateFilterStatus();
             break;
+        case UI_STATE_FILTER_DEMO:
+            s_demoDriftEnable = !s_demoDriftEnable;
+            break;
             
         case UI_STATE_AUTO_LIGHT:
             s_autoLightEnable = 0;
@@ -958,11 +1043,12 @@ void UI_OnKeyLH(void) // Enter / Settings
                 case 1: s_uiState = UI_STATE_ALARM_SET; break;
                 case 2: s_uiState = UI_STATE_SPO2_SET;  break;
                 case 3: s_uiState = UI_STATE_FILTER_SET; break;
-                case 4: s_uiState = UI_STATE_R_CALIB;   break;
-                case 5: s_uiState = UI_STATE_AUTO_LIGHT; break;
-                case 6: s_uiState = UI_STATE_ETCO2_SET; break;
-                case 7: s_uiState = UI_STATE_SYSTEM_SET; break;
-                case 8: s_uiState = UI_STATE_DATA_REVIEW; break;
+                case 4: s_uiState = UI_STATE_FILTER_DEMO; break;
+                case 5: s_uiState = UI_STATE_R_CALIB;   break;
+                case 6: s_uiState = UI_STATE_AUTO_LIGHT; break;
+                case 7: s_uiState = UI_STATE_ETCO2_SET; break;
+                case 8: s_uiState = UI_STATE_SYSTEM_SET; break;
+                case 9: s_uiState = UI_STATE_DATA_REVIEW; break;
                 default: break;
             }
             s_needRefresh = 1;
@@ -985,6 +1071,7 @@ void UI_OnKeyRH(void) // Back
         case UI_STATE_ALARM_SET:
         case UI_STATE_SPO2_SET:
         case UI_STATE_FILTER_SET:
+        case UI_STATE_FILTER_DEMO:
         case UI_STATE_R_CALIB:
         case UI_STATE_AUTO_LIGHT:
         case UI_STATE_ETCO2_SET:

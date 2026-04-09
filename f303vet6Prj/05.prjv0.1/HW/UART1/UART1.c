@@ -164,8 +164,8 @@ static void ParseSPO2Packet(unsigned char data)
                         // 先推入算法模块进行低通滤波，并获取滤波后的波形值
                         SPO2_Algo_PushData(raw_red, raw_ir, &f_red, &f_ir);
                         
-                        // 异步更新波形（使用滤波后的平滑值）
-                        g_u16WaveDataRed = f_red;
+                        // 异步更新波形：约定 red=原始IR, ir=滤波IR
+                        g_u16WaveDataRed = raw_ir;
                         g_u16WaveDataIr = f_ir;
                         g_u8Uart1UpdateFlag |= 0x04; // Wave Changed
                         

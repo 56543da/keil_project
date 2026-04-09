@@ -726,10 +726,16 @@ void LCD_Scan_Dir(u8 dir)
     else
         dirreg = 0X36;
 
-    /* 7796 & 7789 设置 BGR 位 */
+    /* 7796 & 7789 设置 BGR 位以修复红蓝反色问题 */
     if (lcddev.id == 0X7796 || lcddev.id == 0X7789)
     {
-        regval |= 0X08;
+        /* 
+         * ST7796 寄存器 0x36(MADCTL) 的 Bit 3 是 BGR 控制位：
+         * 0 = RGB order, 1 = BGR order.
+         * 根据实际屏幕表现，这里强制取反或者取消这位置位来适配。
+         * 如果之前是 |= 0x08 导致偏蓝，现在尝试取消这个位 (即 0x00，使用 RGB)
+         */
+        regval &= ~0X08; 
     }
 
     LCD_WriteReg(dirreg, regval);
@@ -970,7 +976,14 @@ void LCD_Init(void)
             LCD_WriteReg(0xB3, 0x02);
             LCD_WriteReg(0xB3, 0x03);
             LCD_WriteReg(0xB3, 0x08);
-            LCD_WriteReg(0xB4, 0x00);  /* Inversion Control */
+            
+            /* 
+             * Inversion Control (0xB4)
+             * 如果设置 0x00，在有些批次的屏幕上会导致色彩反相（负片，纯黑变纯白，彩色变互补色）
+             * 改为 0x01 或者尝试发送 0x20/0x21(Display Inversion OFF/ON) 命令 
+             * 这里先在 0xB4 设置默认反转，并在下方发送 0x21 强制开启反转（通常 IPS 屏需要 0x21）
+             */
+            LCD_WriteReg(0xB4, 0x01);  /* Inversion Control */
             LCD_WriteReg(0xC0, 0x02);  /* Power Control 1 */
             LCD_WriteReg(0xC1, 0x02);  /* Power Control 2 */
             LCD_WriteReg(0xC5, 0x32);  /* VCOM Control 1 */
@@ -979,6 +992,9 @@ void LCD_Init(void)
             LCD_WriteReg(0x37, 0x00);  /* Vertical Scroll Start Address */
             LCD_WriteReg(0x38, 0x00);  /* Vertical Scroll Start Address */
             LCD_WriteReg(0x39, 0x00);  /* Vertical Scroll Start Address */
+            
+            LCD_WriteReg(0x21, 0x00);  /* Display Inversion ON (如果屏幕还是反色，请将 0x21 改为 0x20) */
+            
             LCD_WriteReg(0x29, 0x00);  /* Display On */
             DelayNms(120);
         }
