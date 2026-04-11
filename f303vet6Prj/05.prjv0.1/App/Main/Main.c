@@ -34,6 +34,8 @@
 #include "UI_Manager.h"
 #include <string.h>
 #include "SPO2_Algo.h" // 引用算法头文件
+#include "Speaker.h"
+#include "Power.h" // 引入电源管理模块
 
 /*********************************************************************************************************
 *                                              宏定义
@@ -91,8 +93,10 @@ static  void  InitSoftware(void)
 static  void  InitHardware(void)
 {  
   SystemInit();        /* 系统初始化 */
+  Power_BootstrapHold(); /* 尽早完成自保持，仅在按键按下时拉高PWR_EN */
   InitRCU();           /* 初始化RCU模块 */
   InitNVIC();          /* 初始化NVIC模块 */  
+  Power_Init();        /* 初始化电源管理模块 (ADC, 外部中断, 控制引脚) */
   InitUART0(115200);   /* 初始化UART模块 - 115200 */
   InitTimer();         /* 初始化Timer模块 */
   InitLED();           /* 初始化LED模块 */
@@ -104,6 +108,7 @@ static  void  InitHardware(void)
   // SPO2_DisplayInit();  /* 初始化血氧显示 */
   UI_Init();           /* 初始化UI管理器 */
   SPO2_Algo_Init();    /* 初始化血氧算法 */
+  Speaker_Init();      /* 初始化喇叭与音量控制 */
 }
 
 
@@ -158,8 +163,13 @@ int main(void)
     if(Get2msFlag())
     {
       KeyOne_2msTask();
+      Speaker_2msTask();
+      Power_CheckKey(); // 检测电源键长按防抖
       Clr2msFlag();
     }
+
+    // 电源及ADC轮询任务
+    Power_Process();
 
     // 处理串口1接收数据 (波形转发与解析)
     UART1_ProcessSPO2Data();

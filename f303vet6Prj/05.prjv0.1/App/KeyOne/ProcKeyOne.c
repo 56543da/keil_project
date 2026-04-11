@@ -185,7 +185,7 @@ void  ProcKeyUpRightHigh(void)
 **********************************************************************************************************/
 void  ProcKeyDownMenu(void)
 {
- // printf("MENU KEY PUSH DOWN\r\n");   /* 打印调试信息 */
+  printf("MENU KEY PUSH DOWN\r\n");   /* 打印调试信息 */
   UI_OnKeyMenu();
 }
 

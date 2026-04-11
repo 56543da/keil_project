@@ -8,6 +8,9 @@
 #define HR_SQI_THRESHOLD 3                /* 信号质量AC阈值 */
 #define HR_HIST_SIZE 5                      /* 结果平滑历史长度 */
 #define SPO2_DROPOUT_AC_THRESHOLD 200
+#define DEMO_BASELINE_SHIFT 5
+#define DEMO_IIR_BASELINE_SHIFT 3
+#define DEMO_IIR_SHIFT 3
 
 /* --- 环形缓冲区与处理状态 --- */
 static int32_t red_wave_buf[WAVE_BUF_SIZE];
@@ -51,6 +54,13 @@ static void hr_update_smooth(uint16_t hr_new);
  */
 static uint8_t spo2_is_dropout_by_ac(const int32_t *ir_buf, uint16_t head, uint16_t len);
 
+/* --- Demo 滤波演示的内部状态 --- */
+static int32_t s_demo_iir_y = 0;        /* IIR 低通内部状态（Q8放大） */
+static int32_t s_demo_drift_baseline = 0; /* 基线估计（Q8放大） */
+static uint16_t s_demo_med_buf[3] = {0,0,0}; /* 中值滤波的3点窗 */
+static uint8_t  s_demo_med_idx = 0;
+static uint8_t  s_demo_inited = 0;
+
 /* --- 对外接口实现 --- */
 
 /**
@@ -79,6 +89,12 @@ void SPO2_Algo_Init(void)
     
     s_red_filter_out = 0;
     s_ir_filter_out = 0;
+    
+    s_demo_iir_y = 0;
+    s_demo_drift_baseline = 0;
+    s_demo_med_buf[0] = s_demo_med_buf[1] = s_demo_med_buf[2] = 0;
+    s_demo_med_idx = 0;
+    s_demo_inited = 0;
 }
 
 /**
@@ -222,6 +238,63 @@ uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t 
     return 0;
 }
 
+/* Demo 滤波复位 */
+void SPO2_Algo_DemoFilterReset(void)
+{
+    s_demo_iir_y = 0;
+    s_demo_drift_baseline = 0;
+    s_demo_med_buf[0] = s_demo_med_buf[1] = s_demo_med_buf[2] = 0;
+    s_demo_med_idx = 0;
+    s_demo_inited = 0;
+}
+
+/* Demo 滤波应用：根据不同模式对原始 IR 做实时滤波（只用于 UI 演示，不影响算法主链路） */
+uint16_t SPO2_Algo_ApplyDemoFilter(uint16_t raw_ir, uint8_t mode)
+{
+    int32_t y;
+    int32_t x = (int32_t)raw_ir << 8; /* Q8 放大 */
+    
+    if(!s_demo_inited)
+    {
+        s_demo_iir_y = (2048 << 8);
+        s_demo_drift_baseline = x;
+        s_demo_med_buf[0] = raw_ir;
+        s_demo_med_buf[1] = raw_ir;
+        s_demo_med_buf[2] = raw_ir;
+        s_demo_inited = 1;
+    }
+    
+    switch(mode)
+    {
+        case 0:
+            s_demo_drift_baseline = s_demo_drift_baseline + ((x - s_demo_drift_baseline) >> DEMO_IIR_BASELINE_SHIFT);
+            {
+                int32_t hp = x - s_demo_drift_baseline + (2048 << 8);
+                s_demo_iir_y = s_demo_iir_y + ((hp - s_demo_iir_y) >> DEMO_IIR_SHIFT);
+                y = s_demo_iir_y >> 8;
+            }
+            break;
+        case 1:
+            s_demo_drift_baseline = s_demo_drift_baseline + ((x - s_demo_drift_baseline) >> DEMO_BASELINE_SHIFT);
+            y = (x - s_demo_drift_baseline + (2048 << 8)) >> 8;
+            break;
+        default:
+        {
+            uint16_t a,b,c,med;
+            s_demo_med_buf[s_demo_med_idx] = (uint16_t)(x >> 8);
+            s_demo_med_idx = (uint8_t)((s_demo_med_idx + 1) % 3);
+            a = s_demo_med_buf[0]; b = s_demo_med_buf[1]; c = s_demo_med_buf[2];
+            if ((a >= b && a <= c) || (a <= b && a >= c)) med = a;
+            else if ((b >= a && b <= c) || (b <= a && b >= c)) med = b;
+            else med = c;
+            y = med;
+            break;
+        }
+    }
+    if(y < 0) y = 0;
+    if(y > 4095) y = 4095;
+    return (uint16_t)y;
+}
 uint8_t SPO2_Algo_PopAnomalyFlag(void)
 {
     uint8_t ret = g_abnormal_segment_flag;

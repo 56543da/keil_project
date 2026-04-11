@@ -33,4 +33,12 @@ void SPO2_Algo_Process(void);
 uint8_t SPO2_Algo_GetResult(uint8_t *spo2, uint8_t *hr, uint8_t *pi_ir, uint8_t *pi_red, float *r_val, int32_t *ac_val);
 uint8_t SPO2_Algo_PopAnomalyFlag(void);
 
+/* Demo 滤波展示：对原始 IR 应用不同的滤波模式，返回用于 UI 演示的滤波结果
+ * mode: 0 = IIR 低通（降随机噪声）
+ *       1 = 去基线漂移（高通/去趋势）
+ *       2 = 中值滤波（去毛刺/随机噪声）
+ */
+void SPO2_Algo_DemoFilterReset(void);
+uint16_t SPO2_Algo_ApplyDemoFilter(uint16_t raw_ir, uint8_t mode);
+
 #endif

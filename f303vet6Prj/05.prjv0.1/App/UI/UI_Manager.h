@@ -18,7 +18,8 @@ typedef enum
     UI_STATE_ETCO2_SET,
     UI_STATE_SYSTEM_SET,
     UI_STATE_DATA_REVIEW,
-    UI_STATE_FILTER_DEMO
+    UI_STATE_FILTER_DEMO,
+    UI_STATE_ALARM_TEST
 } UI_State_t;
 
 void UI_Init(void);

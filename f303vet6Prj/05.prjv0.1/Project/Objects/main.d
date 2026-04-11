@@ -52,3 +52,5 @@
 .\objects\main.o: ..\App\UI\UI_Manager.h
 .\objects\main.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\string.h
 .\objects\main.o: ..\App\SPO2\SPO2_Algo.h
+.\objects\main.o: ..\App\Speaker\Speaker.h
+.\objects\main.o: ..\App\Power\Power.h

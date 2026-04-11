@@ -1,6 +1,9 @@
 #include "UI_Manager.h"
+#include "SPO2_Algo.h"
 #include "LCD.h"
 #include "UART1.h"
+#include "Speaker.h"
+#include "Power.h"
 #include <stdio.h>
 
 // UI Colors (RGB565)
@@ -56,6 +59,24 @@ static uint8_t s_demoDriftEnable = 0;
 static int16_t s_demoDriftVal = 0;
 static int8_t  s_demoDriftStep = 1;
 static uint16_t s_lfsr = 0xACE1;
+static uint8_t s_demoFilterMode = 0; /* 0=IIR,1=Detrend,2=Median */
+/* Demo 横屏扫描方向校准：MENU 一键循环 4 种候选方向，当前选项即为固化配置 */
+static const uint8_t s_demoScanDirList[4] = {L2R_U2D, L2R_D2U, R2L_U2D, R2L_D2U};
+static uint8_t s_demoScanDirIndex = 2; /* 固化为 Scan 3/4 (R2L_U2D) */
+static uint8_t s_fingerOff = 0;
+
+static uint8_t s_alarmSwitch = 1;
+static uint8_t s_alarmActive = 0;
+static uint8_t s_alarmVolume = 10;
+static uint8_t s_alarmMode = 1;
+
+/* 动态波形显示区域与抽取控制（默认使用底部小窗配置） */
+static uint16_t s_waveX = UI_WAVE_X;
+static uint16_t s_waveY = UI_WAVE_Y;
+static uint16_t s_waveW = UI_WAVE_W;
+static uint16_t s_waveH = UI_WAVE_H;
+static uint16_t s_waveXStep = UI_WAVE_X_STEP;
+static uint16_t s_waveDecimCntMax = UI_WAVE_DECIM;
 
 #define SETTINGS_ITEM_COUNT 10
 static const char* s_settingsItems[SETTINGS_ITEM_COUNT] = {
@@ -78,6 +99,10 @@ void UI_DrawAlarmSetScreen(void);
 void UI_DrawSpO2SetScreen(void);
 void UI_DrawFilterSetScreen(void);
 void UI_DrawFilterDemoScreen(void);
+static void UI_DrawFilterDemoFrame(void);
+static void UI_UpdateFilterDemoStatus(void);
+void UI_DrawAlarmTestScreen(void);
+static void UI_UpdateAlarmTestStatus(void);
 void UI_DrawRCalibScreen(void);
 void UI_DrawAutoLightScreen(void);
 void UI_DrawEtCO2SetScreen(void);
@@ -87,6 +112,7 @@ static void UI_DrawScreenBackground(void);
 static void UI_DrawCard(u16 x, u16 y, u16 w, u16 h, u16 borderColor, u16 titleColor, char* title);
 static void UI_DrawSettingsItem(uint8_t index, uint8_t selected);
 static void UI_WaveReset(void);
+static void UI_SetWaveRect(u16 x, u16 y, u16 w, u16 h);
 static uint16_t UI_WaveMapY(uint16_t sample);
 static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw);
 static uint16_t UI_AddDemoNoise(uint16_t v);
@@ -100,12 +126,16 @@ static void UI_UpdateAutoLightStatus(void);
 static void UI_UpdateEtCO2Status(void);
 static void UI_UpdateSystemSetStatus(void);
 static void UI_UpdateDataReviewValue(void);
+static void UI_DrawBatteryIcon(uint8_t percent, uint8_t charging);
+static void UI_UpdateBattery(void);
 
 void UI_Init(void)
 {
     LCD_Clear(UI_COLOR_BG);
     s_uiState = UI_STATE_MAIN;
     s_needRefresh = 1;
+    /* 默认主界面的波形区域 */
+    UI_SetWaveRect(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_W, UI_WAVE_H);
     UI_Update();
 }
 
@@ -118,6 +148,17 @@ void UI_UpdateData(SPO2Data_t *data)
     if(data->pwm_ir == 0 && s_curData.pwm_ir != 0) data->pwm_ir = s_curData.pwm_ir;
     if(data->gain_level == 0xFF && s_curData.gain_level != 0xFF) data->gain_level = s_curData.gain_level;
     
+    if(s_alarmMode == 0){
+        s_alarmActive = 0;
+    }else if(s_alarmMode == 1){
+        if(data->spo2 > 0 && data->spo2 < 90) s_alarmActive = 1;
+        else s_alarmActive = 0;
+    }else{
+        if(s_uiState == UI_STATE_ALARM_TEST) s_alarmActive = 1;
+        else s_alarmActive = 0;
+    }
+    Speaker_SetAlarmActive(s_alarmActive);
+
     if(s_uiState == UI_STATE_MAIN)
     {
         uint8_t need_update_main = 0;
@@ -183,6 +224,7 @@ void UI_UpdateData(SPO2Data_t *data)
         }
 
         s_curData = *data;
+        UI_UpdateBattery();
     }
     else
     {
@@ -190,26 +232,57 @@ void UI_UpdateData(SPO2Data_t *data)
         switch(s_uiState)
         {
             case UI_STATE_R_CALIB:      UI_UpdateRCalibValue(); break;
+            case UI_STATE_ALARM_TEST:   UI_UpdateAlarmTestStatus(); break;
             case UI_STATE_DATA_REVIEW:   UI_UpdateDataReviewValue(); break;
             default: break;
         }
+        UI_UpdateBattery();
     }
 }
 
 void UI_UpdateWave(uint16_t red_raw, uint16_t ir_raw)
 {
+    uint8_t currentFingerOff = (red_raw > 4080 && ir_raw > 4080) ? 1 : 0;
+    
+    if (s_uiState == UI_STATE_MAIN)
+    {
+        if (currentFingerOff != s_fingerOff) {
+            s_fingerOff = currentFingerOff;
+            if (!s_fingerOff) {
+                // 手指恢复，重置波形区域以清除弹窗
+                UI_WaveReset();
+            } else {
+                // 手指刚脱落，绘制弹窗
+                LCD_Fill(60, 395, 260, 435, RED);
+                POINT_COLOR = WHITE;
+                BACK_COLOR = RED;
+                LCD_ShowString(64, 403, 192, 24, 24, (u8*)"ERROR: NO FINGER");
+            }
+        }
+    }
+
     if(s_uiState == UI_STATE_MAIN || s_uiState == UI_STATE_FILTER_DEMO)
     {
         s_waveDecimCnt++;
-        if(s_waveDecimCnt < UI_WAVE_DECIM) return;
+        if(s_waveDecimCnt < s_waveDecimCntMax) return;
         s_waveDecimCnt = 0;
-        /* 约定：red_raw=原始IR，ir_raw=滤波IR */
+        
+        // 如果手指脱落且在主界面，冻结波形刷新，保持弹窗显示
+        if (s_fingerOff && s_uiState == UI_STATE_MAIN) {
+            return;
+        }
+        
+        /* 约定：red=原始IR，ir=滤波IR */
         if(s_uiState == UI_STATE_FILTER_DEMO)
         {
             uint16_t raw = red_raw;
             if(s_demoNoiseEnable) raw = UI_AddDemoNoise(raw);
             if(s_demoDriftEnable) raw = UI_AddDemoDrift(raw);
-            UI_WavePushSample(raw, ir_raw);
+            /* 根据演示滤波模式生成滤波后的 IR */
+            {
+                uint16_t demo_filt = SPO2_Algo_ApplyDemoFilter(raw, s_demoFilterMode);
+                UI_WavePushSample(raw, demo_filt);
+            }
         }
         else
         {
@@ -277,6 +350,7 @@ void UI_Update(void)
         case UI_STATE_SPO2_SET:     UI_DrawSpO2SetScreen(); break;
         case UI_STATE_FILTER_SET:   UI_DrawFilterSetScreen(); break;
         case UI_STATE_FILTER_DEMO:  UI_DrawFilterDemoScreen(); break;
+        case UI_STATE_ALARM_TEST:   UI_DrawAlarmTestScreen(); break;
         case UI_STATE_R_CALIB:      UI_DrawRCalibScreen(); break;
         case UI_STATE_AUTO_LIGHT:   UI_DrawAutoLightScreen(); break;
         case UI_STATE_ETCO2_SET:    UI_DrawEtCO2SetScreen(); break;
@@ -297,21 +371,32 @@ static void UI_WaveReset(void)
 {
     s_wavePlotInited = 0;
     s_waveXPos = 0;
-    s_wavePrevYRed = UI_WAVE_Y + (UI_WAVE_H / 2);
-    s_wavePrevYIr = UI_WAVE_Y + (UI_WAVE_H / 2);
+    s_wavePrevYRed = (u16)(s_waveY + (s_waveH / 2));
+    s_wavePrevYIr = (u16)(s_waveY + (s_waveH / 2));
     s_waveDecimCnt = 0;
     s_waveMin = 4095;
     s_waveMax = 0;
     s_waveDispMin = UI_WAVE_RAW_MIN;
     s_waveDispMax = UI_WAVE_RAW_MAX;
-    LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_WAVE_BG); // 使用纯黑波形底色
-    POINT_COLOR = UI_COLOR_BORDER;
-    LCD_DrawRectangle(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1);
+    
+    if (s_uiState == UI_STATE_FILTER_DEMO) {
+        /* 在 Demo 模式下，直接清理整个内部区域即可，因为没有边框需求 */
+        LCD_Fill(s_waveX, s_waveY, (u16)(s_waveX + s_waveW - 1), (u16)(s_waveY + s_waveH - 1), UI_COLOR_WAVE_BG);
+    } else {
+        /* 主界面带有边框的清屏逻辑 */
+        LCD_Fill(s_waveX, s_waveY, (u16)(s_waveX + s_waveW - 1), (u16)(s_waveY + s_waveH - 1), UI_COLOR_WAVE_BG); // 外框清黑
+        POINT_COLOR = UI_COLOR_BORDER;
+        LCD_DrawRectangle(s_waveX, s_waveY, (u16)(s_waveX + s_waveW - 1), (u16)(s_waveY + s_waveH - 1));
+        /* 内部区域再清一次，避免边框覆盖导致的残留 */
+        if(s_waveW > 2 && s_waveH > 2){
+            LCD_Fill((u16)(s_waveX + 1), (u16)(s_waveY + 1), (u16)(s_waveX + s_waveW - 2), (u16)(s_waveY + s_waveH - 2), UI_COLOR_WAVE_BG);
+        }
+    }
 }
 
 static uint16_t UI_WaveMapY(uint16_t sample)
 {
-    uint32_t h = (uint32_t)(UI_WAVE_H - 1);
+    uint32_t h = (uint32_t)(s_waveH - 1);
     uint32_t y_off;
     
     // 动态更新极值，留一点裕量
@@ -326,7 +411,7 @@ static uint16_t UI_WaveMapY(uint16_t sample)
     } else {
         y_off = (uint32_t)(sample - s_waveDispMin) * h / (s_waveDispMax - s_waveDispMin);
     }
-    return (uint16_t)(UI_WAVE_Y + h - y_off);
+    return (uint16_t)(s_waveY + h - y_off);
 }
 
 static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw)
@@ -365,44 +450,83 @@ static void UI_WavePushSample(uint16_t red_raw, uint16_t ir_raw)
     
     y_red = UI_WaveMapY(red_raw);
     y_ir = UI_WaveMapY(ir_raw);
-    x = UI_WAVE_X + s_waveXPos;
+    x = (u16)(s_waveX + s_waveXPos);
     if(s_waveXPos == 0)
     {
-        LCD_Fill(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_WAVE_BG); // 使用纯黑波形底色
-        POINT_COLOR = UI_COLOR_BORDER;
-        LCD_DrawRectangle(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_X + UI_WAVE_W - 1, UI_WAVE_Y + UI_WAVE_H - 1);
+        if(s_uiState == UI_STATE_FILTER_DEMO)
+        {
+            UI_DrawFilterDemoFrame();
+        }
+        else
+        {
+            if(s_waveW > 2 && s_waveH > 2){
+                LCD_Fill((u16)(s_waveX + 1), (u16)(s_waveY + 1), (u16)(s_waveX + s_waveW - 2), (u16)(s_waveY + s_waveH - 2), UI_COLOR_WAVE_BG);
+            } else {
+                LCD_Fill(s_waveX, s_waveY, (u16)(s_waveX + s_waveW - 1), (u16)(s_waveY + s_waveH - 1), UI_COLOR_WAVE_BG);
+            }
+            POINT_COLOR = UI_COLOR_BORDER;
+            LCD_DrawRectangle(s_waveX, s_waveY, (u16)(s_waveX + s_waveW - 1), (u16)(s_waveY + s_waveH - 1));
+        }
         s_wavePrevYRed = y_red;
         s_wavePrevYIr = y_ir;
     }
     else
     {
-        uint16_t x2 = x + UI_WAVE_X_STEP - 1;
-        if(x2 > (UI_WAVE_X + UI_WAVE_W - 1)) x2 = UI_WAVE_X + UI_WAVE_W - 1;
-        LCD_Fill(x, UI_WAVE_Y, x2, UI_WAVE_Y + UI_WAVE_H - 1, UI_COLOR_WAVE_BG); // 使用纯黑波形底色
-        POINT_COLOR = UI_COLOR_BORDER;
-        LCD_DrawPoint(x, UI_WAVE_Y);
-        LCD_DrawPoint(x, UI_WAVE_Y + UI_WAVE_H - 1);
+        uint16_t x2 = (u16)(x + s_waveXStep - 1);
+        if(x2 > (s_waveX + s_waveW - 1)) x2 = (u16)(s_waveX + s_waveW - 1);
+        
+        if (s_uiState == UI_STATE_FILTER_DEMO)
+        {
+            /* Demo 模式没有上下边框，直接清理纵向整条 */
+            LCD_Fill(x, s_waveY, x2, (u16)(s_waveY + s_waveH - 1), UI_COLOR_WAVE_BG);
+        }
+        else
+        {
+            /* 主界面：清理当前竖条（内部区域），保留上下边框像素 */
+            if(s_waveH > 2){
+                LCD_Fill(x, (u16)(s_waveY + 1), x2, (u16)(s_waveY + s_waveH - 2), UI_COLOR_WAVE_BG);
+            } else {
+                LCD_Fill(x, s_waveY, x2, (u16)(s_waveY + s_waveH - 1), UI_COLOR_WAVE_BG);
+            }
+            POINT_COLOR = UI_COLOR_BORDER;
+            LCD_DrawPoint(x, s_waveY);
+            LCD_DrawPoint(x, (u16)(s_waveY + s_waveH - 1));
+        }
         if(s_uiState == UI_STATE_FILTER_DEMO)
     {
         /* 在演示模式：红色=滤波后IR，蓝色=原始IR */
         POINT_COLOR = BLUE;
-        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYRed, x, y_red);
+        LCD_DrawLine((u16)(x - s_waveXStep), s_wavePrevYRed, x, y_red);
         POINT_COLOR = UI_COLOR_SPO2;
-        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYIr, x, y_ir);
+        LCD_DrawLine((u16)(x - s_waveXStep), s_wavePrevYIr, x, y_ir);
     }
     else
     {
         /* 主界面：仅显示滤波后IR波形 (红色) */
         POINT_COLOR = UI_COLOR_SPO2;
-        LCD_DrawLine((u16)(x - UI_WAVE_X_STEP), s_wavePrevYIr, x, y_ir);
+        LCD_DrawLine((u16)(x - s_waveXStep), s_wavePrevYIr, x, y_ir);
     }
         s_wavePrevYRed = y_red;
         s_wavePrevYIr = y_ir;
     }
-    s_waveXPos = (uint16_t)(s_waveXPos + UI_WAVE_X_STEP);
-    if(s_waveXPos >= UI_WAVE_W)
+    s_waveXPos = (uint16_t)(s_waveXPos + s_waveXStep);
+    if(s_waveXPos >= s_waveW)
     {
         s_waveXPos = 0;
+    }
+}
+
+static void UI_SetWaveRect(u16 x, u16 y, u16 w, u16 h)
+{
+    uint16_t points;
+    s_waveX = x; s_waveY = y; s_waveW = w; s_waveH = h;
+    /* 重新计算抽取因子，使 5s 数据刚好填满当前宽度 */
+    points = (uint16_t)(w / s_waveXStep);
+    if(points == 0) points = 1;
+    {
+        uint32_t num = (uint32_t)UI_WAVE_EXPECTED_HZ * UI_WAVE_SECONDS + points - 1;
+        s_waveDecimCntMax = (uint16_t)(num / points);
+        if(s_waveDecimCntMax == 0) s_waveDecimCntMax = 1;
     }
 }
 
@@ -447,15 +571,16 @@ void UI_DrawPanel(u16 x, u16 y, u16 w, u16 h, u16 color, char* title, u16 titleC
 
 void UI_DrawHeader(char* title)
 {
-    LCD_Fill(0, 0, 319, 39, UI_COLOR_HEADER_BG);
+    LCD_Fill(0, 0, (u16)(lcddev.width - 1), 39, UI_COLOR_HEADER_BG);
     POINT_COLOR = WHITE;
     BACK_COLOR = UI_COLOR_HEADER_BG;
     LCD_ShowString(12, 12, 120, 16, 16, (u8*)title);
-    LCD_ShowString(200, 12, 108, 16, 16, (u8*)"ID:01 ONLINE");
+    LCD_ShowString((u16)(lcddev.width - 200), 12, 160, 16, 16, (u8*)"ID:01 ONLINE");
     BACK_COLOR = UI_COLOR_BG;
     POINT_COLOR = UI_COLOR_ACCENT;
-    LCD_DrawLine(0, 40, 319, 40);
-    LCD_DrawLine(0, 41, 319, 41);
+    LCD_DrawLine(0, 40, (u16)(lcddev.width - 1), 40);
+    LCD_DrawLine(0, 41, (u16)(lcddev.width - 1), 41);
+    UI_UpdateBattery();
 }
 
 static void UI_DrawScreenBackground(void)
@@ -464,15 +589,64 @@ static void UI_DrawScreenBackground(void)
     u16 c;
     u16 g;
     u16 b;
-    for(y = 0; y < 480; y++)
+    for(y = 0; y < lcddev.height; y++)
     {
         g = (u16)(12 + y / 18);
         if(g > 63) g = 63;
         b = (u16)(20 + y / 20);
         if(b > 31) b = 31;
         c = (u16)((g << 5) | b);
-        LCD_Fill(0, y, 319, y, c);
+        LCD_Fill(0, y, (u16)(lcddev.width - 1), y, c);
     }
+}
+
+static void UI_DrawBatteryIcon(uint8_t percent, uint8_t charging)
+{
+    u16 x0 = (u16)(lcddev.width - 44);
+    u16 y0 = 8;
+    u16 bw = 34;
+    u16 bh = 16;
+    u16 tipw = 3;
+    u16 tiph = 8;
+    u16 fillw;
+    u16 color = GREEN;
+    if(percent < 20) color = RED;
+    else if(percent < 50) color = YELLOW;
+    LCD_Fill(x0-2, y0-2, (u16)(x0 + bw + tipw + 2), (u16)(y0 + bh + 2), UI_COLOR_HEADER_BG);
+    POINT_COLOR = WHITE;
+    LCD_DrawRectangle(x0, y0, (u16)(x0 + bw), (u16)(y0 + bh));
+    LCD_Fill((u16)(x0 + bw + 1), (u16)(y0 + (bh - tiph)/2), (u16)(x0 + bw + tipw), (u16)(y0 + (bh - tiph)/2 + tiph), WHITE);
+    LCD_Fill((u16)(x0 + 1), (u16)(y0 + 1), (u16)(x0 + bw - 1), (u16)(y0 + bh - 1), UI_COLOR_HEADER_BG);
+    if(percent > 100) percent = 100;
+    fillw = (u16)((bw - 6) * percent / 100);
+    if(fillw > 0){
+        LCD_Fill((u16)(x0 + 3), (u16)(y0 + 3), (u16)(x0 + 3 + fillw), (u16)(y0 + bh - 3), color);
+    }
+    {
+        char buf[6];
+        u16 tx = (u16)(x0 + 5);
+        u16 ty = (u16)(y0 + ((bh > 16) ? ((bh - 16)/2) : 0));
+        if(percent > 99) sprintf(buf, "100");
+        else sprintf(buf, "%u", percent);
+        BACK_COLOR = UI_COLOR_HEADER_BG;
+        POINT_COLOR = WHITE;
+        LCD_ShowString(tx, ty, 24, 16, 16, (u8*)buf);
+    }
+    if(charging){
+        u16 lx = (u16)(x0 - 10);
+        u16 ly = (u16)(y0 + 3);
+        POINT_COLOR = YELLOW;
+        LCD_DrawLine(lx, ly, (u16)(lx + 4), (u16)(ly + 4));
+        LCD_DrawLine((u16)(lx + 4), (u16)(ly + 4), (u16)(lx + 2), (u16)(ly + 4));
+        LCD_DrawLine((u16)(lx + 2), (u16)(ly + 4), (u16)(lx + 6), (u16)(ly + 10));
+    }
+}
+
+static void UI_UpdateBattery(void)
+{
+    uint8_t p = Power_GetBatteryPercent();
+    uint8_t chg = Power_IsCharging();
+    UI_DrawBatteryIcon(p, chg);
 }
 
 static void UI_DrawCard(u16 x, u16 y, u16 w, u16 h, u16 borderColor, u16 titleColor, char* title)
@@ -541,9 +715,19 @@ void UI_DrawMainScreen(void)
     BACK_COLOR = UI_COLOR_PANEL_BG;
     LCD_ShowString(24, 350, 140, 16, 16, (u8*)"IR (filtered)");
 
+    /* 主界面波形区域使用底部预设矩形 */
+    UI_SetWaveRect(UI_WAVE_X, UI_WAVE_Y, UI_WAVE_W, UI_WAVE_H);
     UI_WaveReset();
 
     BACK_COLOR = UI_COLOR_BG;
+    
+    // 如果手指处于脱落状态，进入主界面时恢复弹窗
+    if (s_fingerOff) {
+        LCD_Fill(60, 395, 260, 435, RED);
+        POINT_COLOR = WHITE;
+        BACK_COLOR = RED;
+        LCD_ShowString(64, 403, 192, 24, 24, (u8*)"ERROR: NO FINGER");
+    }
 }
 
 void UI_DrawSettingsScreen(void)
@@ -634,7 +818,7 @@ void UI_DrawAlarmSetScreen(void)
     POINT_COLOR = RED;
     LCD_ShowString(65, 250, 180, 16, 16, (u8*)"RL: Profile -");
     POINT_COLOR = UI_COLOR_HINT;
-    LCD_ShowString(70, 440, 180, 16, 16, (u8*)"Press BACK to Exit");
+    LCD_ShowString(60, 440, 200, 16, 16, (u8*)"LH: Alarm Test  RH:Back");
 }
 
 static void UI_UpdateAlarmSetStatus(void)
@@ -715,24 +899,75 @@ void UI_DrawFilterSetScreen(void)
 
 void UI_DrawFilterDemoScreen(void)
 {
-    UI_DrawScreenBackground();
+    UI_DrawFilterDemoFrame();
+    UI_WaveReset();
+}
+
+static void UI_DrawFilterDemoFrame(void)
+{
+    u16 frame_x1, frame_y1, frame_x2, frame_y2;
+    u16 inner_w, inner_h;
+    LCD_Display_Dir(1);
+    LCD_Scan_Dir(s_demoScanDirList[s_demoScanDirIndex]);
+    LCD_Display_Dir(1);
+    
+    LCD_Clear(UI_COLOR_BG);
     BACK_COLOR = UI_COLOR_BG;
     UI_DrawHeader("Filter Demo");
-    // 不再画带背景色的 Card，直接画边框并用纯黑底色覆盖整个波形区域
-    // Y=130 到 Y=470 作为超大波形显示区
-    LCD_Fill(10, 130, 310, 470, UI_COLOR_WAVE_BG); // 使用纯黑底色
+    
+    frame_x1 = 10;
+    frame_x2 = (u16)(lcddev.width - 10);
+    frame_y1 = 70;
+    frame_y2 = (u16)(lcddev.height - 10);
+    
+    LCD_Fill(frame_x1, frame_y1, frame_x2, frame_y2, UI_COLOR_WAVE_BG);
     POINT_COLOR = UI_COLOR_BORDER;
-    LCD_DrawRectangle(10, 130, 310, 470);
+    LCD_DrawRectangle(frame_x1, frame_y1, frame_x2, frame_y2);
+    
+    inner_w = (u16)(frame_x2 - frame_x1 + 1);
+    inner_h = (u16)(frame_y2 - frame_y1 + 1);
+    UI_SetWaveRect(frame_x1, frame_y1, inner_w, inner_h);
     
     POINT_COLOR = UI_COLOR_HINT;
-    LCD_ShowString(20, 60, 260, 16, 16, (u8*)"LL:Noise ON/OFF  RL:Drift ON/OFF");
-    POINT_COLOR = BLUE;
-    BACK_COLOR = UI_COLOR_BG;
-    LCD_ShowString(20, 80, 160, 16, 16, (u8*)"Blue: Raw (demo)");
-    POINT_COLOR = UI_COLOR_SPO2;
-    LCD_ShowString(20, 100, 160, 16, 16, (u8*)"Red:  Filtered");
+    BACK_COLOR = UI_COLOR_HEADER_BG;
+    LCD_ShowString(160, 12, 300, 16, 16, (u8*)"LH:Mode  LL:Noise  RL:Drift");
     
-    UI_WaveReset();
+    UI_UpdateFilterDemoStatus();
+}
+static const char* UI_GetDemoModeText(uint8_t mode)
+{
+    switch(mode){
+        case 0: return "IIR LPF";
+        case 1: return "Detrend";
+        default: return "Median";
+    }
+}
+static void UI_UpdateFilterDemoStatus(void)
+{
+    char buf[32];
+    /* 状态行放在 Header 下方，不参与波形区域清屏 */
+    BACK_COLOR = UI_COLOR_BG;
+    
+    POINT_COLOR = BLUE;
+    LCD_ShowString(20, 48, 110, 16, 16, (u8*)"Blue: Raw ");
+    
+    POINT_COLOR = UI_COLOR_SPO2;
+    LCD_ShowString(130, 48, 130, 16, 16, (u8*)"Red: Filtered");
+    
+    POINT_COLOR = WHITE;
+    sprintf(buf, "Mode:%-8s", UI_GetDemoModeText(s_demoFilterMode));
+    LCD_ShowString(270, 48, 120, 16, 16, (u8*)buf);
+    
+    POINT_COLOR = UI_COLOR_HINT;
+    sprintf(buf, "N:%s D:%s ",
+            s_demoNoiseEnable ? "ON " : "OFF",
+            s_demoDriftEnable ? "ON " : "OFF");
+    LCD_ShowString(390, 48, 90, 16, 16, (u8*)buf);
+    POINT_COLOR = WHITE;
+    sprintf(buf, "Scan:%d/4 ", (int)(s_demoScanDirIndex + 1));
+    LCD_ShowString(390, 30, 90, 16, 16, (u8*)buf);
+    
+    BACK_COLOR = UI_COLOR_BG;
 }
 static void UI_UpdateFilterStatus(void)
 {
@@ -922,6 +1157,11 @@ void UI_OnKeyLL(void) // Up
             break;
         case UI_STATE_FILTER_DEMO:
             s_demoNoiseEnable = !s_demoNoiseEnable;
+            /* 临时增加：使用 LL 键也作为校准切换键，防止 MENU 硬件按键失效 */
+            s_demoScanDirIndex = (uint8_t)((s_demoScanDirIndex + 1) % 4);
+            s_needRefresh = 1;
+            UI_UpdateFilterDemoStatus();
+            UI_Update();
             break;
             
         case UI_STATE_AUTO_LIGHT:
@@ -956,6 +1196,11 @@ void UI_OnKeyLL(void) // Up
             else s_dataReviewPage = 0;
             UI_UpdateDataReviewValue();
             break;
+        case UI_STATE_ALARM_TEST:
+            if(s_alarmVolume < 31) s_alarmVolume++;
+            UI_UpdateAlarmTestStatus();
+            Speaker_SetVolume(s_alarmVolume);
+            break;
             
         default: break;
     }
@@ -987,6 +1232,7 @@ void UI_OnKeyRL(void) // Down
             break;
         case UI_STATE_FILTER_DEMO:
             s_demoDriftEnable = !s_demoDriftEnable;
+            UI_UpdateFilterDemoStatus();
             break;
             
         case UI_STATE_AUTO_LIGHT:
@@ -1021,6 +1267,11 @@ void UI_OnKeyRL(void) // Down
             else s_dataReviewPage = 2;
             UI_UpdateDataReviewValue();
             break;
+        case UI_STATE_ALARM_TEST:
+            if(s_alarmVolume > 0) s_alarmVolume--;
+            UI_UpdateAlarmTestStatus();
+            Speaker_SetVolume(s_alarmVolume);
+            break;
             
         default: break;
     }
@@ -1053,6 +1304,20 @@ void UI_OnKeyLH(void) // Enter / Settings
             }
             s_needRefresh = 1;
             break;
+        case UI_STATE_ALARM_SET:
+            s_uiState = UI_STATE_ALARM_TEST;
+            s_needRefresh = 1;
+            break;
+        case UI_STATE_FILTER_DEMO:
+            s_demoFilterMode = (uint8_t)((s_demoFilterMode + 1) % 3);
+            SPO2_Algo_DemoFilterReset();
+            UI_UpdateFilterDemoStatus();
+            break;
+        case UI_STATE_ALARM_TEST:
+            s_alarmMode = (uint8_t)((s_alarmMode + 1) % 3);
+            UI_UpdateAlarmTestStatus();
+            Speaker_SetAlarmActive((s_alarmMode == 2) ? 1 : s_alarmActive);
+            break;
             
         default: break;
     }
@@ -1072,6 +1337,20 @@ void UI_OnKeyRH(void) // Back
         case UI_STATE_SPO2_SET:
         case UI_STATE_FILTER_SET:
         case UI_STATE_FILTER_DEMO:
+        case UI_STATE_ALARM_TEST:
+            if(s_uiState == UI_STATE_FILTER_DEMO){
+                LCD_Display_Dir(0);
+                LCD_Scan_Dir(R2L_U2D);
+                LCD_Clear(UI_COLOR_BG);
+            }
+            if(s_uiState == UI_STATE_ALARM_TEST){
+                if(s_alarmMode == 2){
+                    s_alarmActive = 0;
+                    Speaker_SetAlarmActive(0);
+                }
+                s_uiState = UI_STATE_ALARM_SET;
+                break;
+            }
         case UI_STATE_R_CALIB:
         case UI_STATE_AUTO_LIGHT:
         case UI_STATE_ETCO2_SET:
@@ -1088,5 +1367,38 @@ void UI_OnKeyRH(void) // Back
 
 void UI_OnKeyMenu(void)
 {
-    // Reserved
+    if(s_uiState == UI_STATE_FILTER_DEMO)
+    {
+        s_demoScanDirIndex = (uint8_t)((s_demoScanDirIndex + 1) % 4);
+        s_needRefresh = 1;
+        UI_Update();
+    }
+}
+
+void UI_DrawAlarmTestScreen(void)
+{
+    UI_DrawScreenBackground();
+    BACK_COLOR = UI_COLOR_BG;
+    UI_DrawHeader("Alarm Test");
+    UI_DrawPanel(60, 120, 200, 170, UI_COLOR_ACCENT, "Alarm Config", WHITE);
+    UI_UpdateAlarmTestStatus();
+    POINT_COLOR = GREEN;
+    LCD_ShowString(75, 220, 220, 16, 16, (u8*)"LL: Volume +");
+    POINT_COLOR = RED;
+    LCD_ShowString(75, 240, 220, 16, 16, (u8*)"RL: Volume -");
+    POINT_COLOR = UI_COLOR_HINT;
+    LCD_ShowString(60, 440, 220, 16, 16, (u8*)"LH:Mode   RH:Back");
+}
+
+static void UI_UpdateAlarmTestStatus(void)
+{
+    char buf[32];
+    POINT_COLOR = WHITE;
+    BACK_COLOR = UI_COLOR_BG;
+    if(s_alarmMode == 0) sprintf(buf, "Mode: OFF   ");
+    else if(s_alarmMode == 1) sprintf(buf, "Mode: AUTO  ");
+    else sprintf(buf, "Mode: FORCE ");
+    LCD_ShowString(80, 160, 200, 16, 16, (u8*)buf);
+    sprintf(buf, "Volume: %2d   ", s_alarmVolume);
+    LCD_ShowString(80, 180, 200, 16, 16, (u8*)buf);
 }

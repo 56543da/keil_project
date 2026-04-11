@@ -109,7 +109,7 @@ UI状态机实现：
 
 主界面UI区域设计（320×480，文字版）：
 1. Header 区：Y=0~40
-   - 标题、在线标识
+   - 标题、在线标识、电量图标（右上角）
 2. SPO2 卡片区：Y=50~120
    - SPO2 数值
 3. PR 卡片区：Y=130~200
@@ -134,6 +134,7 @@ UI状态机实现：
 2. 布局基准：所有主界面区域按 320×480 物理分辨率重新标定，确保 UI 铺满全屏。
 3. 波形区位置：固定在最下方功能区（Y=340~470），不与数值区重叠。
 4. 兼容层处理：SPO2_Display 模块不再直接占用独立 LCD 区域，统一走 UI_Manager 渲染。
+5. 电量图标：基于 Power_GetBatteryPercent() 实时绘制，<20% 红色、20~49% 黄色、≥50% 绿色；充电时在电池内显示“+”标记
 
 后续优化建议：
 1. 将 Work Mode / Alarm Set / EtCO2 Set / System Set 的参数与 F310 实际控制命令打通
@@ -145,3 +146,4 @@ Module size (W×H×T) 55.26×84.69×2.40
 Active area (W×H) 48.96×73.44
 LCD Driver IC ST7796U—— ST7796U 驱动芯片
 Interface Type MCU 8080 interface  ——8080 8 位并行 MCU 接口
+横屏：Resolution (W×H) 480×320 像素

@@ -21,7 +21,6 @@
 | KEY2 | KEY_NAME_RL | GPIOE | PE4 | 下降沿触发 | EXTI4 | 黄色LED翻转 |
 | LEFT_HIGH | KEY_NAME_LEFT_HIGH | GPIOE | PE5 | 下降沿触发 | EXTI5 | 红色LED翻转 |
 | RIGHT_HIGH | KEY_NAME_RIGHT_HIGH | GPIOC | PC13 | 下降沿触发 | EXTI13 | 应用逻辑 |
-| MENU | KEY_NAME_MENU | GPIOC | PC9 | 下降沿触发 | EXTI9 | 应用逻辑 |
 
 **按键中断说明：**
 - 中断优先级：抢占优先级2，子优先级2
@@ -30,9 +29,25 @@
 - 中断服务函数：
   - `EXTI3_IRQHandler` (KEY_LL)
   - `EXTI4_IRQHandler` (KEY_RL)
-  - `EXTI5_9_IRQHandler` (LEFT_HIGH & MENU)
+  - `EXTI5_9_IRQHandler` (LEFT_HIGH & SW_KEY 电源键)
   - `EXTI10_15_IRQHandler` (RIGHT_HIGH)
 - 软件消抖：在2ms定时任务中进行状态机消抖 (5个tick)
+
+## 电源与充电管理 (Power 模块)
+
+| 信号名 | GPIO端口 | 引脚 | 功能说明 | 控制逻辑 |
+| :--- | :--- | :--- | :--- | :--- |
+| PWR_EN | GPIOC | PC9 | 主电源使能控制 | 推挽输出。开机后持续输出高电平开启 5V，关机时拉低断电 |
+| SW_KEY | GPIOC | PC8 | 电源开关按键 | 上拉输入，外部中断(EXTI8)下降沿触发。软件消抖 20ms 后执行关机 |
+| CHRG   | GPIOA | PA0 | 充电状态指示 | 输入。低电平表示正在充电 |
+| STDBY  | GPIOA | PA1 | 充电完成指示 | 输入。低电平表示充电完成/待机 |
+| BAT_DET| GPIOC | PC1 | 电池电压检测 | ADC输入 (ADC0_CH11)。检测电池电量百分比 |
+| USB_DET| GPIOC | PC2 | USB插入检测 | ADC输入 (ADC0_CH12)。高电平(2.5V)表示已插入USB，低电平表示拔出 |
+
+**电源控制机制：**
+- **开机**：长按 SW_KEY 硬件触发开机，单片机启动后立刻拉高 PWR_EN (PC9) 维持电源开启。
+- **关机**：开机状态下按下 SW_KEY，触发 EXTI8 中断，在 SysTick (2ms) 中进行 20ms 软件消抖后，单片机拉低 PWR_EN (PC9)，切断主升压芯片，实现彻底关机。
+- **ADC采样**：在主循环中轮询切换通道 11 和 12 读取电池和 USB 电压值，并做简单的平滑滤波。
 
 ## LCD接口映射（8080并行接口）
 
@@ -74,12 +89,34 @@
 - NT35310 (ID: 0x5310)
 - NT35510 (ID: 0x5510)
 
+## 音频与音量控制
+
+### 模拟音频输出
+
+| 信号名 | GPIO端口 | 引脚 | 功能说明 |
+| :--- | :--- | :--- | :--- |
+| DAC_OUT | GPIOA | PA4 | DAC 模拟输出，驱动外部功放 |
+
+### 数字音量控制（AD5160）
+
+| 信号名 | GPIO端口 | 引脚 | 连接说明 |
+| :--- | :--- | :--- | :--- |
+| 5160_CLK | GPIOB | PB13 | SPI 时钟 (SCK) |
+| 5160_CS  | GPIOB | PB14 | SPI 片选 (NSS) |
+| 5160_SDI | GPIOB | PB15 | SPI 数据输入 (MOSI) |
+
+### 功放
+
+- 模块：FM8002A 音频功放
+- 音量：通过 AD5160 数字电位器调节（SPI 控制）
+
 ## 重要说明
 
-1. **按键系统更新：**
-   - 新增了 `RIGHT_HIGH` (PC13) 和 `MENU` (PC9) 按键
-   - 所有按键统一使用 **中断下降沿触发** + **定时器消抖** 机制
-   - 解决了中断资源共享问题 (EXTI5_9, EXTI10_15)
+1. **按键与电源系统更新：**
+   - 移除了原有的 `MENU` (PC9) 按键，将 PC9 分配给 `PWR_EN`（主电源使能）
+   - 新增 `SW_KEY` (PC8) 作为电源开关按键，复用 EXTI5_9 中断
+   - 新增 `BAT_DET` (PC1), `USB_DET` (PC2), `CHRG` (PA0), `STDBY` (PA1) 用于充电和电量管理
+   - 解决了中断资源共享问题 (EXTI5_9 负责 LEFT_HIGH 和 SW_KEY)
 
 2. **LCD显示：**
    - 接口保持不变，使用高性能8080并口驱动

@@ -88,7 +88,7 @@ static  void  ConfigKeyOneGPIO(void)
   gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_4);  /* KEY2 */
   gpio_init(GPIOE, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_5);  /* LEFT_HIGH (PE5) */
   gpio_init(GPIOC, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_13); /* RIGHT_HIGH (PC13) */
-  gpio_init(GPIOC, GPIO_MODE_IPU, GPIO_OSPEED_50MHZ, GPIO_PIN_9);  /* MENU (PC9) */
+  /* MENU (PC9) 被移除，由 SW_KEY 替代 */
   
   /* 配置外部中断源选择 */
   /* KEY1(PE3) -> EXTI3 */
@@ -99,28 +99,25 @@ static  void  ConfigKeyOneGPIO(void)
   gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOE, GPIO_PIN_SOURCE_5);
   /* RIGHT_HIGH(PC13) -> EXTI13 */
   gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOC, GPIO_PIN_SOURCE_13);
-  /* MENU(PC9) -> EXTI9 */
-  gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOC, GPIO_PIN_SOURCE_9);
+  /* MENU(PC9) 的配置已移除，因为 PC9 被用作 PWR_EN */
   
   /* 配置中断触发方式 */
   exti_init(EXTI_3, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
   exti_init(EXTI_4, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
   exti_init(EXTI_5, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
   exti_init(EXTI_13, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
-  exti_init(EXTI_9, EXTI_INTERRUPT, EXTI_TRIG_FALLING);
   
   /* 清除中断标志位 */
   exti_interrupt_flag_clear(EXTI_3);
   exti_interrupt_flag_clear(EXTI_4);
   exti_interrupt_flag_clear(EXTI_5);
   exti_interrupt_flag_clear(EXTI_13);
-  exti_interrupt_flag_clear(EXTI_9);
 
   /* 配置NVIC中断优先级 */
   nvic_irq_enable(EXTI3_IRQn, 2, 2);      /* KEY1 */
   nvic_irq_enable(EXTI4_IRQn, 2, 2);      /* KEY2 */
   nvic_irq_enable(EXTI10_15_IRQn, 2, 2);  /* RIGHT_HIGH */
-  nvic_irq_enable(EXTI5_9_IRQn, 2, 2);    /* LH (EXTI5) & MENU (EXTI9) 共享中断 */
+  nvic_irq_enable(EXTI5_9_IRQn, 2, 2);    /* LH (EXTI5) 共享中断 */
 }
 
 /*********************************************************************************************************
@@ -143,7 +140,7 @@ static unsigned char KeyIsPressed(unsigned char keyName)
         case KEY_NAME_RL: return (gpio_input_bit_get(GPIOE, GPIO_PIN_4) == RESET);
         case KEY_NAME_LEFT_HIGH: return (gpio_input_bit_get(GPIOE, GPIO_PIN_5) == RESET);
         case KEY_NAME_RIGHT_HIGH: return (gpio_input_bit_get(GPIOC, GPIO_PIN_13) == RESET);
-        case KEY_NAME_MENU: return (gpio_input_bit_get(GPIOC, GPIO_PIN_9) == RESET);
+        case KEY_NAME_MENU: return 0; // Menu key is removed, always return not pressed
         default: return 0;
     }
 }
@@ -199,13 +196,11 @@ void EXTI5_9_IRQHandler(void)
         s_keyStableCnt[KEY_NAME_LEFT_HIGH] = 0;
     }
 
-    /* 处理 MENU (EXTI9) */
-    if(exti_flag_get(EXTI_9) != RESET)
+    // EXTI_8 用于 SW_KEY (电源开关)
+    extern void EXTI8_IRQHandler_Impl(void);
+    if(exti_flag_get(EXTI_8) != RESET)
     {
-        exti_interrupt_flag_clear(EXTI_9);
-        exti_interrupt_disable(EXTI_9);
-        s_keyState[KEY_NAME_MENU] = 1;
-        s_keyStableCnt[KEY_NAME_MENU] = 0;
+        EXTI8_IRQHandler_Impl();
     }
 
     /* 清除所有可能的中断标志位，防止死循环 */

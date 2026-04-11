@@ -35,7 +35,10 @@
 .\objects\ui_manager.o: ..\FW\Include\gd32f30x_exmc.h
 .\objects\ui_manager.o: ..\App\DataType\DataType.h
 .\objects\ui_manager.o: ..\ARM\System\gd32f30x_conf.h
+.\objects\ui_manager.o: ..\App\SPO2\SPO2_Algo.h
 .\objects\ui_manager.o: ..\App\LCD\LCD.h
 .\objects\ui_manager.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\ui_manager.o: E:\E_tools\keil\core\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\ui_manager.o: ..\HW\UART1\UART1.h
+.\objects\ui_manager.o: ..\App\Speaker\Speaker.h
+.\objects\ui_manager.o: ..\App\Power\Power.h

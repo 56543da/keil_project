@@ -286,7 +286,26 @@ void SPO2_Timer_Handler(void)
             g_wave_ir_seq++;
             if(g_agc_enable)
             {
-                // ... (AGC logic remains commented/removed)
+                static uint8_t agc_cnt = 0;
+                agc_cnt++;
+                if (agc_cnt >= 20) // 每 200ms 调整一次
+                {
+                    agc_cnt = 0;
+                    
+                    // 调整 RED
+                    if (g_raw_red_adc > SPO2_DC_TARGET_HIGH) {
+                        if (g_red_pwm_pulse > SPO2_PWM_PULSE_MIN) g_red_pwm_pulse--;
+                    } else if (g_raw_red_adc < SPO2_DC_TARGET_LOW) {
+                        if (g_red_pwm_pulse < SPO2_PWM_PULSE_MAX) g_red_pwm_pulse++;
+                    }
+                    
+                    // 调整 IR
+                    if (g_raw_ir_adc > SPO2_DC_TARGET_HIGH) {
+                        if (g_ir_pwm_pulse > SPO2_PWM_PULSE_MIN) g_ir_pwm_pulse--;
+                    } else if (g_raw_ir_adc < SPO2_DC_TARGET_LOW) {
+                        if (g_ir_pwm_pulse < SPO2_PWM_PULSE_MAX) g_ir_pwm_pulse++;
+                    }
+                }
             }
             break;
             
